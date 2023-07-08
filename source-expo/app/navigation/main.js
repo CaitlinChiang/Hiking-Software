@@ -20,11 +20,7 @@ import SignIn from '@screens/SignIn'
 import ResetPassword from '@screens/ResetPassword'
 import ChangePassword from '@screens/ChangePassword'
 /* Keeping for Styling */
-import PostDetail from '@screens/PostDetail'
 import DashboardEvent from '@screens/DashboardEvent'
-import BucketListDetail from '@screens/PostDetail'
-import ProfileEdit from '@screens/ProfileEdit'
-import ProfileExample from '@screens/ProfileExample'
 
 const MainStack = createStackNavigator()
 const BottomTab = createBottomTabNavigator()
@@ -48,11 +44,6 @@ export default function Main() {
       <MainStack.Screen name="ResetPassword" component={ResetPassword} />
       <MainStack.Screen name="ChangePassword" component={ChangePassword} />
       <MainStack.Screen name="NotFound" component={NotFound} />
-
-      {/* Keeping for Styling */}
-      <MainStack.Screen name="ProfileEdit" component={ProfileEdit} />
-      <MainStack.Screen name="ProfileExample" component={ProfileExample} />
-      <MainStack.Screen name="PostDetail" component={PostDetail} />
     </MainStack.Navigator>
   )
 }

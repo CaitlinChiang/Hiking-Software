@@ -11,6 +11,7 @@ import {
   Button,
   ProfileDetail,
   ProfilePerformance,
+  TextInput
 } from '@components';
 import styles from './styles';
 import {UserData} from '@data';
@@ -22,14 +23,18 @@ export default function Profile({navigation}) {
 
   const [loading, setLoading] = useState(false);
   const [userData] = useState(UserData[0]);
+  const [id, setId] = useState(UserData[0].id);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [image] = useState(UserData[0].image);
+
   const dispatch = useDispatch();
 
-  /**
-   * @description Simple logout with Redux
-   * @author Passion UI <passionui.com>
-   * @date 2019-08-03
-   */
-  const onLogOut = () => {
+  onLogOut = () => {
     setLoading(true);
     dispatch(AuthActions.authentication(false, response => {}));
   };
@@ -56,29 +61,11 @@ export default function Profile({navigation}) {
               point={userData.point}
               textSecond={userData.address}
               textThird={userData.id}
-              onPress={() => navigation.navigate('ProfileExanple')}
             />
             <ProfilePerformance
               data={userData.performance}
               style={{marginTop: 20, marginBottom: 20}}
             />
-            <TouchableOpacity
-              style={[
-                styles.profileItem,
-                {borderBottomColor: colors.border, borderBottomWidth: 1},
-              ]}
-              onPress={() => {
-                navigation.navigate('ProfileEdit');
-              }}>
-              <Text body1>{t('edit_profile')}</Text>
-              <Icon
-                name="angle-right"
-                size={18}
-                color={colors.primary}
-                style={{marginLeft: 5}}
-                enableRTL={true}
-              />
-            </TouchableOpacity>
             <TouchableOpacity
               style={[
                 styles.profileItem,
@@ -111,20 +98,65 @@ export default function Profile({navigation}) {
                 enableRTL={true}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.profileItem}
-              onPress={() => {
-                navigation.navigate('Setting');
-              }}>
-              <Text body1>{t('setting')}</Text>
-              <Icon
-                name="angle-right"
-                size={18}
-                color={colors.primary}
-                style={{marginLeft: 5}}
-                enableRTL={true}
-              />
-            </TouchableOpacity>
+            <View style={styles.contentTitle}>
+              <Text headline semibold>
+                {'Name'}
+              </Text>
+            </View>
+            <TextInput
+              onChangeText={text => setName(text)}
+              value={name}
+            />
+            <View style={styles.contentTitle}>
+              <Text headline semibold>
+                {'Email'}
+              </Text>
+            </View>
+            <TextInput
+              onChangeText={text => setEmail(text)}
+              placeholder={t('input_email')}
+              value={email}
+            />
+            <View style={styles.contentTitle}>
+              <Text headline semibold>
+                {'Gender'}
+              </Text>
+            </View>
+            <TextInput
+              onChangeText={text => setGender(text)}
+              placeholder={t('input_email')}
+              value={gender}
+            />
+            <View style={styles.contentTitle}>
+              <Text headline semibold>
+                {'Birthday'}
+              </Text>
+            </View>
+            <TextInput
+              onChangeText={text => setBirthday(text)}
+              placeholder={t('input_email')}
+              value={birthday}
+            />
+            <View style={styles.contentTitle}>
+              <Text headline semibold>
+                {'Height'}
+              </Text>
+            </View>
+            <TextInput
+              onChangeText={text => setHeight(text)}
+              placeholder={t('input_email')}
+              value={height}
+            />
+            <View style={styles.contentTitle}>
+              <Text headline semibold>
+                {'Weight'}
+              </Text>
+            </View>
+            <TextInput
+              onChangeText={text => setWeight(text)}
+              placeholder={t('input_email')}
+              value={weight}
+            />
           </View>
         </ScrollView>
         <View style={{paddingHorizontal: 20, paddingVertical: 15}}>
