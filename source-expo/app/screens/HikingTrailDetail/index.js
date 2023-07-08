@@ -18,7 +18,7 @@ import styles from './styles';
 import {useTranslation} from 'react-i18next';
 import { Calendar } from 'react-native-calendars';
 
-export default function HotelDetail({navigation}) {
+export default function HikingTrailDetail({navigation}) {
   const {colors} = useTheme();
   const {t} = useTranslation();
 

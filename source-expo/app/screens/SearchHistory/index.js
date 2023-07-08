@@ -185,7 +185,7 @@ export default function SearchHistory({navigation}) {
                       marginTop: 5,
                     }}
                     image={item.image}
-                    onPress={() => navigation.navigate('HotelDetail')}>
+                    onPress={() => navigation.navigate('HikingTrailDetail')}>
                     <Text headline semibold whiteColor>
                       {item.name}
                     </Text>

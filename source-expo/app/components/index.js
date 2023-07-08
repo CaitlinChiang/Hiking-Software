@@ -20,12 +20,10 @@ import ProfileGroup from './ProfileGroup';
 import ProfileGroupSmall from './ProfileGroupSmall';
 import RateDetail from './RateDetail';
 import ListThumbCircle from './ListThumbCircle';
-import PostListItem from './PostListItem';
+import BucketListItem from './BucketListItem';
 import Coupon from './Coupon';
 import PostItem from './PostItem';
 import Card from './Card';
-import TourItem from './TourItem';
-import TourDay from './TourDay';
 import CarItem from './CarItem';
 import RoomType from './RoomType';
 import FilterSort from './FilterSort';
@@ -76,12 +74,10 @@ export {
   ProfileDescription,
   ProfileGroup,
   RateDetail,
-  PostListItem,
+  BucketListItem,
   Coupon,
   PostItem,
   Card,
-  TourItem,
-  TourDay,
   CarItem,
   RoomType,
   FilterSort,

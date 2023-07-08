@@ -2,8 +2,7 @@ import React, {useEffect} from 'react'
 import {StatusBar, Platform, useColorScheme} from 'react-native'
 import {NavigationContainer} from '@react-navigation/native'
 import {
-  createStackNavigator,
-  CardStyleInterpolators,
+  createStackNavigator
 } from '@react-navigation/stack'
 import {useTheme, BaseSetting} from '@config'
 import i18n from 'i18next'
@@ -17,8 +16,6 @@ import Filter from '@screens/Filter'
 import Search from '@screens/Search'
 import SearchHistory from '@screens/SearchHistory'
 import PreviewImage from '@screens/PreviewImage'
-import SelectDarkOption from '@screens/SelectDarkOption'
-import SelectFontOption from '@screens/SelectFontOption'
 
 const RootStack = createStackNavigator()
 
@@ -64,25 +61,6 @@ export default function Navigator() {
         <RootStack.Screen name="Search" component={Search} />
         <RootStack.Screen name="SearchHistory" component={SearchHistory} />
         <RootStack.Screen name="PreviewImage" component={PreviewImage} />
-        <RootStack.Screen
-          name="SelectDarkOption"
-          component={SelectDarkOption}
-          options={{
-            presentation: 'transparentModal',
-            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
-            cardStyle: {backgroundColor: 'rgba(0, 0, 0, 0.5)'},
-            gestureEnabled: false,
-          }}
-        />
-        <RootStack.Screen
-          name="SelectFontOption"
-          component={SelectFontOption}
-          options={{
-            presentation: 'transparentModal',
-            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
-            cardStyle: {backgroundColor: 'rgba(0, 0, 0, 0.5)'},
-          }}
-        />
       </RootStack.Navigator>
     </NavigationContainer>
   )

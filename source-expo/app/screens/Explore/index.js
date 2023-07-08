@@ -131,7 +131,7 @@ export default function Home({navigation}) {
                     duration={item.duration}
                     summitHeight={item.summitHeight}
                     style={{marginLeft: 15, marginBottom: 15}}
-                    onPress={() => navigation.navigate('HotelDetail')}
+                    onPress={() => navigation.navigate('HikingTrailDetail')}
                   />
                 )}
               />

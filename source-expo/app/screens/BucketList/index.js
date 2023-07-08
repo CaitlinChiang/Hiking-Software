@@ -1,50 +1,66 @@
-import React, {useState} from 'react';
-import {RefreshControl, FlatList, View} from 'react-native';
-import {BaseStyle, useTheme} from '@config';
-import {Header, SafeAreaView, PostItem, ProfileAuthor} from '@components';
+import React from 'react';
+import {View, ScrollView, Animated, TouchableOpacity} from 'react-native';
+import {BaseColor, Images} from '@config';
+import {
+  SafeAreaView,
+  Text,
+  BucketListItem,
+} from '@components';
+import * as Utils from '@utils';
 import styles from './styles';
-import {PostData} from '@data';
 import {useTranslation} from 'react-i18next';
 
-export default function Post({navigation}) {
-  const {colors} = useTheme();
+export default function BucketList({navigation}) {
   const {t} = useTranslation();
 
-  const [refreshing] = useState(false);
-  const [posts] = useState(PostData);
+  const deltaY = new Animated.Value(0);
+  const heightHeader = Utils.heightHeader();
+  const heightImageBanner = Utils.scaleWithPixel(250);
+  const marginTopBanner = heightImageBanner - heightHeader - 30;
 
   return (
     <View style={{flex: 1}}>
-      <Header title={t('post')} />
-      <SafeAreaView
-        style={BaseStyle.safeAreaView}
-        edges={['right', 'left', 'bottom']}>
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              colors={[colors.primary]}
-              tintColor={colors.primary}
-              refreshing={refreshing}
-              onRefresh={() => {}}
-            />
-          }
-          data={posts}
-          keyExtractor={(item, index) => item.id}
-          renderItem={({item, index}) => (
-            <PostItem
-              image={item.image}
-              title={item.title}
-              description={item.description}
-              onPress={() => navigation.navigate('PostDetail')}>
-              <ProfileAuthor
-                image={item.authorImage}
-                name={item.name}
-                description={item.detail}
-                style={{paddingHorizontal: 20}}
+      <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
+        <ScrollView
+          onScroll={Animated.event([
+            {
+              nativeEvent: {
+                contentOffset: {y: deltaY},
+              },
+            },
+          ])}
+          scrollEventThrottle={8}>
+          <View
+            style={{
+              paddingHorizontal: 20,
+              marginBottom: 20,
+              marginTop: 50
+            }}>
+            <Text
+              headline
+              semibold
+              style={{
+                marginTop: 20,
+              }}>
+              {'Bucket List'}
+            </Text>
+            {Array.from({ length: 8 }).map((_, index) => (
+              <BucketListItem
+                title="Mountain Sample"
+                location="Country, Address"
+                summitHeight="1000m"
+                duration="1 day"
+                ydsGrading="VII"
+                ydsClass="4"
+                style={{marginTop: 10, width: '100%'}}
+                image={Images.trail1}
+                onPress={() => {
+                  navigation.navigate('HikingTrailDetail');
+                }}
               />
-            </PostItem>
-          )}
-        />
+            ))}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
