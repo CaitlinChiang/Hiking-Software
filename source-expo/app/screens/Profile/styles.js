@@ -7,6 +7,7 @@ export default StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     height: 32,
+    marginTop: 10,
     justifyContent: 'center',
   },
   contain: {
@@ -26,4 +27,24 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 20,
   },
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30
+  }
 });

@@ -128,9 +128,6 @@ export default function DatePicker(props) {
       <TouchableOpacity
         style={styles.itemPick}
         onPress={() => setModalVisible(true)}>
-        <Text caption1 light style={{marginBottom: 5}}>
-          {label}
-        </Text>
         <Text headline semibold numberOfLines={1}>
           {selected}
         </Text>
