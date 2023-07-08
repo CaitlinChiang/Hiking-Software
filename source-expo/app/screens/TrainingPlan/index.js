@@ -29,7 +29,7 @@ export default function Booking({navigation}) {
         price={item.price}
         style={{paddingVertical: 10, marginHorizontal: 20}}
         onPress={() => {
-          navigation.navigate('BookingDetail');
+          navigation.navigate('TrainingDetail');
         }}
       />
     );
