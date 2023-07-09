@@ -13,6 +13,7 @@ import HelpBlock from './HelpBlock';
 import Header from './Header';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TrainingExercise from './TrainingExercise'
+import TrainingDetail from './TrainingDetail'
 import StarRating from './StarRating';
 import ProfileAuthor from './ProfileAuthor';
 import ProfileDetail from './ProfileDetail';
@@ -88,4 +89,5 @@ export {
   EventCard,
   TextInput,
   RangeSlider,
+  TrainingDetail
 };
