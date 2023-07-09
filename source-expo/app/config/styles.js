@@ -13,6 +13,13 @@ export const BaseStyle = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  searchInput: {
+    height: 46,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    width: '100%',
+    alignItems: 'center'
+  },
   safeAreaView: {
     flex: 1,
   },

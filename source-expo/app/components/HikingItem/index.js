@@ -27,7 +27,7 @@ export default function HikingItem(props) {
     return (
       <View style={style}>
         <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-          <Image source={image} style={styles.blockImage} />
+          <Image imageUrl={image} style={styles.blockImage} />
         </TouchableOpacity>
         <View style={{paddingHorizontal: 20}}>
           <Text title2 semibold style={{marginTop: 5}} numberOfLines={1}>
@@ -98,7 +98,8 @@ export default function HikingItem(props) {
     return (
       <View style={[styles.listContent, style]}>
         <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-          <Image source={image} style={styles.listImage} />
+          <Image imageUrl={image} style={{ height: Utils.scaleWithPixel(120),
+    width: '100%' }} />
         </TouchableOpacity>
         <View style={styles.listContentRight}>
           <Text headline semibold numberOfLines={1}>
@@ -118,8 +119,7 @@ export default function HikingItem(props) {
           </View>
       
           <Text
-            title3
-            primaryColor
+            headline
             semibold
             style={{marginTop: 5, marginBottom: 5}}>
             {duration}
@@ -133,7 +133,7 @@ export default function HikingItem(props) {
     return (
       <View style={[styles.girdContent, style]}>
         <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-          <Image source={image} style={styles.girdImage} />
+          <Image imageUrl={image} style={{ ...styles.girdImage, borderRadius: 10 }} />
         </TouchableOpacity>
         <View style={styles.girdContentLocation}>
           <Icon name="map-marker-alt" color={colors.primary} size={10} />
@@ -148,7 +148,7 @@ export default function HikingItem(props) {
           </Text>
         </View>
         <Text
-          body2
+          headline
           semibold
           style={{
             marginTop: 5,
@@ -156,9 +156,7 @@ export default function HikingItem(props) {
           {name}
         </Text>
         <Text
-          title3
-          primaryColor
-          semibold
+          body2
           style={{
             marginTop: 5,
           }}>

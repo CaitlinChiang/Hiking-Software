@@ -14,8 +14,8 @@ export default function PostListItem(props) {
       style={[styles.contain, style]}
       onPress={onPress}
       activeOpacity={0.9}>
-      <Image source={image} style={styles.imageBanner} />
-      <View style={[styles.content, {backgroundColor: cardColor}]}>
+      <Image imageUrl={image} style={styles.imageBanner} />
+      <View style={[styles.content, { zIndex: -1, marginLeft: -10, paddingLeft: 20, backgroundColor: cardColor, borderRadius: 10 }]}>
         {name != '' && (
           <View style={styles.contentTitle}>
             <Text headline semibold>

@@ -48,9 +48,10 @@ export default function Home({navigation}) {
         data={icons}
         numColumns={4}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => {
+        renderItem={({item}, i) => {
           return (
             <TouchableOpacity
+              key={i}
               style={styles.itemService}
               activeOpacity={0.9}
               onPress={() => {
@@ -88,7 +89,7 @@ export default function Home({navigation}) {
                   activeOpacity={0.9}>
                   <View
                     style={[
-                      BaseStyle.textInput,
+                      BaseStyle.searchInput,
                       {
                         backgroundColor: colors.card,
                         borderRadius: 30,
@@ -99,7 +100,7 @@ export default function Home({navigation}) {
                     ]}
                   >
                     <Ionicons name="search" size={24} color="gray" />
-                    <Text body1 grayColor>
+                    <Text body1 grayColor style={{ paddingLeft: 10 }}>
                       {'Search for a Hiking Trail'}
                     </Text>
                   </View>
@@ -119,7 +120,7 @@ export default function Home({navigation}) {
                   <HikingItem
                     grid
                     key={item.id}
-                    image={item.image}
+                    image={item.imageSrc}
                     name={item.name}
                     location={item.location}
                     duration={item.duration}

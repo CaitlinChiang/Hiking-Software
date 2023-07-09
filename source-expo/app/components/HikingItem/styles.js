@@ -59,12 +59,12 @@ export default StyleSheet.create({
   },
   //gird css
   girdImage: {
-    borderRadius: 8,
+    borderRadius: 20,
     height: Utils.scaleWithPixel(120),
     width: '100%',
   },
   girdContent: {
-    flex: 1,
+    flex: 1
   },
   girdContentLocation: {
     flexDirection: 'row',

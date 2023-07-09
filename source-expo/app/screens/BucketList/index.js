@@ -44,7 +44,7 @@ export default function BucketList({navigation}) {
                 ydsGrading={trail.ydsGrading}
                 ydsClass={trail.ydsClass}
                 style={{marginTop: 10, width: '100%'}}
-                image={Images.trail1}
+                image={trail.imageSrc}
                 onPress={() => {
                   navigation.navigate('HikingTrailDetail');
                 }}
