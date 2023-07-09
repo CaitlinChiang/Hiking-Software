@@ -19,6 +19,7 @@ import {FlightData} from './flight';
 import {CruiseData} from './cruise';
 import {BusData} from './bus';
 import {EventListData} from './event';
+import { TrainingTimelineData } from './trainingTimeline';
 // Sample data for display on template
 export {
   BusData,
@@ -42,4 +43,5 @@ export {
   CarData,
   FlightBrandData,
   EventListData,
+  TrainingTimelineData
 };

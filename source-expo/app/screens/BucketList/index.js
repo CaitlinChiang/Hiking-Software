@@ -2,6 +2,7 @@ import React from 'react';
 import {View, ScrollView, Animated, TouchableOpacity} from 'react-native';
 import {BaseColor, Images} from '@config';
 import {
+  Header,
   SafeAreaView,
   Text,
   BucketListItem,
@@ -16,7 +17,6 @@ export default function BucketList({navigation}) {
   const deltaY = new Animated.Value(0);
   const heightHeader = Utils.heightHeader();
   const heightImageBanner = Utils.scaleWithPixel(250);
-  const marginTopBanner = heightImageBanner - heightHeader - 30;
 
   return (
     <View style={{flex: 1}}>
@@ -30,20 +30,14 @@ export default function BucketList({navigation}) {
             },
           ])}
           scrollEventThrottle={8}>
+          <Header
+            title="Bucket List"
+          />
           <View
             style={{
               paddingHorizontal: 20,
-              marginBottom: 20,
-              marginTop: 50
+              marginBottom: 20
             }}>
-            <Text
-              headline
-              semibold
-              style={{
-                marginTop: 20,
-              }}>
-              {'Bucket List'}
-            </Text>
             {Array.from({ length: 8 }).map((_, index) => (
               <BucketListItem
                 title="Mountain Sample"

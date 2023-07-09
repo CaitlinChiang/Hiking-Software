@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {FlatList, RefreshControl, View} from 'react-native';
-import {BaseStyle, useTheme} from '@config';
-import {Header, SafeAreaView, BookingHistory} from '@components';
+import {BaseStyle, useTheme, BaseColor} from '@config';
+import {Header, SafeAreaView, BookingHistory, Icon} from '@components';
 import {BookingHistoryData} from '@data';
 import {useTranslation} from 'react-i18next';
 import styles from './styles';
@@ -13,12 +13,6 @@ export default function Booking({navigation}) {
   const [refreshing] = useState(false);
   const [bookingHistory] = useState(BookingHistoryData);
 
-  /**
-   * render Item
-   *
-   * @param {*} item
-   * @returns
-   */
   const renderItem = item => {
     return (
       <BookingHistory
@@ -35,15 +29,11 @@ export default function Booking({navigation}) {
     );
   };
 
-  /**
-   * @description Loading booking item history one by one
-   * @author Passion UI <passionui.com>
-   * @date 2019-08-03
-   * @returns
-   */
   return (
     <View style={{flex: 1}}>
-      <Header title={t('booking_history')} />
+      <Header
+        title="Training Schedule"
+      />
       <SafeAreaView
         style={BaseStyle.safeAreaView}
         edges={['right', 'left', 'bottom']}>

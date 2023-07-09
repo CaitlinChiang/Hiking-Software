@@ -12,6 +12,7 @@ import ListThumbSquare from './ListThumbSquare';
 import HelpBlock from './HelpBlock';
 import Header from './Header';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import TrainingExercise from './TrainingExercise'
 import StarRating from './StarRating';
 import ProfileAuthor from './ProfileAuthor';
 import ProfileDetail from './ProfileDetail';
@@ -45,6 +46,7 @@ import RangeSlider from './RangeSlider';
 export {
   BusPlan,
   BusItem,
+  TrainingExercise,
   DatePicker,
   CruiseItem,
   FlightItem,

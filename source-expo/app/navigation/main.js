@@ -14,6 +14,7 @@ import BucketList from '@screens/BucketList'
 import Profile from '@screens/Profile'
 /* Pages */
 import TrainingDetail from '@screens/TrainingDetail'
+import TrainingExercise from '@screens/TrainingExercise'
 import HikingTrailDetail from '@screens/HikingTrailDetail'
 import SignUp from '@screens/SignUp'
 import SignIn from '@screens/SignIn'
@@ -38,6 +39,7 @@ export default function Main() {
       />
 
       <MainStack.Screen name="TrainingDetail" component={TrainingDetail} />
+      <MainStack.Screen name="TrainingExercise" component={TrainingExercise} />
       <MainStack.Screen name="HikingTrailDetail" component={HikingTrailDetail} />
       <MainStack.Screen name="SignUp" component={SignUp} />
       <MainStack.Screen name="SignIn" component={SignIn} />

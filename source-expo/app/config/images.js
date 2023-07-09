@@ -47,6 +47,7 @@ export const Images = {
   trip8: require('@assets/images/trip-8.jpg'),
   trip9: require('@assets/images/trip-9.jpg'),
   trail1: require('@assets/images/mountain-1.jpeg'),
+  trainingVideo1: require('@assets/images/training1.jpeg'),
   room2: require('@assets/images/room-2.jpg'),
   room3: require('@assets/images/room-3.jpg'),
   room4: require('@assets/images/room-4.jpg'),
