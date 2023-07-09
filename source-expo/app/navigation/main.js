@@ -62,7 +62,7 @@ function BottomTabNavigator() {
       initialRouteName="Home"
       screenOptions={{
         tabBarInactiveTintColor: BaseColor.grayColor,
-        tabBarActiveTintColor: colors.primary,
+        tabBarActiveTintColor: '#554c3d',
         headerShown: false,
         tabBarLabelStyle: {
           fontSize: 12,

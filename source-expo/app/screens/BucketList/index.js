@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, ScrollView, Animated, TouchableOpacity} from 'react-native';
 import {BaseColor, Images} from '@config';
 import {
@@ -10,9 +10,12 @@ import {
 import * as Utils from '@utils';
 import styles from './styles';
 import {useTranslation} from 'react-i18next';
+import { HikingTrailsData } from '@data';
 
 export default function BucketList({navigation}) {
   const {t} = useTranslation();
+
+  const [hikingTrailsData, setHikingTrails] = useState(HikingTrailsData)
 
   const deltaY = new Animated.Value(0);
   const heightHeader = Utils.heightHeader();
@@ -22,13 +25,6 @@ export default function BucketList({navigation}) {
     <View style={{flex: 1}}>
       <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
         <ScrollView
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {y: deltaY},
-              },
-            },
-          ])}
           scrollEventThrottle={8}>
           <Header
             title="Bucket List"
@@ -38,14 +34,15 @@ export default function BucketList({navigation}) {
               paddingHorizontal: 20,
               marginBottom: 20
             }}>
-            {Array.from({ length: 8 }).map((_, index) => (
+            {hikingTrailsData?.map((trail, index) => (
               <BucketListItem
-                title="Mountain Sample"
-                location="Country, Address"
-                summitHeight="1000m"
-                duration="1 day"
-                ydsGrading="VII"
-                ydsClass="4"
+                key={index}
+                name={trail.name}
+                location={trail.location}
+                summitHeight={trail.summitHeight}
+                duration={trail.duration}
+                ydsGrading={trail.ydsGrading}
+                ydsClass={trail.ydsClass}
                 style={{marginTop: 10, width: '100%'}}
                 image={Images.trail1}
                 onPress={() => {

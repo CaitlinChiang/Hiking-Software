@@ -77,13 +77,6 @@ export default function Home({navigation}) {
     <View style={{flex: 1}}>
       <SafeAreaView style={{flex: 1}} edges={['right', 'left']}>
         <FlatList
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {y: deltaY},
-              },
-            },
-          ])}
           onContentSizeChange={() => setHeightHeader(Utils.heightHeader())}
           scrollEventThrottle={8}
           ListHeaderComponent={
@@ -125,6 +118,7 @@ export default function Home({navigation}) {
                 renderItem={({item, index}) => (
                   <HikingItem
                     grid
+                    key={item.id}
                     image={item.image}
                     name={item.name}
                     location={item.location}

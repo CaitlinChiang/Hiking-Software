@@ -6,7 +6,7 @@ import {useTheme} from '@config';
 import PropTypes from 'prop-types';
 
 export default function PostListItem(props) {
-  const {style, title, location, summitHeight, duration, ydsGrading, ydsClass, date, onPress, image} = props;
+  const {style, name, location, summitHeight, duration, ydsGrading, ydsClass, date, onPress, image} = props;
   const {colors} = useTheme();
   const cardColor = colors.card;
   return (
@@ -16,10 +16,10 @@ export default function PostListItem(props) {
       activeOpacity={0.9}>
       <Image source={image} style={styles.imageBanner} />
       <View style={[styles.content, {backgroundColor: cardColor}]}>
-        {title != '' && (
+        {name != '' && (
           <View style={styles.contentTitle}>
             <Text headline semibold>
-              {title}
+              {name}
             </Text>
           </View>
         )}

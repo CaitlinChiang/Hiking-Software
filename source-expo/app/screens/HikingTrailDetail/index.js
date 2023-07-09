@@ -104,13 +104,6 @@ export default function HikingTrailDetail({navigation}) {
       />
       <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
         <ScrollView
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {y: deltaY},
-              },
-            },
-          ])}
           onContentSizeChange={() => setHeightHeader(Utils.heightHeader())}
           scrollEventThrottle={8}>
           <View style={{paddingHorizontal: 20}}>
