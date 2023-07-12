@@ -1,9 +1,6 @@
-/**
- * Basic Setting Variables Define
- */
 export const BaseSetting = {
-  name: 'FelixPro',
-  displayName: 'FelixPro',
+  name: 'PeakQuest',
+  displayName: 'PeakQuest',
   appVersion: '1.1.8',
   defaultLanguage: 'en',
   languageSupport: [

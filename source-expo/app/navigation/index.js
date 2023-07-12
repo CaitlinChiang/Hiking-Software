@@ -14,8 +14,6 @@ import Main from 'app/navigation/main'
 import Loading from '@screens/Loading'
 import Filter from '@screens/Filter'
 import Search from '@screens/Search'
-import SearchHistory from '@screens/SearchHistory'
-import PreviewImage from '@screens/PreviewImage'
 
 const RootStack = createStackNavigator()
 
@@ -59,8 +57,6 @@ export default function Navigator() {
         <RootStack.Screen name="Main" component={Main} />
         <RootStack.Screen name="Filter" component={Filter} />
         <RootStack.Screen name="Search" component={Search} />
-        <RootStack.Screen name="SearchHistory" component={SearchHistory} />
-        <RootStack.Screen name="PreviewImage" component={PreviewImage} />
       </RootStack.Navigator>
     </NavigationContainer>
   )

@@ -1,9 +1,6 @@
 import {useSelector} from 'react-redux';
 import {useColorScheme} from 'react-native';
 
-/**
- * Define Const color use for whole application
- */
 export const BaseColor = {
   grayColor: '#9B9B9B',
   dividerColor: '#BDBDBD',
@@ -18,9 +15,6 @@ export const BaseColor = {
   greenColor: '#58D68D',
 };
 
-/**
- * Define Const list theme use for whole application
- */
 export const ThemeSupport = [
   {
     theme: 'orange',
@@ -169,9 +163,6 @@ export const ThemeSupport = [
   },
 ];
 
-/**
- * Define default theme use for whole application
- */
 export const DefaultTheme = {
   theme: 'orange',
   light: {
@@ -202,20 +193,10 @@ export const DefaultTheme = {
   },
 };
 
-/**
- * Define list font use for whole application
- */
 export const FontSupport = ['Raleway', 'Roboto', 'Merriweather'];
 
-/**
- * Define font default use for whole application
- */
 export const DefaultFont = 'Raleway';
 
-/**
- * export theme and colors for application
- * @returns theme,colors
- */
 export const useTheme = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const forceDark = useSelector(state => state.application.force_dark);
@@ -230,10 +211,6 @@ export const useTheme = () => {
   return {theme: theme.light, colors: theme.light.colors};
 };
 
-/**
- * export font for application
- * @returns font
- */
 export const useFont = () => {
   const font = useSelector(state => state.application.font);
   return font ?? DefaultFont;

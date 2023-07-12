@@ -20,8 +20,6 @@ import SignUp from '@screens/SignUp'
 import SignIn from '@screens/SignIn'
 import ResetPassword from '@screens/ResetPassword'
 import ChangePassword from '@screens/ChangePassword'
-/* Keeping for Styling */
-import DashboardEvent from '@screens/DashboardEvent'
 
 const MainStack = createStackNavigator()
 const BottomTab = createBottomTabNavigator()
@@ -52,7 +50,6 @@ export default function Main() {
 
 function BottomTabNavigator() {
   const {t} = useTranslation()
-  const {colors} = useTheme()
   const font = useFont()
   const auth = useSelector(state => state.auth)
   const login = auth.login.success

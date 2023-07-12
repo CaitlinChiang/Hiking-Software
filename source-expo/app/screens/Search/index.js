@@ -74,10 +74,6 @@ export default function Search({navigation}) {
     }
   };
 
-  /**
-   * render UI modal
-   * @returns
-   */
   const renderModal = () => {
     return (
       <View>
