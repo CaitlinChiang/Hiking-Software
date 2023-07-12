@@ -13,7 +13,7 @@ import {
 import {BaseStyle, Images, useTheme} from '@config'
 import * as Utils from '@utils'
 import styles from './styles'
-import {PromotionData, TourData, HikingTrailsData } from '@data'
+import { HikingTrailsData } from '@data'
 import {useTranslation} from 'react-i18next'
 import { Ionicons } from '@expo/vector-icons';
 

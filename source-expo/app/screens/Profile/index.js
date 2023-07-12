@@ -15,7 +15,7 @@ import {UserData} from '@data';
 import {useTranslation} from 'react-i18next';
 import Slider from '@react-native-community/slider';
 import RNPickerSelect from "react-native-picker-select";
-import RadarChartComponent from './Chart';
+// import RadarChartComponent from './Chart';
 
 export default function Profile({navigation}) {
   const {colors} = useTheme();
@@ -53,7 +53,7 @@ export default function Profile({navigation}) {
         edges={['right', 'left', 'bottom']}>
         <ScrollView>
           <View style={styles.contain}>
-            <RadarChartComponent />
+            {/* <RadarChartComponent /> */}
 
             <View style={styles.contentTitle}>
               <Text headline semibold>
