@@ -126,7 +126,14 @@ export default function Home({navigation}) {
                     duration={item.duration}
                     summitHeight={item.summitHeight}
                     style={{marginLeft: 15, marginBottom: 15}}
-                    onPress={() => navigation.navigate('HikingTrailDetail')}
+                    onPress={() =>
+                      navigation.navigate('HikingTrailDetail', {
+                        name: item.name,
+                        location: item.location,
+                        duration: item.duration,
+                        summitHeight: item.summitHeight,
+                      })
+                    }
                   />
                 )}
               />
