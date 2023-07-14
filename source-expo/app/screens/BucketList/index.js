@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Animated, Text } from 'react-native';
 import { Header, SafeAreaView, BucketListItem } from '@components';
 import { initializeApp } from 'firebase/app';
-import { doc, getFirestore, collection, getDoc } from 'firebase/firestore';
+import { doc, getFirestore, collection, getDoc, onSnapshot } from 'firebase/firestore';
 import { HikingTrailsData } from '../../data/hikingTrails.js';
 import * as Utils from '@utils';
 import styles from './styles';
@@ -27,7 +27,22 @@ export default function BucketList({ navigation }) {
   const heightImageBanner = Utils.scaleWithPixel(250);
 
   useEffect(() => {
-    fetchHikingTrails();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const userDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx'); // Replace with the actual user document ID
+    const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const bucketList = snapshot.get('bucketlist') || [];
+        const hikingTrails = HikingTrailsData.filter((trail) =>
+          bucketList.some((item) => item.name === trail.name)
+        );
+        setHikingTrails(hikingTrails);
+      } else {
+        console.log('User document does not exist');
+      }
+    });
+
+    return () => unsubscribe(); // Clean up the listener on component unmount
   }, []);
 
   const fetchHikingTrails = async () => {
