@@ -115,7 +115,6 @@ export default function HikingTrailDetail({navigation, route}) {
     }
   };
 
-  
   return (
     <View style={{flex: 1}}>
     <Animated.Image
