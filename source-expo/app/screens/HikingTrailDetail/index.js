@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { doc, setDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
-import { HikingTrailsData } from '../../data/hikingTrails.js'; // Source to the Hiking Data
+import { HikingTrailsData } from '@data';
 
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
 const firebaseConfig = {

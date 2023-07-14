@@ -3,7 +3,7 @@ import { View, ScrollView, Animated, Text } from 'react-native';
 import { Header, SafeAreaView, BucketListItem } from '@components';
 import { initializeApp } from 'firebase/app';
 import { doc, getFirestore, collection, getDoc, onSnapshot } from 'firebase/firestore';
-import { HikingTrailsData } from '../../data/hikingTrails.js';
+import { HikingTrailsData } from '@data';
 import * as Utils from '@utils';
 import styles from './styles';
 import { useTranslation } from 'react-i18next';
