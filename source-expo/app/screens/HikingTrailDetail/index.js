@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { doc, setDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
+import { HikingTrailsData } from '../../data/hikingTrails.js'; // Source to the Hiking Data
 
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
 const firebaseConfig = {
@@ -48,7 +49,7 @@ const heartRegularSvg = `<svg xmlns="http://www.w3.org/2000/svg" height="1em" vi
 export default function HikingTrailDetail({navigation, route}) {
   const {colors} = useTheme();
   const {t} = useTranslation();
-  const { name, location, duration, summitHeight } = route.params;
+  const { name, imageSrc } = route.params;
   const [selectedDates, setSelectedDates] = useState({});
   const [rightIcon, setRightIcon] = useState('heart')
 
@@ -56,6 +57,13 @@ export default function HikingTrailDetail({navigation, route}) {
   const [renderMapView, setRenderMapView] = useState(false);
   const deltaY = new Animated.Value(0);
   const [isFilled, setIsFilled] = useState(false);
+  const [trail, setTrailData] = useState(null);
+
+
+  useEffect(() => {
+    const trail = HikingTrailsData.find((trail) => trail.name === name);
+    setTrailData(trail);
+  }, [{ name }]);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -66,25 +74,21 @@ export default function HikingTrailDetail({navigation, route}) {
   const heightImageBanner = Utils.scaleWithPixel(250, 1);
   const marginTopBanner = heightImageBanner - heightHeader - 40;
 
-  // Handler for when the button is pressed
   const handleButtonPress = () => {
-    // Open the calendar popup
     navigation.navigate('Calendar');
   };
   
-  // Handler for when a date is selected
   const handleDateSelect = (date) => {
     if (!selectedDates.startDate) {
       setSelectedDates({ startDate: date.dateString });
     } else if (!selectedDates.endDate) {
       const { startDate } = selectedDates;
       const endDate = date.dateString;
-      // Perform any necessary logic with the selected start and end dates
       console.log('Selected start date:', startDate);
       console.log('Selected end date:', endDate);
       setSelectedDates({ startDate: null, endDate: null });
       setRightIcon('heart');
-      handleHeartIconPress(); // Add this line to call handleHeartIconPress when the heart icon is deselected
+      handleHeartIconPress(); 
     }
   };
 
@@ -94,12 +98,12 @@ export default function HikingTrailDetail({navigation, route}) {
       const bucketListRef = doc(db, 'users', userId);
   
       if (isFilled) {
-        // Remove from bucket list
+        // Remove from buckeisttl
         await updateDoc(bucketListRef, {
           bucketlist: arrayRemove({name})
         });
       } else {
-        // Add to bucket list
+        // Add to bucketlist
         await updateDoc(bucketListRef, {
           bucketlist: arrayUnion({name})
         });
@@ -114,18 +118,19 @@ export default function HikingTrailDetail({navigation, route}) {
   
   return (
     <View style={{flex: 1}}>
-      <Animated.Image
-        source={Images.trail1}
-        style={[
-          styles.imgBanner,
-          {
-            height: deltaY.interpolate({
-              inputRange: [
-                0,
-                Utils.scaleWithPixel(200),
-                Utils.scaleWithPixel(200),
+    <Animated.Image
+      source={{ uri: imageSrc }} // Using this instead for URI
+      // source={require(Image.trail1)} //
+      style={[
+        styles.imgBanner,
+        {
+          height: deltaY.interpolate({
+            inputRange: [
+              0,
+              Utils.scaleWithPixel(200),
+              Utils.scaleWithPixel(200),
               ],
-              outputRange: [heightImageBanner, heightHeader, heightHeader],
+              outputRange: [heightImageBanner, heightHeader, heightHeader], 
             }),
           },
         ]}
@@ -193,7 +198,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Location
                   </Text>
                   <Text body2>
-                    Country, Specific Address
+                    {trail?.location || ''}
                   </Text>
                 </View>
               </View>
@@ -205,7 +210,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Starting Height
                   </Text>
                   <Text body2>
-                    1,600
+                    {trail?.startingHeight || ''}
                   </Text>
                 </View>
               </View>
@@ -217,7 +222,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Summit Height
                   </Text>
                   <Text body2>
-                    4884
+                    {trail?.summitHeight || ''}
                   </Text>
                 </View>
               </View>
@@ -229,7 +234,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Altitude Gain
                   </Text>
                   <Text body2>
-                    3284
+                    {trail?.altitudeGain || ''}
                   </Text>
                 </View>
               </View>
@@ -241,7 +246,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Trail Distance
                   </Text>
                   <Text body2>
-                    53205
+                    {trail?.trailDistance || ''}
                   </Text>
                 </View>
               </View>
@@ -253,7 +258,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Duration
                   </Text>
                   <Text body2>
-                    7 Days
+                    {trail?.duration || ''}
                   </Text>
                 </View>
               </View>
@@ -265,7 +270,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     YDS Grading
                   </Text>
                   <Text body2>
-                    VII
+                    {trail?.ydsGrading || ''}
                   </Text>
                 </View>
               </View>
@@ -277,7 +282,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     YDS Class
                   </Text>
                   <Text body2>
-                    4
+                    {trail?.ydsClass || ''}
                   </Text>
                 </View>
               </View>
@@ -289,9 +294,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Weather
                   </Text>
                   <Text body2>
-                    {'May - Oct: DRY'}
-                    {'\n'}
-                    {'Dec - Mar: WET'}
+                    {trail?.weather || ''} 
                   </Text>
                 </View>
               </View>

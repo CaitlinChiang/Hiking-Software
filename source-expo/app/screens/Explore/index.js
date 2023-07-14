@@ -132,8 +132,9 @@ export default function Home({navigation}) {
                         location: item.location,
                         duration: item.duration,
                         summitHeight: item.summitHeight,
+                        imageSrc: item.imageSrc,
                       })
-                    }
+                    }                    
                   />
                 )}
               />
