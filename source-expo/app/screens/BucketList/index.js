@@ -29,7 +29,7 @@ export default function BucketList({ navigation }) {
   useEffect(() => {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const userDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx'); // Replace with the actual user document ID
+    const userDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx'); // Replace with the actual user document IDs for each different user
     const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
       if (snapshot.exists()) {
         const bucketList = snapshot.get('bucketlist') || [];
@@ -42,7 +42,7 @@ export default function BucketList({ navigation }) {
       }
     });
 
-    return () => unsubscribe(); // Clean up the listener on component unmount
+    return () => unsubscribe(); 
   }, []);
 
   const fetchHikingTrails = async () => {
