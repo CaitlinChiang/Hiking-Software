@@ -3,6 +3,49 @@ import {View, ScrollView, TouchableOpacity } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {AuthActions} from '@actions';
 import {BaseStyle, useTheme} from '@config';
+import {getFirestore} from 'firebase/firestore';
+import 'firebase/firestore'
+
+
+// Imports for firebase (you can get this from firebase.js as well to make it cleaner)
+const firebaseConfig = {
+  apiKey: "AIzaSyD46mMFUwZ7AlCJWPqOXK3SKw1BuIihlFM",
+  authDomain: "hikingproject-3abef.firebaseapp.com",
+  projectId: "hikingproject-3abef",
+  storageBucket: "hikingproject-3abef.appspot.com",
+  messagingSenderId: "23275209713",
+  appId: "1:23275209713:web:3579558675b39890b47a50",
+  measurementId: "G-7H0L154L10"
+};
+
+// Important initialization. must be done in index.js
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const onSaveProfile = () => {
+  const userRef = db.collection('users').doc();
+
+  const userProfile = {
+    naming,
+    email,
+    gender,
+    birthday,
+    height,
+    weight,
+  };
+
+  // Save the user profile to Firestore
+  userRef
+    .set(userProfile)
+    .then(() => {
+      console.log('User profile saved successfully!');
+      // Perform any additional actions or navigation if needed
+    })
+    .catch((error) => {
+      console.log('Error saving user profile:', error);
+    });
+};
+
 import {
   SafeAreaView,
   Text,
@@ -24,7 +67,7 @@ export default function Profile({navigation}) {
   const [loading, setLoading] = useState(false);
   const [userData] = useState(UserData[0]);
   const [id, setId] = useState(UserData[0].id);
-  const [name, setName] = useState('');
+  const [naming, setNaming] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [birthday, setBirthday] = useState('');
@@ -61,9 +104,9 @@ export default function Profile({navigation}) {
               </Text>
             </View>
             <TextInput
-              onChangeText={text => setName(text)}
+              onChangeText={text => setNaming(text)}
               placeholder={'Input Name'}
-              value={name}
+              value={naming}
             />
             <View style={styles.contentTitle}>
               <Text headline semibold>
@@ -111,6 +154,34 @@ export default function Profile({navigation}) {
               placeholder={'Input Weight'}
               value={weight}
             />
+            </View>
+
+          <View style={{ flex: 1 }}>
+            <SafeAreaView
+              style={{ marginTop: 60, ...BaseStyle.safeAreaView }}
+              edges={['right', 'left', 'bottom']}
+            >
+          <ScrollView>
+            <View style={styles.contain}>
+              <View style={styles.contentTitle}>
+                <Text headline semibold>
+                  {'Name'}
+                </Text>
+              </View>
+            <TextInput
+              onChangeText={(text) => setNaming(text)}
+              placeholder={'Input Name'}
+              value={naming}
+            />
+            {/* ... other input fields ... */}
+
+            
+          </View>
+            <TouchableOpacity style={styles.saveButton} onPress={onSaveProfile}>
+            <Text style={styles.saveButtonText}>Save</Text>
+            </TouchableOpacity>
+            </ScrollView>
+            </SafeAreaView>
           </View>
 
           <View>
