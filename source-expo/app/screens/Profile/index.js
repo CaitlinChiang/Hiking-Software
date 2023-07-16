@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {View, ScrollView, TouchableOpacity } from 'react-native';
+import {View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {AuthActions} from '@actions';
 import {BaseStyle, useTheme} from '@config';
-import {getFirestore} from 'firebase/firestore';
-import 'firebase/firestore'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
@@ -18,33 +18,6 @@ const firebaseConfig = {
   measurementId: "G-7H0L154L10"
 };
 
-// Important initialization. must be done in index.js
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const onSaveProfile = () => {
-  const userRef = db.collection('users').doc();
-
-  const userProfile = {
-    naming,
-    email,
-    gender,
-    birthday,
-    height,
-    weight,
-  };
-
-  // Save the user profile to Firestore
-  userRef
-    .set(userProfile)
-    .then(() => {
-      console.log('User profile saved successfully!');
-      // Perform any additional actions or navigation if needed
-    })
-    .catch((error) => {
-      console.log('Error saving user profile:', error);
-    });
-};
 
 import {
   SafeAreaView,
@@ -59,6 +32,12 @@ import {useTranslation} from 'react-i18next';
 import Slider from '@react-native-community/slider';
 import RNPickerSelect from "react-native-picker-select";
 // import RadarChartComponent from './Chart';
+
+// Important initialization. must be done in index.js
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
 
 export default function Profile({navigation}) {
   const {colors} = useTheme();
@@ -81,6 +60,70 @@ export default function Profile({navigation}) {
   const [flexibility, setFlexibility] = useState('');
   const [outdoorExperienceFrequency, setOutdoorExperienceFrequency] = useState('');
   const [outdoorExperienceComfort, setOutdoorExperienceComfort] = useState('');
+
+
+  const onSaveProfile = async () => {
+    try {
+      const userId1 = 'pIRDa83OOxomB7Gr6czm';
+      const userId2 = 'xIAJtDxUUahHf2kgMjPf';
+  
+      // Validate the compulsory fields
+      if (!naming || !email || !gender || !birthday || !height || !weight) {
+        Alert.alert('Error', 'Please fill in all required fields.');
+        return;
+      }
+  
+      // Validate the birthday format (DD-MM-YYYY)
+      const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+      if (!dateRegex.test(birthday)) {
+        Alert.alert('Error', 'Please enter a valid birthday in DD-MM-YYYY format.');
+        return;
+      }
+  
+      // Validate the height and weight as numbers
+      if (isNaN(height) || isNaN(weight)) {
+        Alert.alert('Error', 'Please enter valid numeric values for height and weight.');
+        return;
+      }
+  
+      // Save the user profile data
+      const userProfileRef = db.collection('users').doc(userId1);
+      const userProfileData = {
+        naming,
+        email,
+        gender,
+        birthday,
+        height: Number(height),
+        weight: Number(weight),
+      };
+      await userProfileRef.update({
+        userProfile: firebase.firestore.FieldValue.arrayUnion(userProfileData),
+      });
+      console.log('User profile saved successfully!');
+  
+      // Save the physical activity data
+      const physicalActivityRef = db.collection('users').doc(userId2);
+      const physicalActivityData = {
+        userId1,
+        physicalSustainability,
+        upperBodyStrength,
+        lowerBodyStrength,
+        balanceStability,
+        flexibility,
+        outdoorExperienceFrequency,
+        outdoorExperienceComfort,
+      };
+      await physicalActivityRef.update({
+        physicalActivities: firebase.firestore.FieldValue.arrayUnion(physicalActivityData),
+      });
+      console.log('Physical activity data saved successfully!');
+  
+      // Show the success message
+      Alert.alert('Success', 'Saved successfully!');
+    } catch (error) {
+      console.log('Error saving data:', error);
+    }
+  };
   
   const dispatch = useDispatch();
 
@@ -133,7 +176,11 @@ export default function Profile({navigation}) {
                 {'Birthday'}
               </Text>
             </View>
-            <DatePicker />
+            <TextInput
+              onChangeText={text => setBirthday(text)}
+              placeholder={'DD-MM-YYYY'}
+              value={birthday}
+            />
             <View style={styles.contentTitle}>
               <Text headline semibold>
                 {'Height (cm)'}
@@ -156,35 +203,7 @@ export default function Profile({navigation}) {
             />
             </View>
 
-          <View style={{ flex: 1 }}>
-            <SafeAreaView
-              style={{ marginTop: 60, ...BaseStyle.safeAreaView }}
-              edges={['right', 'left', 'bottom']}
-            >
-          <ScrollView>
-            <View style={styles.contain}>
-              <View style={styles.contentTitle}>
-                <Text headline semibold>
-                  {'Name'}
-                </Text>
-              </View>
-            <TextInput
-              onChangeText={(text) => setNaming(text)}
-              placeholder={'Input Name'}
-              value={naming}
-            />
-            {/* ... other input fields ... */}
-
-            
-          </View>
-            <TouchableOpacity style={styles.saveButton} onPress={onSaveProfile}>
-            <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
-            </ScrollView>
-            </SafeAreaView>
-          </View>
-
-          <View>
+         <View>
             <Text style={{ padding: 20 }} headline semibold>Rate your ability to sustain physical activity for an extended period:</Text>
             <Text style={{ textAlign: 'center' }} headline semibold>{physicalSustainability}</Text>
             <Slider
@@ -298,6 +317,21 @@ export default function Profile({navigation}) {
               </View>
             </View>
           </View>
+
+          <View style={{ flex: 1 }}>
+              <SafeAreaView style={{ flex: 1 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                  <View style={styles.contain}>
+                  </View>
+                  <View style={styles.saveButtonContainer}>
+                    <TouchableOpacity style={styles.saveButton} onPress={onSaveProfile}>
+                      <Text style={styles.saveButtonText}>Save</Text>
+                    </TouchableOpacity>
+                  </View>
+                </ScrollView>
+              </SafeAreaView>
+            </View>
+
         </ScrollView>
       </SafeAreaView>
     </View>

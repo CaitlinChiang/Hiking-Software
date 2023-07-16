@@ -18,4 +18,12 @@ export default StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  completedButton: {
+    backgroundColor: 'grey',
+    // Additional styles for the completed button
+  },
+  completedButtonText: {
+    color: 'white',
+    // Additional styles for the completed button text
+  },
 });

@@ -46,5 +46,22 @@ export default StyleSheet.create({
     borderRadius: 8,
     color: 'black',
     paddingRight: 30
-  }
+  },
+  saveButtonContainer: {
+    backgroundColor: '#D48B67', 
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    width: '40%',
+    height: '60%',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 10,
+  },
+  saveButtonText: {
+    color: 'white', // Set the text color to white
+    fontWeight: 'bold', 
+    fontSize: 25,
+    justifyContent: 'center',
+    fontFamily: 'Roboto',
+  },
 });

@@ -1,20 +1,34 @@
-import React, {useState} from 'react';
-import {FlatList, RefreshControl, View} from 'react-native';
-import {BaseStyle, useTheme, BaseColor} from '@config';
-import {Header, Text, SafeAreaView, TrainingExercise, Icon, Button} from '@components';
-import {TrainingTimelineData} from '@data';
-import {useTranslation} from 'react-i18next';
+import React, { useState } from 'react';
+import { FlatList, RefreshControl, View, Alert } from 'react-native';
+import { BaseStyle, useTheme, BaseColor } from '@config';
+import { Header, Text, SafeAreaView, TrainingExercise, Icon, Button } from '@components';
+import { TrainingTimelineData } from '@data';
+import { useTranslation } from 'react-i18next';
 import styles from './styles';
 import Timeline from 'react-native-timeline-flatlist';
 import Slider from '@react-native-community/slider';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
-export default function Booking({navigation}) {
-  const {t} = useTranslation();
-  const {colors} = useTheme();
+// Imports for firebase (you can get this from firebase.js as well to make it cleaner)
+const firebaseConfig = {
+  // Your Firebase configuration
+};
+
+// Important initialization. must be done in index.js
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
+
+const Booking = ({ navigation }) => {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
 
   const [refreshing] = useState(false);
   const [trainingTimeline] = useState(TrainingTimelineData);
   const [rating, setRating] = useState(1);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const test_data = trainingTimeline?.map((item, index) => {
     return {
@@ -22,7 +36,7 @@ export default function Booking({navigation}) {
         <TrainingExercise
           title={item.title}
           duration={item.duration}
-          style={{paddingVertical: 10, marginHorizontal: 20, marginTop: -30 }}
+          style={{ paddingVertical: 10, marginHorizontal: 20, marginTop: -30 }}
           onPress={() => {
             navigation.navigate('TrainingExercise');
           }}
@@ -30,9 +44,35 @@ export default function Booking({navigation}) {
       )
     }
   })
+  // Complete button that saves training progress into Firebase
+  const onCompleteTraining = async (exercise, date, difficulty) => {
+    try {
+      const userId = 'A8N2OS1isndpX5XKeiZb';
+
+      // Save the completed exercise data
+      const completedExerciseRef = db.collection('users').doc(userId);
+      const completedExerciseData = {
+        exercise,
+        date,
+        difficulty,
+      };
+      await completedExerciseRef.update({
+        completedExercises: firebase.firestore.FieldValue.arrayUnion(completedExerciseData),
+      });
+      console.log('Completed exercise data saved successfully!');
+
+      // Show the success message
+      Alert.alert('Success', 'Exercise completed and saved successfully!');
+
+      // Set completion status and disable the button
+      setIsCompleted(true);
+    } catch (error) {
+      console.log('Error saving data:', error);
+    }
+  };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Header
         title=""
         renderLeft={() => {
@@ -73,13 +113,14 @@ export default function Booking({navigation}) {
                 maximumTrackTintColor="grey"
                 value={rating}
                 onValueChange={(value) => setRating(value)}
+                disabled={isCompleted} // Disable the slider if the exercise is completed
               />
               <Text style={{ textAlign: 'center' }}>1 (least difficult); 10 (most difficult)</Text>
             </View>
           </View>
         </View>
         <View style={{ flex: 1, marginLeft: -20, marginTop: 35 }}>
-          <Timeline 
+          <Timeline
             data={test_data}
             circleSize={20}
             circleColor="#554c3d"
@@ -87,14 +128,20 @@ export default function Booking({navigation}) {
             innerCircle={'dot'}
           />
         </View>
-        
-        <View
-          style={{ paddingVertical: 10, paddingHorizontal: 20 }}>
-          <Button onPress={() => console.log('Button Pressed')}>
-            {'Complete'}
+
+        <View style={{ paddingVertical: 10, paddingHorizontal: 20 }}>
+          <Button
+            onPress={() => onCompleteTraining('Training #1', 'July 15, 2023', rating)}
+            disabled={isCompleted}
+            style={isCompleted ? styles.completedButton : null}
+            textStyle={isCompleted ? styles.completedButtonText : null}
+          >
+            {isCompleted ? 'Completed' : 'Complete'}
           </Button>
         </View>
       </SafeAreaView>
     </View>
   );
-}
+};
+
+export default Booking;
