@@ -5,6 +5,12 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
 import { HikingTrailsData } from '@data';
 
+//imports for calender
+import { Calendar } from 'react-native-calendars';
+import CalendarWithPeriodFill from './calender';
+
+
+
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
 const firebaseConfig = {
   apiKey: "AIzaSyD46mMFUwZ7AlCJWPqOXK3SKw1BuIihlFM",
@@ -17,6 +23,7 @@ const firebaseConfig = {
 };
 
 import {
+  Alert,
   View,
   ScrollView,
   Animated
@@ -29,13 +36,13 @@ import {
   Text,
   Button
 } from '@components';
-import {TouchableOpacity } from 'react-native';
+import {TouchableOpacity, Modal } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import * as Utils from '@utils';
 import {InteractionManager} from 'react-native';
 import styles from './styles';
 import {useTranslation} from 'react-i18next';
-import { Calendar } from 'react-native-calendars';
+// import { Calendar } from 'react-native-calendars';
 
 // Important initialization. must be done in index.js
 const app = initializeApp(firebaseConfig);
@@ -47,6 +54,12 @@ const heartRegularSvg = `<svg xmlns="http://www.w3.org/2000/svg" height="1em" vi
 // ...
 
 export default function HikingTrailDetail({navigation, route}) {
+  // Calender initiations
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  
+
   const {colors} = useTheme();
   const {t} = useTranslation();
   const { name, imageSrc } = route.params;
@@ -96,20 +109,19 @@ export default function HikingTrailDetail({navigation, route}) {
   const marginTopBanner = heightImageBanner - heightHeader - 40;
 
   const handleButtonPress = () => {
-    navigation.navigate('Calendar');
+    setShowCalendar(true);
+  };
+
+  const handleCalendarClose = () => {
+    setShowCalendar(false);
   };
   
   const handleDateSelect = (date) => {
-    if (!selectedDates.startDate) {
-      setSelectedDates({ startDate: date.dateString });
-    } else if (!selectedDates.endDate) {
-      const { startDate } = selectedDates;
-      const endDate = date.dateString;
-      console.log('Selected start date:', startDate);
-      console.log('Selected end date:', endDate);
-      setSelectedDates({ startDate: null, endDate: null });
-      setRightIcon('heart');
-      handleHeartIconPress(); 
+    if (!startDate) {
+      setStartDate(date.dateString);
+    } else if (!endDate) {
+      setEndDate(date.dateString);
+      setShowCalendar(false); // Close the calendar popup
     }
   };
 
@@ -328,8 +340,13 @@ export default function HikingTrailDetail({navigation, route}) {
             {'Book to Calendar'}
           </Button>
         </View>
+        {/* Render the CalendarWithPeriodFill component in a modal */}
+        <Modal visible={showCalendar} onRequestClose={handleCalendarClose}>
+          <CalendarWithPeriodFill />
+          {/* Add any additional components or logic for the calendar */}
+        </Modal>
 
-        {selectedDates.startDate && !selectedDates.endDate && (
+        {/* {selectedDates.startDate && !selectedDates.endDate && (
           <Calendar
             markedDates={{
               [selectedDates.startDate]: { startingDay: true, color: 'green' },
@@ -345,7 +362,7 @@ export default function HikingTrailDetail({navigation, route}) {
             }}
             onDayPress={handleDateSelect}
           />
-        )}
+        )} */}
       </SafeAreaView>
     </View>
   );
