@@ -23,4 +23,22 @@ export default StyleSheet.create({
     paddingBottom: 5,
     justifyContent: 'flex-end',
   },
+  overlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 10,
+    padding: 2,
+    paddingRight:6,
+    marginBottom: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    zIndex: 1,
+  },
+  overlayText: {
+    color: 'black',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginLeft: 4,
+    zIndex:1,
+  }
 });

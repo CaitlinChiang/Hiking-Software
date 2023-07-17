@@ -15,6 +15,9 @@ export default function PostListItem(props) {
       onPress={onPress}
       activeOpacity={0.9}>
       <Image imageUrl={image} style={styles.imageBanner} />
+      <View style={styles.overlay}>
+        <Text style={styles.overlayText}>{ydsGrading}</Text>
+      </View>
       <View style={[styles.content, { zIndex: -1, marginLeft: -10, paddingLeft: 20, backgroundColor: cardColor, borderRadius: 10 }]}>
         {name != '' && (
           <View style={styles.contentTitle}>
@@ -28,7 +31,6 @@ export default function PostListItem(props) {
             {`Location: ${location} \n`}
             {`Summit Height: ${summitHeight} \n`}
             {`Duration: ${duration} \n`}
-            {`YDS Grading: ${ydsGrading} \n`}
             {`YDS Class: ${ydsClass} \n`}
           </Text>
         </View>
