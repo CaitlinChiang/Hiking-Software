@@ -1,11 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import {useDispatch} from 'react-redux';
+import { doc, getDoc } from "firebase/firestore";
 import {AuthActions} from '@actions';
-import {BaseStyle, useTheme} from '@config';
+import {BaseStyle} from '@config';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-
+import {
+  SafeAreaView,
+  Text,
+  TextInput
+} from '@components';
+import styles from './styles';
+import Slider from '@react-native-community/slider';
+import RNPickerSelect from "react-native-picker-select";
+import MeterComponent from './meter';
 
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
 const firebaseConfig = {
@@ -18,22 +27,6 @@ const firebaseConfig = {
   measurementId: "G-7H0L154L10"
 };
 
-
-import {
-  SafeAreaView,
-  Text,
-  ProfileDetail,
-  TextInput,
-  DatePicker
-} from '@components';
-import styles from './styles';
-import {UserData} from '@data';
-import {useTranslation} from 'react-i18next';
-import Slider from '@react-native-community/slider';
-import RNPickerSelect from "react-native-picker-select";
-// import RadarChartComponent from './Chart';
-import MeterComponent from './meter';
-
 // Important initialization. must be done in index.js
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -41,30 +34,83 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 
 export default function Profile({navigation}) {
-  const {colors} = useTheme();
-  const {t} = useTranslation();
-
   const [loading, setLoading] = useState(false);
-  const [userData] = useState(UserData[0]);
-  const [id, setId] = useState(UserData[0].id);
+
+  const [totalScore, setTotalScore] = useState(0);
+  
   const [naming, setNaming] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [birthday, setBirthday] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
-  const [image] = useState(UserData[0].image);
+  
   const [physicalSustainability, setPhysicalSustainability] = useState(1);
   const [upperBodyStrength, setUpperBodyStrength] = useState(1);
   const [lowerBodyStrength, setLowerBodyStrength] = useState(1);
-  const [balanceStability, setBalanceStability] = useState('');
-  const [flexibility, setFlexibility] = useState('');
-  const [outdoorExperienceFrequency, setOutdoorExperienceFrequency] = useState('');
-  const [outdoorExperienceComfort, setOutdoorExperienceComfort] = useState('');
-  const calculatetotalscore = () => {
-    return physicalSustainability + upperBodyStrength + lowerBodyStrength;
-  }; 
+  const [balanceStability, setBalanceStability] = useState(1);
+  const [flexibility, setFlexibility] = useState(1);
+  const [outdoorExperienceFrequency, setOutdoorExperienceFrequency] = useState(1);
+  const [outdoorExperienceComfort, setOutdoorExperienceComfort] = useState(1);
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userId = 'pIRDa83OOxomB7Gr6czm';
+        const userDocRef = doc(db, 'users', userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+  
+        if (userDocSnapshot.exists()) {
+          const userRecord = userDocSnapshot.get('userProfile') || [];
+          const existingUserRecord = userRecord[0];
+          
+          setNaming(existingUserRecord?.naming);
+          setEmail(existingUserRecord?.email);
+          setGender(existingUserRecord?.gender);
+          setBirthday(existingUserRecord?.birthday);
+          setHeight(Number(existingUserRecord?.height));
+          setWeight(Number(existingUserRecord?.weight));
+        } else {
+          console.log('Document does not exist');
+        }
+      } catch (error) {
+        console.log('Error fetching physical activities data', error);
+      }
+    };
+
+    const fetchPhysicalActivities = async () => {
+      try {
+        const userId = 'xIAJtDxUUahHf2kgMjPf';
+        const userDocRef = doc(db, 'users', userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+  
+        if (userDocSnapshot.exists()) {
+          const physicalRecord = userDocSnapshot.get('physicalActivities') || [];
+          const existingPhysicalRecord = physicalRecord[0]
+          
+          setPhysicalSustainability(existingPhysicalRecord?.physicalSustainability);
+          setUpperBodyStrength(existingPhysicalRecord?.upperBodyStrength);
+          setLowerBodyStrength(existingPhysicalRecord?.lowerBodyStrength);
+          setBalanceStability(existingPhysicalRecord?.balanceStability);
+          setFlexibility(existingPhysicalRecord?.flexibility);
+          setOutdoorExperienceFrequency(existingPhysicalRecord?.outdoorExperienceFrequency);
+          setOutdoorExperienceComfort(existingPhysicalRecord?.outdoorExperienceComfort);
+        } else {
+          console.log('Document does not exist');
+        }
+      } catch (error) {
+        console.log('Error fetching physical activities data', error);
+      }
+    };
+  
+    fetchUserProfile();
+    fetchPhysicalActivities();
+  }, []);
+
+  useEffect(() => {
+    total = physicalSustainability + upperBodyStrength + lowerBodyStrength + balanceStability + flexibility + outdoorExperienceFrequency + outdoorExperienceComfort;
+    setTotalScore(total)
+  }, [physicalSustainability, upperBodyStrength, lowerBodyStrength, balanceStability, flexibility, outdoorExperienceFrequency, outdoorExperienceComfort])
 
   //error catchers
   const onSaveProfile = async () => {
@@ -102,7 +148,7 @@ export default function Profile({navigation}) {
         weight: Number(weight),
       };
       await userProfileRef.update({
-        userProfile: firebase.firestore.FieldValue.arrayUnion(userProfileData),
+        'userProfile.0': userProfileData
       });
       console.log('User profile saved successfully!');
   
@@ -119,7 +165,7 @@ export default function Profile({navigation}) {
         outdoorExperienceComfort,
       };
       await physicalActivityRef.update({
-        physicalActivities: firebase.firestore.FieldValue.arrayUnion(physicalActivityData),
+        'physicalActivities.0': physicalActivityData
       });
       console.log('Physical activity data saved successfully!');
   
@@ -145,7 +191,7 @@ export default function Profile({navigation}) {
         edges={['right', 'left', 'bottom']}>
         <ScrollView>
           <View style={styles.contain}>
-            {<MeterComponent />}
+            <MeterComponent totalScore={totalScore} />
 
             <View style={styles.contentTitle}>
               <Text headline semibold>
@@ -195,7 +241,7 @@ export default function Profile({navigation}) {
             <TextInput
               onChangeText={text => setHeight(text)}
               placeholder={'Input Weight'}
-              value={height}
+              value={String(height)}
             />
             <View style={styles.contentTitle}>
               <Text headline semibold>
@@ -205,7 +251,7 @@ export default function Profile({navigation}) {
             <TextInput
               onChangeText={text => setWeight(text)}
               placeholder={'Input Weight'}
-              value={weight}
+              value={String(weight)}
             />
             </View>
 
@@ -215,7 +261,7 @@ export default function Profile({navigation}) {
             <Slider
               style={{ marginRight: 50, marginLeft: 50 }}
               minimumValue={1}
-              maximumValue={5}
+              maximumValue={10}
               step={1}
               minimumTrackTintColor="blue"
               maximumTrackTintColor="grey"
@@ -224,10 +270,10 @@ export default function Profile({navigation}) {
             />
             <View style={{ padding: 20 }}>
               <Text>1 (Very low endurance)</Text>
-              <Text>2 (Low endurance)</Text>
-              <Text>3 (Moderate endurance)</Text>
-              <Text>4 (Above average endurance)</Text>
-              <Text>5 (Exceptional endurance)</Text>
+              <Text>3 (Low endurance)</Text>
+              <Text>5 (Moderate endurance)</Text>
+              <Text>7 (Above average endurance)</Text>
+              <Text>10 (Exceptional endurance)</Text>
             </View>
 
             <Text style={{ padding: 20 }} headline semibold>Rate your perceived upper body strength:</Text>
@@ -276,9 +322,9 @@ export default function Profile({navigation}) {
                 <RNPickerSelect
                   onValueChange={(value) => setBalanceStability}
                   items={[
-                    { label: "Not Confident at All", value: "notConfident" },
-                    { label: "Somewhat Confident", value: "somewhatConfident" },
-                    { label: "Very Confident", value: "veryConfident" }
+                    { label: "Not Confident at All", value: 1 },
+                    { label: "Somewhat Confident", value: 5 },
+                    { label: "Very Confident", value: 10 }
                   ]}
                   style={styles.inputIOS}
                   value={balanceStability}
@@ -288,9 +334,9 @@ export default function Profile({navigation}) {
                 <RNPickerSelect
                   onValueChange={(value) => setFlexibility(value)}
                   items={[
-                    { label: "Yes, easily", value: "easily" },
-                    { label: "Yes, but with some difficulty", value: "withDifficulty" },
-                    { label: "No, unable to reach toes", value: "unable" }
+                    { label: "Yes, easily", value: 10 },
+                    { label: "Yes, but with some difficulty", value: 5 },
+                    { label: "No, unable to reach toes", value: 1 }
                   ]}
                   style={styles.inputIOS}
                   value={flexibility}
@@ -300,10 +346,10 @@ export default function Profile({navigation}) {
                 <RNPickerSelect
                   onValueChange={(value) => setOutdoorExperienceFrequency(value)}
                   items={[
-                    { label: "Rarely or never", value: "rarelyNever" },
-                    { label: "Occasionally (once a month or less)", value: "occasionally" },
-                    { label: "Regularly (a few times a month)", value: "regularly" },
-                    { label: "Frequently (at least once a week)", value: "frequently" }
+                    { label: "Rarely or never", value: 2 },
+                    { label: "Occasionally (once a month or less)", value: 5 },
+                    { label: "Regularly (a few times a month)", value: 8 },
+                    { label: "Frequently (at least once a week)", value: 10 }
                   ]}
                   style={styles.inputIOS}
                   value={outdoorExperienceFrequency}
@@ -313,9 +359,9 @@ export default function Profile({navigation}) {
                 <RNPickerSelect
                   onValueChange={(value) => setOutdoorExperienceComfort(value)}
                   items={[
-                    { label: "Not comfortable at all", value: "notComfortable" },
-                    { label: "Somewhat comfortable", value: "somewhatComfortable" },
-                    { label: "Very comfortable", value: "veryComfortable" }
+                    { label: "Not comfortable at all", value: 1 },
+                    { label: "Somewhat comfortable", value: 5 },
+                    { label: "Very comfortable", value: 10 }
                   ]}
                   style={styles.inputIOS}
                   value={outdoorExperienceComfort}
