@@ -74,12 +74,12 @@ export default StyleSheet.create({
   },
   itemReason: {
     paddingLeft: 5,
-    marginTop: 15,
+    marginTop: 20,
     flexDirection: 'row',
   },
   largerItemReason: {
     paddingLeft: 2,
-    marginTop: 15,
+    marginTop: 20,
     flexDirection: 'row',
   },
   contentButtonBottom: {

@@ -29,7 +29,6 @@ export default function PostListItem(props) {
             {`Summit Height: ${summitHeight} \n`}
             {`Duration: ${duration} \n`}
             {`YDS Grading: ${ydsGrading} \n`}
-            {`YDS Class: ${ydsClass} \n`}
           </Text>
         </View>
         {date != '' && (
