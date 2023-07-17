@@ -55,6 +55,7 @@ export default StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
+    zIndex: 0,
   },
   itemService: {
     alignItems: 'center',
@@ -74,5 +75,30 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 10,
-  }
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 0,
+    right: 8,
+    padding: 2,
+    paddingRight:6,
+    marginBottom: 88,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    zIndex: 1,
+  },
+  overlayText: {
+    color: 'black',
+    fontSize: 8,
+    fontWeight: 'bold',
+    marginLeft: 4,
+    zIndex:1,
+  },
+  gridItemContainer: {
+    flex: 1,
+    marginHorizontal: 5,
+    marginBottom: 20,
+    position: 'relative',
+    zIndex: 0,
+  },
 })

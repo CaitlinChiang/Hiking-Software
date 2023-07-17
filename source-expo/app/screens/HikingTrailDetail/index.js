@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 // Imports for firebase
-import { doc, setDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
 import { HikingTrailsData } from '../../data/hikingTrails.js'; // Source to the Hiking Data
@@ -92,13 +92,34 @@ export default function HikingTrailDetail({navigation, route}) {
     }
   };
 
+//HELPLA
+  useEffect(() => {
+    const fetchBucketlistData = async () => {
+      try {
+        const userId = 'jxihUCNoi0396wkQR2gx';
+        const bucketListRef = doc(db, 'users', userId);
+        const bucketListDoc = await getDoc(bucketListRef);
+        if (bucketListDoc.exists()) {
+          const bucketlistData = bucketListDoc.data();
+          const isTrailInBucketlist = bucketlistData.bucketlist.some(item => item.name === name);
+          setIsFilled(isTrailInBucketlist);
+        }
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+  
+    fetchBucketlistData();
+  }, []);
+
+
   const handleHeartIconPress = async () => {
     try {
       const userId = 'jxihUCNoi0396wkQR2gx';
       const bucketListRef = doc(db, 'users', userId);
   
       if (isFilled) {
-        // Remove from buckeisttl
+        // Remove from bucketlist
         await updateDoc(bucketListRef, {
           bucketlist: arrayRemove({name})
         });

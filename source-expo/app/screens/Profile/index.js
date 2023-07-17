@@ -32,6 +32,7 @@ import {useTranslation} from 'react-i18next';
 import Slider from '@react-native-community/slider';
 import RNPickerSelect from "react-native-picker-select";
 // import RadarChartComponent from './Chart';
+import MeterComponent from './meter';
 
 // Important initialization. must be done in index.js
 if (!firebase.apps.length) {
@@ -60,8 +61,12 @@ export default function Profile({navigation}) {
   const [flexibility, setFlexibility] = useState('');
   const [outdoorExperienceFrequency, setOutdoorExperienceFrequency] = useState('');
   const [outdoorExperienceComfort, setOutdoorExperienceComfort] = useState('');
+  const calculatetotalscore = () => {
+    return physicalSustainability + upperBodyStrength + lowerBodyStrength;
+  }; 
 
 
+  //error catchers
   const onSaveProfile = async () => {
     try {
       const userId1 = 'pIRDa83OOxomB7Gr6czm';
@@ -132,6 +137,7 @@ export default function Profile({navigation}) {
     dispatch(AuthActions.authentication(false, response => {}));
   };
 
+  //questions
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
@@ -139,7 +145,7 @@ export default function Profile({navigation}) {
         edges={['right', 'left', 'bottom']}>
         <ScrollView>
           <View style={styles.contain}>
-            {/* <RadarChartComponent /> */}
+            {<MeterComponent />}
 
             <View style={styles.contentTitle}>
               <Text headline semibold>

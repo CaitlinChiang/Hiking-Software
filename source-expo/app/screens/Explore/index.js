@@ -117,25 +117,30 @@ export default function Home({navigation}) {
                 data={hikingTrails}
                 keyExtractor={(item, index) => item.id}
                 renderItem={({item, index}) => (
-                  <HikingItem
-                    grid
-                    key={item.id}
-                    image={item.imageSrc}
-                    name={item.name}
-                    location={item.location}
-                    duration={item.duration}
-                    summitHeight={item.summitHeight}
-                    style={{marginLeft: 15, marginBottom: 15}}
-                    onPress={() =>
-                      navigation.navigate('HikingTrailDetail', {
-                        name: item.name,
-                        location: item.location,
-                        duration: item.duration,
-                        summitHeight: item.summitHeight,
-                        imageSrc: item.imageSrc,
-                      })
-                    }                    
-                  />
+                  <View style={styles.gridItemContainer}>
+                    <View style={styles.overlay}>
+                      <Text style={styles.overlayText}>YDS</Text>
+                    </View>
+                    <HikingItem
+                      grid
+                      key={item.id}
+                      image={item.imageSrc}
+                      name={item.name}
+                      location={item.location}
+                      duration={item.duration}
+                      summitHeight={item.summitHeight}
+                      style={{marginLeft: 15, marginBottom: 15}}
+                      onPress={() =>
+                        navigation.navigate('HikingTrailDetail', {
+                          name: item.name,
+                          location: item.location,
+                          duration: item.duration,
+                          summitHeight: item.summitHeight,
+                          imageSrc: item.imageSrc,
+                        })
+                      }                    
+                    />
+                  </View>
                 )}
               />
             </View>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-// import RadarChart from 'react-svg-radar-chart';
+import RadarChart from 'react-svg-radar-chart';
 import { VictoryChart, VictoryPolarAxis, VictoryArea } from 'victory-native';
 
 
@@ -72,3 +72,4 @@ const RadarChartComponent = () => {
 };
 
 export default RadarChartComponent;
+
