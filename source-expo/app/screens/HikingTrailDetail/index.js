@@ -114,33 +114,29 @@ export default function HikingTrailDetail({navigation, route}) {
   const heightImageBanner = Utils.scaleWithPixel(250, 1);
   const marginTopBanner = heightImageBanner - heightHeader - 40;
 
-  const handleButtonPress = () => {
+  const handleButtonPress = async () => {
     setShowCalendar(true);
+
+    const userId = 'jxihUCNoi0396wkQR2gx'; 
+    const savedDocRef = doc(db, 'users', userId);
+    const savedDocSnapshot = await getDoc(savedDocRef);
+
+    const savedDoc = savedDocSnapshot.data()|| {};
+    const updatedDates = { ...savedDoc.dates, mountainName: name };
+
+    updateDoc(savedDocRef, {
+      dates: updatedDates
+    }).then(() => {
+      console.log('Mountain name stored in Firebase:', name);
+    }).catch((error) => {
+      console.log('Error storing');
+    });
   };
 
   const handleCalendarClose = () => {
     setShowCalendar(false);
   };
   
-
-  const handleDateSelect = (date) => {
-    if (!start.dateString) {
-      setStart(date);
-    } else if (!end.dateString && date.timestamp > start.timestamp) {
-      setEnd(date);
-    } else if (end.dateString) {
-      setStart(date);
-      setEnd({});
-    }
-  };
-  
-
-  const handlePrintDates = () => {
-    console.log('Start Date:', startDate);
-    console.log('End Date:', endDate);
-  };
-
-
   const handleHeartIconPress = async () => {
     try {
       const userId = 'jxihUCNoi0396wkQR2gx';

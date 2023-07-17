@@ -4,7 +4,7 @@ import { LocaleConfig } from 'react-native-calendars';
 import { MaterialIcons } from '@expo/vector-icons';
 import _isEmpty from 'lodash/isEmpty'
 import moment from 'moment';
-import { handleDateSelection } from './DateSelectionUtils';
+import handleDateSelection from './DateSelectionUtils';
 
 
 export default class CalendarWithPeriodFill extends React.Component {

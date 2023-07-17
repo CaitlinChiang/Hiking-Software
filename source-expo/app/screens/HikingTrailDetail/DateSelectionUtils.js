@@ -1,6 +1,6 @@
-import { doc, updateDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -17,21 +17,28 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export function handleDateSelection(startDate, endDate) {
+const handleDateSelection = async (startDate, endDate) => {
   console.log('Start Date:', startDate);
   console.log('End Date:', endDate);
 
-  const userId = 'jxihUCNoi0396wkQR2gx'; 
-  const userDocRef = doc(db, 'users', userId);
+  const userId = 'jxihUCNoi0396wkQR2gx'; // Replace with the actual user ID
+  const savedDocRef = doc(db, 'users', userId);
+  const savedDocSnapshot = await getDoc(savedDocRef);
 
-  updateDoc(userDocRef, {
-    dates: {
-      startDate: startDate,
-      endDate: endDate
-    }
-  }).then(() => {
-    console.log('Start Date and End Date stored in Firebase:', startDate, endDate);
-  }).catch((error) => {
-    console.log('Error storing Start Date and End Date in Firebase:', error);
-  });
+  if (savedDocSnapshot.exists()) {
+    const savedDoc = savedDocSnapshot.data()|| {};
+    const updatedDates = { ...savedDoc.dates, startDate, endDate };
+
+    updateDoc(savedDocRef, {
+      dates: updatedDates
+    }).then(() => {
+      console.log('Start Date and End Date stored in Firebase:', startDate, endDate);
+    }).catch((error) => {
+      console.log('Error storing Start Date and End Date in Firebase:', error);
+    });
+  } else {
+    console.log('User document does not exist');
+  }
 }
+
+export default handleDateSelection
