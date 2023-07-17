@@ -19,45 +19,31 @@ export default function BucketList({ navigation }) {
   const [hikingTrails, setHikingTrails] = useState([]);
 
   useEffect(() => {
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const userDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx'); // Replace with the actual user document IDs for each different user
-    const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const bucketList = snapshot.get('bucketlist') || [];
-        const hikingTrails = HikingTrailsData.filter((trail) =>
-          bucketList.some((item) => item.name === trail.name)
-        );
-        setHikingTrails(hikingTrails);
-      } else {
-        console.log('User document does not exist');
+    const fetchHikingTrails = async () => {
+      try {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const userDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx');
+        const userDocSnapshot = await getDoc(userDocRef);
+        
+        if (userDocSnapshot.exists()) {
+          const bucketList = userDocSnapshot.get('bucketlist') || [];
+          console.log('Bucket List:', bucketList);
+          const hikingTrails = HikingTrailsData.filter((trail) => {
+            return bucketList.some((item) => item.name === trail.name);
+          });
+          console.log('Filtered Hiking Trails:', hikingTrails);
+          setHikingTrails(hikingTrails);
+        } else {
+          console.log('User document does not exist'); // Wrote these statements to check my errors because I could not figure out why I didnt receive data from firebase.
+        }
+      } catch (error) {
+        console.log('Error fetching hiking trails:', error);
       }
-    });
+    };
 
-    return () => unsubscribe(); 
+    fetchHikingTrails()
   }, []);
-
-  const fetchHikingTrails = async () => {
-    try {
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const userDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx');
-      const userDocSnapshot = await getDoc(userDocRef);
-      if (userDocSnapshot.exists()) {
-        const bucketList = userDocSnapshot.get('bucketlist') || [];
-        console.log('Bucket List:', bucketList);
-        const hikingTrails = HikingTrailsData.filter((trail) => {
-          return bucketList.some((item) => item.name === trail.name);
-        });
-        console.log('Filtered Hiking Trails:', hikingTrails);
-        setHikingTrails(hikingTrails);
-      } else {
-        console.log('User document does not exist'); // Wrote these statements to check my errors because I could not figure out why I didnt receive data from firebase.
-      }
-    } catch (error) {
-      console.log('Error fetching hiking trails:', error);
-    }
-  };
   
   return (
     <View style={{flex: 1}}>
@@ -72,7 +58,7 @@ export default function BucketList({ navigation }) {
               paddingHorizontal: 20,
               marginBottom: 20
             }}>
-            {HikingTrailsData.map((trail, index) => (
+            {hikingTrails.map((trail, index) => (
               <BucketListItem
                 key={index}
                 name={trail.name}
