@@ -61,7 +61,8 @@
     "redux-persist": "6.0.0",
     "redux-thunk": "2.4.1",
     "rn-range-slider": "2.1.1",
-    "victory-native": "^36.6.11"
+    "victory-native": "^36.6.11",
+    "react-native-speedometer":"^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3"

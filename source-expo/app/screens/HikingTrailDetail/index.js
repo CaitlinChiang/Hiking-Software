@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 // Imports for firebase
-import { doc, getDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
 import { HikingTrailsData } from '@data';
@@ -8,8 +8,6 @@ import { HikingTrailsData } from '@data';
 //imports for calender
 import { Calendar } from 'react-native-calendars';
 import CalendarWithPeriodFill from './calender';
-
-
 
 
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
@@ -133,17 +131,33 @@ export default function HikingTrailDetail({navigation, route}) {
     });
   };
 
-  const handleCalendarClose = () => {
-    setShowCalendar(false);
-  };
+  useEffect(() => {
+    const fetchBucketlistData = async () => {
+      try {
+        const userId = 'jxihUCNoi0396wkQR2gx';
+        const bucketListRef = doc(db, 'users', userId);
+        const bucketListDoc = await getDoc(bucketListRef);
+        if (bucketListDoc.exists()) {
+          const bucketlistData = bucketListDoc.data();
+          const isTrailInBucketlist = bucketlistData.bucketlist.some(item => item.name === name);
+          setIsFilled(isTrailInBucketlist);
+        }
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
   
+    fetchBucketlistData();
+  }, []);
+
+
   const handleHeartIconPress = async () => {
     try {
       const userId = 'jxihUCNoi0396wkQR2gx';
       const bucketListRef = doc(db, 'users', userId);
   
       if (isFilled) {
-        // Remove from buckeisttl
+        // Remove from bucketlist
         await updateDoc(bucketListRef, {
           bucketlist: arrayRemove({name})
         });
