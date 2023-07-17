@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 // Imports for firebase
-import { doc, setDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
 import { HikingTrailsData } from '@data';
@@ -59,6 +59,27 @@ export default function HikingTrailDetail({navigation, route}) {
   const [isFilled, setIsFilled] = useState(false);
   const [trail, setTrailData] = useState(null);
 
+  useEffect(() => {
+    const fetchHikingTrailData = async () => {
+      try {
+        const userId = 'jxihUCNoi0396wkQR2gx'; // Replace with the actual user ID
+        const userDocRef = doc(db, 'users', userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+  
+        if (userDocSnapshot.exists()) {
+          const bucketList = userDocSnapshot.get('bucketlist') || [];
+          const existsInBucketList = bucketList.some(item => item.name === name);
+          setIsFilled(existsInBucketList);
+        } else {
+          console.log('User document does not exist');
+        }
+      } catch (error) {
+        console.log('Error fetching hiking trail data:', error);
+      }
+    };
+  
+    fetchHikingTrailData();
+  }, []);
 
   useEffect(() => {
     const trail = HikingTrailsData.find((trail) => trail.name === name);
