@@ -60,37 +60,38 @@ export default function BucketList({ navigation }) {
   };
   
   return (
-    <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }} edges={['right', 'left', 'bottom']}>
-        <ScrollView scrollEventThrottle={8}>
-          <Header title="Bucket List" />
-          <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
-            {hikingTrails.length > 0 ? (
-              hikingTrails.map((trail, index) => (
-                <BucketListItem
-                  key={index}
-                  name={trail.name}
-                  location={trail.location}
-                  summitHeight={trail.summitHeight}
-                  duration={trail.duration}
-                  ydsGrading={trail.ydsGrading}
-                  ydsClass={trail.ydsClass}
-                  style={{ marginTop: 10, width: '100%' }}
-                  image={trail.imageSrc}
-                  onPress={() =>
-                    navigation.navigate('HikingTrailDetail', {
-                      name: trail.name,
-                      location: trail.location,
-                      duration: trail.duration,
-                      summitHeight: trail.summitHeight,
-                      imageSrc: trail.imageSrc,
-                    })
-                  }  
-                />
-              ))
-            ) : (
-              <Text>No hiking trails found.</Text>
-            )}
+    <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
+        <ScrollView
+          scrollEventThrottle={8}>
+          <Header
+            title="Bucket List"
+          />
+          <View
+            style={{
+              paddingHorizontal: 20,
+              marginBottom: 20
+            }}>
+            {HikingTrailsData.map((trail, index) => (
+              <BucketListItem
+                key={index}
+                name={trail.name}
+                location={trail.location}
+                summitHeight={trail.summitHeight}
+                duration={trail.duration}
+                ydsGrading={trail.ydsGrading}
+                ydsClass={trail.ydsClass}
+                style={{marginTop: 10, width: '100%'}}
+                image={trail.imageSrc}
+                onPress={() => {
+                  navigation.navigate('HikingTrailDetail',{name: trail.name,
+                    location: trail.location,
+                    duration: trail.duration,
+                    summitHeight: trail.summitHeight,
+                    imageSrc: trail.imageSrc,});
+                }}
+              />
+            ))}
           </View>
         </ScrollView>
       </SafeAreaView>
