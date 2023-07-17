@@ -31,7 +31,7 @@ import {UserData} from '@data';
 import {useTranslation} from 'react-i18next';
 import Slider from '@react-native-community/slider';
 import RNPickerSelect from "react-native-picker-select";
-// import RadarChartComponent from './Chart';
+// import RadarChartComponent from './Chart.js';
 
 // Important initialization. must be done in index.js
 if (!firebase.apps.length) {
@@ -139,7 +139,7 @@ export default function Profile({navigation}) {
         edges={['right', 'left', 'bottom']}>
         <ScrollView>
           <View style={styles.contain}>
-            {/* <RadarChartComponent /> */}
+            {/* {<RadarChartComponent />} */}
 
             <View style={styles.contentTitle}>
               <Text headline semibold>
@@ -268,7 +268,7 @@ export default function Profile({navigation}) {
               <View style={{ padding: 20 }}>
                 <Text style={{ marginBottom: 10 }} headline semibold>Balance and Stability:</Text>
                 <RNPickerSelect
-                  onValueChange={(value) => setBalanceStability}
+                  onValueChange={(value) => setBalanceStability(value)}
                   items={[
                     { label: "Not Confident at All", value: "notConfident" },
                     { label: "Somewhat Confident", value: "somewhatConfident" },

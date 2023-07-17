@@ -46,7 +46,11 @@ export default function BucketList({navigation}) {
                 style={{marginTop: 10, width: '100%'}}
                 image={trail.imageSrc}
                 onPress={() => {
-                  navigation.navigate('HikingTrailDetail');
+                  navigation.navigate('HikingTrailDetail',{ name: trail.name,
+                    location: trail.location,
+                    duration: trail.duration,
+                    summitHeight: trail.summitHeight,
+                    imageSrc: trail.imageSrc,});
                 }}
               />
             ))}
