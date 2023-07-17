@@ -41,6 +41,8 @@ export default function Home({navigation}) {
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader())
   const deltaY = new Animated.Value(0)
   const [refreshing, setRefreshing] = React.useState(false);
+  const [activeIcon, setActiveIcon] = useState('');
+
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -55,6 +57,8 @@ export default function Home({navigation}) {
   };
 
   const renderIconService = () => {
+    const [selectedIcon, setSelectedIcon] = useState(null);
+  
     return (
       <FlatList
         style={{ marginTop: 10 }}
@@ -62,30 +66,43 @@ export default function Home({navigation}) {
         numColumns={4}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}, i) => {
+          const isSelected = selectedIcon === item.name;
+  
           return (
             <TouchableOpacity
               key={i}
               style={styles.itemService}
               activeOpacity={0.9}
               onPress={() => {
+                setSelectedIcon(item.name);
                 setRefreshing(true);
                 setTimeout(() => {
                   setRefreshing(false);
                 }, 2000);
-              }}>
+              }}
+            >
               <View
-                style={[styles.iconContent, {backgroundColor: colors.card}]}>
-                <Icon name={item.icon} size={18} color={colors.primary} solid />
+                style={[
+                  styles.iconContent,
+                  {
+                    backgroundColor: isSelected ? colors.primary : colors.card,
+                    borderColor: isSelected ? colors.primary : colors.background,
+                    borderWidth: isSelected ? 2 : 1,
+                  }
+                ]}
+              >
+                <Icon name={item.icon} size={18} color={isSelected ? colors.background : colors.primary} solid />
               </View>
               <Text footnote grayColor numberOfLines={1}>
                 {t(item.name)}
               </Text>
             </TouchableOpacity>
-          )
+          );
         }}
       />
-    )
-  }
+    );
+  };
+  
 
   const heightImageBanner = Utils.scaleWithPixel(140)
   const marginTopBanner = heightImageBanner - heightHeader
