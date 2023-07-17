@@ -50,7 +50,7 @@ export default function Booking({navigation}) {
     };
   
     fetchCurrentMountain();
-  }, []);
+  }, [mountain]);
 
 
   const test_data = trainingTimeline?.map((item, index) => {
