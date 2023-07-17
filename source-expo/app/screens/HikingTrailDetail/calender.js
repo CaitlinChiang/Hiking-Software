@@ -4,14 +4,16 @@ import { LocaleConfig } from 'react-native-calendars';
 import { MaterialIcons } from '@expo/vector-icons';
 import _isEmpty from 'lodash/isEmpty'
 import moment from 'moment';
+import { handleDateSelection } from './DateSelectionUtils';
+
 
 export default class CalendarWithPeriodFill extends React.Component {
     state = {
       start: {},
       end: {}, 
       period: {},
+      
  }
-
 
 getDateString(timestamp) {
    const date = new Date(timestamp)
@@ -60,8 +62,7 @@ setDay(dayObj) {
  } = dayObj
 
  if (!_isEmpty(start) && _isEmpty(end)) {
-    console.log('Start Date:', start.dateString);
-    console.log('End Date:', dateString);
+    handleDateSelection(start.dateString, dateString);
   }
 
  // timestamp returned by dayObj is in 12:00AM UTC 0, want local 12:00AM

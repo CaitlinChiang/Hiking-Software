@@ -60,6 +60,9 @@ export default function HikingTrailDetail({navigation, route}) {
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [start, setStart] = useState({});
+  const [end, setEnd] = useState({});
+
   
   
 
@@ -121,16 +124,17 @@ export default function HikingTrailDetail({navigation, route}) {
   
 
   const handleDateSelect = (date) => {
-    if (!startDate) {
-      setStartDate(date);
-    } else if (!endDate && date.timestamp > startDate.timestamp) {
-      setEndDate(date);
-    } else if (endDate) {
-      // Clear existing start and end dates if a new start date is selected
-      setStartDate(date);
-      setEndDate(null);
+    if (!start.dateString) {
+      setStart(date);
+    } else if (!end.dateString && date.timestamp > start.timestamp) {
+      setEnd(date);
+    } else if (end.dateString) {
+      setStart(date);
+      setEnd({});
     }
   };
+  
+
   const handlePrintDates = () => {
     console.log('Start Date:', startDate);
     console.log('End Date:', endDate);
@@ -360,23 +364,14 @@ export default function HikingTrailDetail({navigation, route}) {
       >
         <View style={stylesforcal.modalContainer}>
           <View style={stylesforcal.modalContent}>
-            <CalendarWithPeriodFill
-              startDate={startDate}
-              endDate={endDate}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
-              onDayPress={(date) => {
-                if (!startDate) {
-                  setStartDate(date);
-                } else if (!endDate && date.timestamp > startDate.timestamp) {
-                  setEndDate(date);
-                } else if (endDate) {
-                  setStartDate(date);
-                  setEndDate(null);
-                }
-              }}
-            />
-            <Button onPress={handlePrintDates}>{"Print"}</Button>
+            <CalendarWithPeriodFill start={start} end={end} />
+          {/* Close Button */}
+            <View style={stylesforcal.closeButtonContainer}>
+              <Button onPress={handleCalendarClose} style={stylesforcal.closeButton}>
+                <Text style={stylesforcal.closeButtonText}>Close</Text>
+              </Button>
+            </View>
+            {/* <Button onPress={handlePrintDates}>{"Print"}</Button> */}
           </View>
         </View>
       </Modal>
@@ -397,4 +392,10 @@ const stylesforcal = StyleSheet.create({
     padding: 20,
     borderRadius: 8,
   },
+
+  closeButtonText: {
+    color: 'white', 
+    fontWeight: 'bold'
+  },
 });
+
