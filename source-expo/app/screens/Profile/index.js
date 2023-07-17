@@ -320,7 +320,7 @@ export default function Profile({navigation}) {
               <View style={{ padding: 20 }}>
                 <Text style={{ marginBottom: 10 }} headline semibold>Balance and Stability:</Text>
                 <RNPickerSelect
-                  onValueChange={(value) => setBalanceStability}
+                  onValueChange={(value) => setBalanceStability(value)}
                   items={[
                     { label: "Not Confident at All", value: 1 },
                     { label: "Somewhat Confident", value: 5 },
