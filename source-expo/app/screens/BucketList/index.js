@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Animated, Text } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { Header, SafeAreaView, BucketListItem } from '@components';
 import { initializeApp } from 'firebase/app';
-import { doc, getFirestore, collection, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getFirestore, getDoc, onSnapshot } from 'firebase/firestore';
 import { HikingTrailsData } from '@data';
-import * as Utils from '@utils';
-import styles from './styles';
-import { useTranslation } from 'react-i18next';
 
 const firebaseConfig = {
   apiKey: "AIzaSyD46mMFUwZ7AlCJWPqOXK3SKw1BuIihlFM",
@@ -19,12 +16,7 @@ const firebaseConfig = {
 };
 
 export default function BucketList({ navigation }) {
-  const { t } = useTranslation();
-
   const [hikingTrails, setHikingTrails] = useState([]);
-  const deltaY = new Animated.Value(0);
-  const heightHeader = Utils.heightHeader();
-  const heightImageBanner = Utils.scaleWithPixel(250);
 
   useEffect(() => {
     const app = initializeApp(firebaseConfig);
