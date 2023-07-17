@@ -58,6 +58,12 @@ setDay(dayObj) {
  const {
    dateString, day, month, year,
  } = dayObj
+
+ if (!_isEmpty(start) && _isEmpty(end)) {
+    console.log('Start Date:', start.dateString);
+    console.log('End Date:', dateString);
+  }
+
  // timestamp returned by dayObj is in 12:00AM UTC 0, want local 12:00AM
  const timestamp = new Date(year, month - 1, day).getTime()
  const newDayObj = { ...dayObj, timestamp }

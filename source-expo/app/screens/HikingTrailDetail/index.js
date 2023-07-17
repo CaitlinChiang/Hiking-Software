@@ -11,6 +11,7 @@ import CalendarWithPeriodFill from './calender';
 
 
 
+
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
 const firebaseConfig = {
   apiKey: "AIzaSyD46mMFUwZ7AlCJWPqOXK3SKw1BuIihlFM",
@@ -26,7 +27,8 @@ import {
   Alert,
   View,
   ScrollView,
-  Animated
+  Animated,
+  StyleSheet
 } from 'react-native';
 import {BaseColor, Images, useTheme} from '@config';
 import {
@@ -58,6 +60,7 @@ export default function HikingTrailDetail({navigation, route}) {
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  
   
 
   const {colors} = useTheme();
@@ -116,14 +119,23 @@ export default function HikingTrailDetail({navigation, route}) {
     setShowCalendar(false);
   };
   
+
   const handleDateSelect = (date) => {
     if (!startDate) {
-      setStartDate(date.dateString);
-    } else if (!endDate) {
-      setEndDate(date.dateString);
-      setShowCalendar(false); // Close the calendar popup
+      setStartDate(date);
+    } else if (!endDate && date.timestamp > startDate.timestamp) {
+      setEndDate(date);
+    } else if (endDate) {
+      // Clear existing start and end dates if a new start date is selected
+      setStartDate(date);
+      setEndDate(null);
     }
   };
+  const handlePrintDates = () => {
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+  };
+
 
   const handleHeartIconPress = async () => {
     try {
@@ -340,30 +352,49 @@ export default function HikingTrailDetail({navigation, route}) {
             {'Book to Calendar'}
           </Button>
         </View>
-        {/* Render the CalendarWithPeriodFill component in a modal */}
-        <Modal visible={showCalendar} onRequestClose={handleCalendarClose}>
-          <CalendarWithPeriodFill />
-          {/* Add any additional components or logic for the calendar */}
-        </Modal>
-
-        {/* {selectedDates.startDate && !selectedDates.endDate && (
-          <Calendar
-            markedDates={{
-              [selectedDates.startDate]: { startingDay: true, color: 'green' },
-            }}
-            onDayPress={handleDateSelect}
-          />
-        )}
-        {selectedDates.startDate && selectedDates.endDate && (
-          <Calendar
-            markedDates={{
-              [selectedDates.startDate]: { startingDay: true, color: 'green' },
-              [selectedDates.endDate]: { endingDay: true, color: 'green' },
-            }}
-            onDayPress={handleDateSelect}
-          />
-        )} */}
+      <Modal
+        visible={showCalendar}
+        onRequestClose={handleCalendarClose}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={stylesforcal.modalContainer}>
+          <View style={stylesforcal.modalContent}>
+            <CalendarWithPeriodFill
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              onDayPress={(date) => {
+                if (!startDate) {
+                  setStartDate(date);
+                } else if (!endDate && date.timestamp > startDate.timestamp) {
+                  setEndDate(date);
+                } else if (endDate) {
+                  setStartDate(date);
+                  setEndDate(null);
+                }
+              }}
+            />
+            <Button onPress={handlePrintDates}>{"Print"}</Button>
+          </View>
+        </View>
+      </Modal>
       </SafeAreaView>
     </View>
   );
 }
+
+const stylesforcal = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 8,
+  },
+});
