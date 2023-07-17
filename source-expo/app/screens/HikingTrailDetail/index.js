@@ -288,18 +288,6 @@ export default function HikingTrailDetail({navigation, route}) {
               </View>
 
               <View style={styles.itemReason}>
-                <Icon name="road" size={18} color={colors.accent} />
-                <View style={{marginLeft: 8}}>
-                  <Text subhead semibold>
-                    Trail Distance
-                  </Text>
-                  <Text body2>
-                    {trail?.trailDistance || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
                 <Icon name="clock" size={18} color={colors.accent} />
                 <View style={{marginLeft: 10}}>
                   <Text subhead semibold>
@@ -315,22 +303,10 @@ export default function HikingTrailDetail({navigation, route}) {
                 <Icon name="greater-than" size={18} color={colors.accent} />
                 <View style={{marginLeft: 15}}>
                   <Text subhead semibold>
-                    YDS Grading
+                    Physical Grading
                   </Text>
                   <Text body2>
                     {trail?.ydsGrading || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
-                <Icon name="greater-than" size={18} color={colors.accent} />
-                <View style={{marginLeft: 15}}>
-                  <Text subhead semibold>
-                    YDS Class
-                  </Text>
-                  <Text body2>
-                    {trail?.ydsClass || ''}
                   </Text>
                 </View>
               </View>
