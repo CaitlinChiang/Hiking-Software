@@ -131,26 +131,10 @@ export default function HikingTrailDetail({navigation, route}) {
     });
   };
 
-  useEffect(() => {
-    const fetchBucketlistData = async () => {
-      try {
-        const userId = 'jxihUCNoi0396wkQR2gx';
-        const bucketListRef = doc(db, 'users', userId);
-        const bucketListDoc = await getDoc(bucketListRef);
-        if (bucketListDoc.exists()) {
-          const bucketlistData = bucketListDoc.data();
-          const isTrailInBucketlist = bucketlistData.bucketlist.some(item => item.name === name);
-          setIsFilled(isTrailInBucketlist);
-        }
-      } catch (error) {
-        console.log('Error:', error);
-      }
-    };
+  const handleCalendarClose = () => {
+    setShowCalendar(false);
+  };
   
-    fetchBucketlistData();
-  }, []);
-
-
   const handleHeartIconPress = async () => {
     try {
       const userId = 'jxihUCNoi0396wkQR2gx';
