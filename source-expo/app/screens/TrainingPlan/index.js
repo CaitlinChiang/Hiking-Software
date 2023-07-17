@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, RefreshControl, View} from 'react-native';
+import {FlatList, RefreshControl, View, ScrollView } from 'react-native';
 import {BaseStyle, useTheme, BaseColor} from '@config';
 import {Header, Text, SafeAreaView, TrainingDetail, Icon, Button} from '@components';
 import {TrainingDatesData} from '@data';
@@ -75,21 +75,23 @@ export default function Booking({navigation}) {
 
   return (
     <View style={{flex: 1}}>
-      <Header
-        title="Training Schedule"
-      />
-      <SafeAreaView
-        style={BaseStyle.safeAreaView}
-        edges={['right', 'left', 'bottom']}>     
-        <View>
-          <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 20, paddingHorizontal: 20, fontWeight: 500 }}>{`Training for: ${mountain?.mountainName}`}</Text>
-          <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training Date Range: ${mountain?.startDate} - ${mountain?.endDate}`}</Text>
-        </View>
+      <ScrollView>
+        <Header
+          title="Training Schedule"
+        />
+        <SafeAreaView
+          style={BaseStyle.safeAreaView}
+          edges={['right', 'left', 'bottom']}>     
+          <View>
+            <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 20, paddingHorizontal: 20, fontWeight: 500 }}>{`Training for: ${mountain?.mountainName}`}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training Date Range: ${mountain?.startDate} - ${mountain?.endDate}`}</Text>
+          </View>
 
-        <View style={{ flex: 1, marginTop: 35 }}>
-          {test_data}
-        </View>
-      </SafeAreaView>
+          <View style={{ flex: 1, marginTop: 35 }}>
+            {test_data}
+          </View>
+        </SafeAreaView>
+      </ScrollView>
     </View>
   );
 }

@@ -30,6 +30,54 @@ const TrainingDatesData = [
   {
     id: '8',
     title: 'Training #8'
+  },
+  {
+    id: '9',
+    title: 'Training #9'
+  },
+  {
+    id: '10',
+    title: 'Training #10'
+  },
+  {
+    id: '11',
+    title: 'Training #11'
+  },
+  {
+    id: '12',
+    title: 'Training #12'
+  },
+  {
+    id: '13',
+    title: 'Training #13'
+  },
+  {
+    id: '14',
+    title: 'Training #14'
+  },
+  {
+    id: '15',
+    title: 'Training #15'
+  },
+  {
+    id: '16',
+    title: 'Training #16'
+  },
+  {
+    id: '17',
+    title: 'Training #17'
+  },
+  {
+    id: '18',
+    title: 'Training #18'
+  },
+  {
+    id: '19',
+    title: 'Training #19'
+  },
+  {
+    id: '20',
+    title: 'Training #20'
   }
 ]
 
