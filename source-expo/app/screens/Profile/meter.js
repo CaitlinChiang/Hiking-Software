@@ -19,27 +19,27 @@ const MeterComponent = ({ totalScore }) => {
         allowedDecimals={0}
         labels={[
           {
-            name: 'V',
+            name: 'E',
             labelColor: '#E4766F',
             activeBarColor: '#FE8B71',
           },
           {
-            name: 'IV',
+            name: 'D',
             labelColor: '#CF792A',
             activeBarColor: '#F4A67A',
           },
           {
-            name: 'III',
+            name: 'C',
             labelColor: '#F8955E',
             activeBarColor: '#F9CD79',
           },
           {
-            name: 'II',
+            name: 'B',
             labelColor: '#D3CB7D',
             activeBarColor: '#F3E98D',
           },
           {
-            name: 'I',
+            name: 'A',
             labelColor: '#A6C06F',
             activeBarColor: '#C3E182',
             fontSize: 100,
