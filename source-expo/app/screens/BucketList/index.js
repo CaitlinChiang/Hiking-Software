@@ -72,7 +72,7 @@ export default function BucketList({ navigation }) {
               paddingHorizontal: 20,
               marginBottom: 20
             }}>
-            {hikingTrailsData?.map((trail, index) => (
+            {HikingTrailsData.map((trail, index) => (
               <BucketListItem
                 key={index}
                 name={trail.name}
@@ -84,7 +84,11 @@ export default function BucketList({ navigation }) {
                 style={{marginTop: 10, width: '100%'}}
                 image={trail.imageSrc}
                 onPress={() => {
-                  navigation.navigate('HikingTrailDetail');
+                  navigation.navigate('HikingTrailDetail',{name: trail.name,
+                    location: trail.location,
+                    duration: trail.duration,
+                    summitHeight: trail.summitHeight,
+                    imageSrc: trail.imageSrc,});
                 }}
               />
             ))}

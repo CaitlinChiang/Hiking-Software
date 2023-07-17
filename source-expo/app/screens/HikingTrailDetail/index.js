@@ -138,7 +138,7 @@ export default function HikingTrailDetail({navigation, route}) {
 
   return (
     <View style={{flex: 1}}>
-    <Animated.Image
+    <ScrollView><Animated.Image
       source={{ uri: imageSrc }} // Using this instead for URI
       // source={require(Image.trail1)} //
       style={[
@@ -184,8 +184,11 @@ export default function HikingTrailDetail({navigation, route}) {
       />
       <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
         <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1 }}
           onContentSizeChange={() => setHeightHeader(Utils.heightHeader())}
-          scrollEventThrottle={8}>
+          scrollEventThrottle={8}
+        >
           <View style={{paddingHorizontal: 20}}>
             <View
               style={[
@@ -347,6 +350,7 @@ export default function HikingTrailDetail({navigation, route}) {
           />
         )}
       </SafeAreaView>
+      </ScrollView>
     </View>
   );
 }
