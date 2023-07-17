@@ -1,26 +1,64 @@
-import React, { useState } from 'react';
-import {View, ScrollView, Animated, TouchableOpacity} from 'react-native';
-import {BaseColor, Images} from '@config';
-import {
-  Header,
-  SafeAreaView,
-  Text,
-  BucketListItem,
-} from '@components';
-import * as Utils from '@utils';
-import styles from './styles';
-import {useTranslation} from 'react-i18next';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Text } from 'react-native';
+import { Header, SafeAreaView, BucketListItem } from '@components';
+import { initializeApp } from 'firebase/app';
+import { doc, getFirestore, getDoc, onSnapshot } from 'firebase/firestore';
 import { HikingTrailsData } from '@data';
 
-export default function BucketList({navigation}) {
-  const {t} = useTranslation();
+const firebaseConfig = {
+  apiKey: "AIzaSyD46mMFUwZ7AlCJWPqOXK3SKw1BuIihlFM",
+  authDomain: "hikingproject-3abef.firebaseapp.com",
+  projectId: "hikingproject-3abef",
+  storageBucket: "hikingproject-3abef.appspot.com",
+  messagingSenderId: "23275209713",
+  appId: "1:23275209713:web:3579558675b39890b47a50",
+  measurementId: "G-7H0L154L10"
+};
 
-  const [hikingTrailsData, setHikingTrails] = useState(HikingTrailsData)
+export default function BucketList({ navigation }) {
+  const [hikingTrails, setHikingTrails] = useState([]);
 
-  const deltaY = new Animated.Value(0);
-  const heightHeader = Utils.heightHeader();
-  const heightImageBanner = Utils.scaleWithPixel(250);
+  useEffect(() => {
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const userDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx'); // Replace with the actual user document IDs for each different user
+    const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const bucketList = snapshot.get('bucketlist') || [];
+        const hikingTrails = HikingTrailsData.filter((trail) =>
+          bucketList.some((item) => item.name === trail.name)
+        );
+        setHikingTrails(hikingTrails);
+      } else {
+        console.log('User document does not exist');
+      }
+    });
 
+    return () => unsubscribe(); 
+  }, []);
+
+  const fetchHikingTrails = async () => {
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const userDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx');
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const bucketList = userDocSnapshot.get('bucketlist') || [];
+        console.log('Bucket List:', bucketList);
+        const hikingTrails = HikingTrailsData.filter((trail) => {
+          return bucketList.some((item) => item.name === trail.name);
+        });
+        console.log('Filtered Hiking Trails:', hikingTrails);
+        setHikingTrails(hikingTrails);
+      } else {
+        console.log('User document does not exist'); // Wrote these statements to check my errors because I could not figure out why I didnt receive data from firebase.
+      }
+    } catch (error) {
+      console.log('Error fetching hiking trails:', error);
+    }
+  };
+  
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
@@ -46,11 +84,7 @@ export default function BucketList({navigation}) {
                 style={{marginTop: 10, width: '100%'}}
                 image={trail.imageSrc}
                 onPress={() => {
-                  navigation.navigate('HikingTrailDetail',{ name: trail.name,
-                    location: trail.location,
-                    duration: trail.duration,
-                    summitHeight: trail.summitHeight,
-                    imageSrc: trail.imageSrc,});
+                  navigation.navigate('HikingTrailDetail');
                 }}
               />
             ))}
