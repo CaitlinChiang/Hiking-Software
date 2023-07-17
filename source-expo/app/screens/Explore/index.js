@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {View, Animated, TouchableOpacity, FlatList} from 'react-native'
+import {RefreshControl, View, Animated, TouchableOpacity, FlatList} from 'react-native'
 import {
   Image,
   Text,
@@ -13,9 +13,9 @@ import {
 import {BaseStyle, Images, useTheme} from '@config'
 import * as Utils from '@utils'
 import styles from './styles'
-import { HikingTrailsData } from '@data'
+import {HikingTrailsData} from '@data'
 import {useTranslation} from 'react-i18next'
-import { Ionicons } from '@expo/vector-icons';
+import {Ionicons} from '@expo/vector-icons';
 
 export default function Home({navigation}) {
   const {t} = useTranslation()
@@ -37,10 +37,20 @@ export default function Home({navigation}) {
       route: 'Explore',
     }
   ])
+
   const [hikingTrails] = useState(HikingTrailsData)
   const [heightHeader, setHeightHeader] = useState(Utils.heightHeader())
   const deltaY = new Animated.Value(0)
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+  
   const renderIconService = () => {
     return (
       <FlatList
@@ -55,7 +65,10 @@ export default function Home({navigation}) {
               style={styles.itemService}
               activeOpacity={0.9}
               onPress={() => {
-                navigation.navigate(item.route)
+                setRefreshing(true);
+                setTimeout(() => {
+                  setRefreshing(false);
+                }, 2000);
               }}>
               <View
                 style={[styles.iconContent, {backgroundColor: colors.card}]}>
@@ -73,6 +86,11 @@ export default function Home({navigation}) {
 
   const heightImageBanner = Utils.scaleWithPixel(140)
   const marginTopBanner = heightImageBanner - heightHeader
+
+  const getRandomTrail = () => {
+    const randomIndex = Math.floor(Math.random() * hikingTrails.length);
+    return hikingTrails[randomIndex];
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -114,7 +132,7 @@ export default function Home({navigation}) {
               <FlatList
                 columnWrapperStyle={{ paddingLeft: 5, paddingRight: 20 }}
                 numColumns={2}
-                data={hikingTrails}
+                data={Array.from({length: 10}, () => getRandomTrail())}
                 keyExtractor={(item, index) => item.id}
                 renderItem={({item, index}) => (
                   <HikingItem
@@ -140,6 +158,7 @@ export default function Home({navigation}) {
               />
             </View>
           }
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
         />
       </SafeAreaView>
     </View>
