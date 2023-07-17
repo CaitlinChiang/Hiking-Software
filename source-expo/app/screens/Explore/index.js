@@ -119,7 +119,7 @@ export default function Home({navigation}) {
                 renderItem={({item, index}) => (
                   <View style={styles.gridItemContainer}>
                     <View style={styles.overlay}>
-                      <Text style={styles.overlayText}>YDS</Text>
+                      <Text style={styles.overlayText}>{item.ydsGrading}</Text>
                     </View>
                     <HikingItem
                       grid
@@ -129,6 +129,7 @@ export default function Home({navigation}) {
                       location={item.location}
                       duration={item.duration}
                       summitHeight={item.summitHeight}
+                      ydsGrading={item.ydsGrading}
                       style={{marginLeft: 15, marginBottom: 15}}
                       onPress={() =>
                         navigation.navigate('HikingTrailDetail', {
