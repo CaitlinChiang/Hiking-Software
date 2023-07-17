@@ -28,7 +28,7 @@ export default function BucketList({ navigation }) {
         
         if (userDocSnapshot.exists()) {
           const bucketList = userDocSnapshot.get('bucketlist') || [];
-          console.log('Bucket List:', bucketList);
+
           const hikingTrails = HikingTrailsData.filter((trail) => {
             return bucketList.some((item) => item.name === trail.name);
           });
@@ -43,7 +43,7 @@ export default function BucketList({ navigation }) {
     };
 
     fetchHikingTrails()
-  }, []);
+  }, [hikingTrails]);
   
   return (
     <View style={{flex: 1}}>
