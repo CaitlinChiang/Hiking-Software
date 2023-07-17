@@ -1,5 +1,5 @@
-/// <reference types="react" />
 import PropTypes from 'prop-types';
+import React from 'react';
 import { SectionListProps, DefaultSectionT, ViewStyle } from 'react-native';
 import { Theme } from '../types';
 export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> {
@@ -30,7 +30,7 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 declare const AgendaList: {
-    (props: AgendaListProps): JSX.Element;
+    (props: AgendaListProps): React.JSX.Element;
     displayName: string;
     propTypes: {
         dayFormat: PropTypes.Requireable<string>;

@@ -1,24 +1,22 @@
 import React, {useState} from 'react';
 import {
   View,
-  TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {BaseStyle, BaseColor, useTheme} from '@config';
+import {BaseStyle, useTheme} from '@config';
 import {
   Header,
   SafeAreaView,
   Icon,
-  Text,
   Button,
-  BookingTime,
+  Text,
   TextInput,
+  BucketListItem
 } from '@components';
-import Modal from 'react-native-modal';
-import styles from './styles';
 import {useTranslation} from 'react-i18next';
+import { HikingTrailsData } from '@data';
 
 export default function Search({navigation}) {
   const {colors} = useTheme();
@@ -29,177 +27,15 @@ export default function Search({navigation}) {
   });
 
   const [keyword, setKeyword] = useState('');
-  const [adult, setAdult] = useState(1);
-  const [children, setChildren] = useState(1);
-  const [night, setNight] = useState(1);
-  const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [hikingTrails, setHikingTrails] = useState(HikingTrailsData);
+  const [filteredHikingTrails, setFilteredHikingTrails] = useState(hikingTrails);
 
-  /**
-   * call when action modal
-   * @param {*} modal
-   */
-  const openModal = modal => {
-    setModalVisible(modal);
-  };
-
-  /**
-   * call when on change value
-   * @param {*} mode
-   * @param {*} value
-   */
-  const setValue = (mode, value) => {
-    switch (value) {
-      case 'adult':
-        if (mode == 'up') {
-          setAdult(adult + 1);
-        } else {
-          setAdult(adult - 1 > 0 ? adult - 1 : 0);
-        }
-        break;
-      case 'children':
-        if (mode == 'up') {
-          setChildren(children + 1);
-        } else {
-          setChildren(children - 1 > 0 ? children - 1 : 0);
-        }
-        break;
-      case 'night':
-        if (mode == 'up') {
-          setNight(night + 1);
-        } else {
-          setNight(night - 1 > 0 ? night - 1 : 0);
-        }
-        break;
-    }
-  };
-
-  const renderModal = () => {
-    return (
-      <View>
-        <Modal
-          isVisible={modalVisible === 'quest'}
-          onSwipeComplete={() => setModalVisible(false)}
-          swipeDirection={['down']}
-          style={styles.bottomModal}>
-          <View
-            style={[
-              styles.contentFilterBottom,
-              {backgroundColor: colors.card},
-            ]}>
-            <View style={styles.contentSwipeDown}>
-              <View style={styles.lineSwipeDown} />
-            </View>
-            <View
-              style={[
-                styles.contentActionModalBottom,
-                {borderBottomColor: colors.border},
-              ]}>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text body1>{t('cancel')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text body1 primaryColor>
-                  {t('save')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.lineRow}>
-              <View>
-                <Text body1>{t('adults')}</Text>
-                <Text caption1 grayColor>
-                  16+ {t('years')}
-                </Text>
-              </View>
-              <View style={styles.iconRight}>
-                <TouchableOpacity onPress={() => setValue('down', 'adult')}>
-                  <Icon
-                    name="minus-circle"
-                    size={24}
-                    color={BaseColor.grayColor}
-                  />
-                </TouchableOpacity>
-                <Text title1>{adult}</Text>
-                <TouchableOpacity onPress={() => setValue('up', 'adult')}>
-                  <Icon name="plus-circle" size={24} color={colors.primary} />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.lineRow}>
-              <View>
-                <Text body1>{t('children')}</Text>
-                <Text caption1 grayColor>
-                  2-11 {t('years')}
-                </Text>
-              </View>
-              <View style={styles.iconRight}>
-                <TouchableOpacity onPress={() => setValue('down', 'children')}>
-                  <Icon
-                    name="minus-circle"
-                    size={24}
-                    color={BaseColor.grayColor}
-                  />
-                </TouchableOpacity>
-                <Text title1>{children}</Text>
-                <TouchableOpacity onPress={() => setValue('up', 'children')}>
-                  <Icon name="plus-circle" size={24} color={colors.primary} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-        <Modal
-          isVisible={modalVisible === 'duration'}
-          onSwipeComplete={() => setModalVisible(false)}
-          swipeDirection={['down']}
-          style={styles.bottomModal}>
-          <View
-            style={[
-              styles.contentFilterBottom,
-              {backgroundColor: colors.card},
-            ]}>
-            <View style={styles.contentSwipeDown}>
-              <View style={styles.lineSwipeDown} />
-            </View>
-            <View
-              style={[
-                styles.contentActionModalBottom,
-                {borderBottomColor: colors.border},
-              ]}>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text body1>{t('cancel')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text body1 primaryColor>
-                  {t('save')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.lineRow, {marginBottom: 40}]}>
-              <View>
-                <Text body1>{t('duration')}</Text>
-                <Text caption1 grayColor>
-                  {t('night')}
-                </Text>
-              </View>
-              <View style={styles.iconRight}>
-                <TouchableOpacity onPress={() => setValue('down', 'night')}>
-                  <Icon
-                    name="minus-circle"
-                    size={24}
-                    color={BaseColor.grayColor}
-                  />
-                </TouchableOpacity>
-                <Text title1>{night}</Text>
-                <TouchableOpacity onPress={() => setValue('up', 'night')}>
-                  <Icon name="plus-circle" size={24} color={colors.primary} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
+  const handleSearch = () => {
+    const filteredTrails = hikingTrails.filter((trail) =>
+      trail.name.toLowerCase().includes(keyword.toLowerCase())
     );
+    setFilteredHikingTrails(filteredTrails);
   };
 
   return (
@@ -216,54 +52,51 @@ export default function Search({navigation}) {
       <SafeAreaView
         style={BaseStyle.safeAreaView}
         edges={['right', 'left', 'bottom']}>
-        {renderModal()}
-
         <KeyboardAvoidingView
           behavior={Platform.OS === 'android' ? 'height' : 'padding'}
           keyboardVerticalOffset={offsetKeyboard}
           style={{flex: 1}}>
           <ScrollView contentContainerStyle={{padding: 20}}>
             <TextInput
-              onChangeText={text => setKeyword(text)}
-              placeholder={t('what_are_you_looking_for')}
+              onChangeText={(text) => setKeyword(text)}
+              placeholder={'Search for a Hiking Trail'}
               value={keyword}
             />
-            <BookingTime style={{marginTop: 15}} />
-            <View style={styles.contentQuest}>
-              <TouchableOpacity
-                style={[styles.total, {backgroundColor: colors.card}]}
-                onPress={() => openModal('quest')}>
-                <Text caption1 grayColor style={{marginBottom: 5}}>
-                  {t('total_guest')}
-                </Text>
-                <Text body1 semibold numberOfLines={1}>
-                  2 {t('adults')}, 1 {t('children')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.duration, {backgroundColor: colors.card}]}
-                onPress={() => openModal('duration')}>
-                <Text caption1 grayColor style={{marginBottom: 5}}>
-                  {t('duration')}
-                </Text>
-                <Text body1 semibold>
-                  1 {t('night')}
-                </Text>
-              </TouchableOpacity>
+            <View style={{ paddingHorizontal: 0, marginBottom: 20 }}>
+              {filteredHikingTrails.length > 0 ? (
+                filteredHikingTrails.map((trail, index) => (
+                  <BucketListItem
+                    key={index}
+                    name={trail.name}
+                    location={trail.location}
+                    summitHeight={trail.summitHeight}
+                    duration={trail.duration}
+                    ydsGrading={trail.ydsGrading}
+                    ydsClass={trail.ydsClass}
+                    style={{ marginTop: 10, width: '100%' }}
+                    image={trail.imageSrc}
+                    onPress={() =>
+                      navigation.navigate('HikingTrailDetail', {
+                        name: trail.name,
+                        location: trail.location,
+                        duration: trail.duration,
+                        summitHeight: trail.summitHeight,
+                        imageSrc: trail.imageSrc,
+                      })
+                    }  
+                  />
+                ))
+              ) : (
+                <Text style={{ marginTop: 20, textAlign: 'center', fontWeight: 500, fontSize: 20 }}>No hiking trails found.</Text>
+              )}
             </View>
           </ScrollView>
           <View style={{paddingHorizontal: 20, paddingVertical: 15}}>
             <Button
               full
-              onPress={() => {
-                setLoading(true);
-                setTimeout(() => {
-                  navigation.navigate('Hotel');
-                  setLoading(false);
-                }, 500);
-              }}
+              onPress={handleSearch}
               loading={loading}>
-              {t('apply')}
+              {t('Search')}
             </Button>
           </View>
         </KeyboardAvoidingView>

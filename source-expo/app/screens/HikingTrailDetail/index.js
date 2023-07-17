@@ -1,9 +1,16 @@
 import React, {useState, useEffect} from 'react';
 // Imports for firebase
-import { doc, setDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
-import { HikingTrailsData } from '../../data/hikingTrails.js'; // Source to the Hiking Data
+import { HikingTrailsData } from '@data';
+
+//imports for calender
+import { Calendar } from 'react-native-calendars';
+import CalendarWithPeriodFill from './calender';
+
+
+
 
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
 const firebaseConfig = {
@@ -17,9 +24,11 @@ const firebaseConfig = {
 };
 
 import {
+  Alert,
   View,
   ScrollView,
-  Animated
+  Animated,
+  StyleSheet
 } from 'react-native';
 import {BaseColor, Images, useTheme} from '@config';
 import {
@@ -29,13 +38,13 @@ import {
   Text,
   Button
 } from '@components';
-import {TouchableOpacity } from 'react-native';
+import {TouchableOpacity, Modal } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import * as Utils from '@utils';
 import {InteractionManager} from 'react-native';
 import styles from './styles';
 import {useTranslation} from 'react-i18next';
-import { Calendar } from 'react-native-calendars';
+// import { Calendar } from 'react-native-calendars';
 
 // Important initialization. must be done in index.js
 const app = initializeApp(firebaseConfig);
@@ -47,6 +56,16 @@ const heartRegularSvg = `<svg xmlns="http://www.w3.org/2000/svg" height="1em" vi
 // ...
 
 export default function HikingTrailDetail({navigation, route}) {
+  // Calender initiations
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [start, setStart] = useState({});
+  const [end, setEnd] = useState({});
+
+  
+  
+
   const {colors} = useTheme();
   const {t} = useTranslation();
   const { name, imageSrc } = route.params;
@@ -59,6 +78,27 @@ export default function HikingTrailDetail({navigation, route}) {
   const [isFilled, setIsFilled] = useState(false);
   const [trail, setTrailData] = useState(null);
 
+  useEffect(() => {
+    const fetchHikingTrailData = async () => {
+      try {
+        const userId = 'jxihUCNoi0396wkQR2gx'; // Replace with the actual user ID
+        const userDocRef = doc(db, 'users', userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+  
+        if (userDocSnapshot.exists()) {
+          const bucketList = userDocSnapshot.get('bucketlist') || [];
+          const existsInBucketList = bucketList.some(item => item.name === name);
+          setIsFilled(existsInBucketList);
+        } else {
+          console.log('User document does not exist');
+        }
+      } catch (error) {
+        console.log('Error fetching hiking trail data:', error);
+      }
+    };
+  
+    fetchHikingTrailData();
+  }, []);
 
   useEffect(() => {
     const trail = HikingTrailsData.find((trail) => trail.name === name);
@@ -74,24 +114,29 @@ export default function HikingTrailDetail({navigation, route}) {
   const heightImageBanner = Utils.scaleWithPixel(250, 1);
   const marginTopBanner = heightImageBanner - heightHeader - 40;
 
-  const handleButtonPress = () => {
-    navigation.navigate('Calendar');
-  };
-  
-  const handleDateSelect = (date) => {
-    if (!selectedDates.startDate) {
-      setSelectedDates({ startDate: date.dateString });
-    } else if (!selectedDates.endDate) {
-      const { startDate } = selectedDates;
-      const endDate = date.dateString;
-      console.log('Selected start date:', startDate);
-      console.log('Selected end date:', endDate);
-      setSelectedDates({ startDate: null, endDate: null });
-      setRightIcon('heart');
-      handleHeartIconPress(); 
-    }
+  const handleButtonPress = async () => {
+    setShowCalendar(true);
+
+    const userId = 'jxihUCNoi0396wkQR2gx'; 
+    const savedDocRef = doc(db, 'users', userId);
+    const savedDocSnapshot = await getDoc(savedDocRef);
+
+    const savedDoc = savedDocSnapshot.data()|| {};
+    const updatedDates = { ...savedDoc.dates, mountainName: name };
+
+    updateDoc(savedDocRef, {
+      dates: updatedDates
+    }).then(() => {
+      console.log('Mountain name stored in Firebase:', name);
+    }).catch((error) => {
+      console.log('Error storing');
+    });
   };
 
+  const handleCalendarClose = () => {
+    setShowCalendar(false);
+  };
+  
   const handleHeartIconPress = async () => {
     try {
       const userId = 'jxihUCNoi0396wkQR2gx';
@@ -115,7 +160,6 @@ export default function HikingTrailDetail({navigation, route}) {
     }
   };
 
-  
   return (
     <View style={{flex: 1}}>
     <Animated.Image
@@ -240,18 +284,6 @@ export default function HikingTrailDetail({navigation, route}) {
               </View>
 
               <View style={styles.itemReason}>
-                <Icon name="road" size={18} color={colors.accent} />
-                <View style={{marginLeft: 8}}>
-                  <Text subhead semibold>
-                    Trail Distance
-                  </Text>
-                  <Text body2>
-                    {trail?.trailDistance || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
                 <Icon name="clock" size={18} color={colors.accent} />
                 <View style={{marginLeft: 10}}>
                   <Text subhead semibold>
@@ -267,22 +299,10 @@ export default function HikingTrailDetail({navigation, route}) {
                 <Icon name="greater-than" size={18} color={colors.accent} />
                 <View style={{marginLeft: 15}}>
                   <Text subhead semibold>
-                    YDS Grading
+                    Physical Grading
                   </Text>
                   <Text body2>
                     {trail?.ydsGrading || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
-                <Icon name="greater-than" size={18} color={colors.accent} />
-                <View style={{marginLeft: 15}}>
-                  <Text subhead semibold>
-                    YDS Class
-                  </Text>
-                  <Text body2>
-                    {trail?.ydsClass || ''}
                   </Text>
                 </View>
               </View>
@@ -308,25 +328,46 @@ export default function HikingTrailDetail({navigation, route}) {
             {'Book to Calendar'}
           </Button>
         </View>
-
-        {selectedDates.startDate && !selectedDates.endDate && (
-          <Calendar
-            markedDates={{
-              [selectedDates.startDate]: { startingDay: true, color: 'green' },
-            }}
-            onDayPress={handleDateSelect}
-          />
-        )}
-        {selectedDates.startDate && selectedDates.endDate && (
-          <Calendar
-            markedDates={{
-              [selectedDates.startDate]: { startingDay: true, color: 'green' },
-              [selectedDates.endDate]: { endingDay: true, color: 'green' },
-            }}
-            onDayPress={handleDateSelect}
-          />
-        )}
+      <Modal
+        visible={showCalendar}
+        onRequestClose={handleCalendarClose}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={stylesforcal.modalContainer}>
+          <View style={stylesforcal.modalContent}>
+            <CalendarWithPeriodFill start={start} end={end} />
+          {/* Close Button */}
+            <View style={stylesforcal.closeButtonContainer}>
+              <Button onPress={handleCalendarClose} style={stylesforcal.closeButton}>
+                <Text style={stylesforcal.closeButtonText}>Close</Text>
+              </Button>
+            </View>
+            {/* <Button onPress={handlePrintDates}>{"Print"}</Button> */}
+          </View>
+        </View>
+      </Modal>
       </SafeAreaView>
     </View>
   );
 }
+
+const stylesforcal = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 8,
+  },
+
+  closeButtonText: {
+    color: 'white', 
+    fontWeight: 'bold'
+  },
+});
+
