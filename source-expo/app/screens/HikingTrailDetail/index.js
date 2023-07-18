@@ -6,7 +6,6 @@ import { getFirestore } from 'firebase/firestore'
 import { HikingTrailsData } from '@data';
 
 //imports for calender
-import { Calendar } from 'react-native-calendars';
 import CalendarWithPeriodFill from './calender';
 
 
@@ -22,11 +21,11 @@ const firebaseConfig = {
 };
 
 import {
-  Alert,
   View,
   ScrollView,
   Animated,
-  StyleSheet
+  StyleSheet,
+  TouchableWithoutFeedback
 } from 'react-native';
 import {BaseColor, Images, useTheme} from '@config';
 import {
@@ -42,7 +41,6 @@ import * as Utils from '@utils';
 import {InteractionManager} from 'react-native';
 import styles from './styles';
 import {useTranslation} from 'react-i18next';
-// import { Calendar } from 'react-native-calendars';
 
 // Important initialization. must be done in index.js
 const app = initializeApp(firebaseConfig);
@@ -324,9 +322,9 @@ export default function HikingTrailDetail({navigation, route}) {
         </ScrollView>
 
         <View
-          style={{ paddingVertical: 10, paddingHorizontal: 20 }}>
+          style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
           <Button onPress={handleButtonPress}>
-            {'Book to Calendar'}
+            {'Schedule Training'}
           </Button>
         </View>
       <Modal
@@ -335,18 +333,18 @@ export default function HikingTrailDetail({navigation, route}) {
         animationType="slide"
         transparent={true}
       >
-        <View style={stylesforcal.modalContainer}>
-          <View style={stylesforcal.modalContent}>
-            <CalendarWithPeriodFill start={start} end={end} />
-          {/* Close Button */}
-            <View style={stylesforcal.closeButtonContainer}>
-              <Button onPress={handleCalendarClose} style={stylesforcal.closeButton}>
-                <Text style={stylesforcal.closeButtonText}>Close</Text>
-              </Button>
+        <TouchableWithoutFeedback onPress={handleCalendarClose}>
+          <View style={stylesforcal.modalContainer}>
+            <View style={stylesforcal.modalContent}>
+              <CalendarWithPeriodFill start={start} end={end} />
+              <View style={stylesforcal.closeButtonContainer}>
+                <Button onPress={handleCalendarClose} style={stylesforcal.closeButton}>
+                  <Text style={stylesforcal.closeButtonText}>Save</Text>
+                </Button>
+              </View>
             </View>
-            {/* <Button onPress={handlePrintDates}>{"Print"}</Button> */}
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
       </SafeAreaView>
       </ScrollView>
