@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
-import { Header, SafeAreaView, BucketListItem } from '@components';
+import { Header, SafeAreaView, BucketListItem, Button } from '@components';
 import { initializeApp } from 'firebase/app';
 import { doc, getFirestore, getDoc, onSnapshot } from 'firebase/firestore';
 import { HikingTrailsData } from '@data';
@@ -53,6 +53,11 @@ export default function BucketList({ navigation }) {
 
     fetchHikingTrails()
   }, [hikingTrails]);
+
+  const goExplore = () => {
+    navigation.navigate('Explore');
+    console.log('test')
+  };
   
   return (
     <View style={{ flex: 1 }}>
@@ -64,6 +69,7 @@ export default function BucketList({ navigation }) {
               <View style={styles.emptyContainer}>
                 <Icon name="inbox" size={50} color="#ccc" />
                 <Text style={styles.emptyText}>You have nothing saved to your bucket list.</Text>
+                <Button style={{ marginTop: 10 }} onPress={goExplore}>Explore Hiking Trails</Button>
               </View>
             ) : (
               hikingTrails.map((trail, index) => (

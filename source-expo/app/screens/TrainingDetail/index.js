@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, RefreshControl, View, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import { BaseStyle, useTheme, BaseColor } from '@config';
 import { Header, Text, SafeAreaView, TrainingExercise, Icon, Button } from '@components';
 import { TrainingTimelineData } from '@data';
@@ -25,7 +25,6 @@ const Booking = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useTheme();
 
-  const [refreshing] = useState(false);
   const [trainingTimeline] = useState(TrainingTimelineData);
   const [rating, setRating] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -44,6 +43,30 @@ const Booking = ({ navigation }) => {
       )
     }
   })
+
+  function getRandomElements(array, count) {
+    // Create a copy of the original array
+    const shuffled = array.slice();
+  
+    // Fisher-Yates shuffle algorithm
+    let currentIndex = shuffled.length;
+    let temporaryValue, randomIndex;
+  
+    while (currentIndex > 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      temporaryValue = shuffled[currentIndex];
+      shuffled[currentIndex] = shuffled[randomIndex];
+      shuffled[randomIndex] = temporaryValue;
+    }
+  
+    // Return the first 'count' elements
+    return shuffled.slice(0, count);
+  }
+
+  const randomElements = getRandomElements(test_data, 4);
+
   // Complete button that saves training progress into Firebase
   const onCompleteTraining = async (exercise, date, difficulty) => {
     try {
@@ -121,7 +144,7 @@ const Booking = ({ navigation }) => {
         </View>
         <View style={{ flex: 1, marginLeft: -20, marginTop: 35 }}>
           <Timeline
-            data={test_data}
+            data={randomElements}
             circleSize={20}
             circleColor="#554c3d"
             lineColor="#554c3d"

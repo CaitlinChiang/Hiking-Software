@@ -380,20 +380,6 @@ const HikingTrailsData = [
       "imageSrc": "https://static.saltinourhair.com/wp-content/uploads/2023/01/21041335/doi-inthanon-thailand-20.jpg"
   },
   {
-      "name": "Fansipan",
-      "location": "Vietnam",
-      "startingHeight": "1,530",
-      "summitHeight": "3,143",
-      "altitudeGain": "1,613",
-      "trailDistance": "22,000",
-      "duration": "2 - 3 days",
-      "ydsGrading": "E",
-      "ydsClass": "2",
-      "weather": "",
-      "image": Images.trail1,
-      "imageSrc": "https://mettavoyage.com/wp-content/uploads/2023/01/sapa3-1290x540.jpg"
-  },
-  {
       "name": "Mount Aural",
       "location": "Cambodia",
       "startingHeight": "131",
