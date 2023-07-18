@@ -90,7 +90,7 @@ export default function Booking({navigation}) {
         <SafeAreaView
           style={{ ...BaseStyle.safeAreaView, paddingVertical: 50, paddingHorizontal: 50 }}
           edges={['right', 'left', 'bottom']}>     
-          <Text style={styles.emptyText}>{'You are currently not training for any hike, visit our explore page to view our recommendation for you!'}</Text>
+          <Text style={styles.emptyText}>{'You are currently not training for any hike, visit our explore page to view our recommendations for you!'}</Text>
           <Button style={{ marginTop: 50 }} onPress={goExplore}>{'Explore Hiking Trails'}</Button>
         </SafeAreaView>
       )
