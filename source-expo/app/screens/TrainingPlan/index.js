@@ -29,6 +29,7 @@ export default function Booking({navigation}) {
 
   const [trainingTimeline] = useState(TrainingDatesData);
   const [mountain, setMountain] = useState({})
+  const [showRedirect, setShowRedirect] = useState(false)
 
   useEffect(() => {
     const fetchCurrentMountain = async () => {
@@ -40,7 +41,13 @@ export default function Booking({navigation}) {
         if (savedDocSnapshot.exists()) {
           const savedDoc = savedDocSnapshot.data()|| {};
           const mountain = savedDoc?.dates || {};
-          setMountain(mountain);
+
+          if (mountain?.mountainName === '-') {
+            setShowRedirect(true)
+          } else {
+            setShowRedirect(false)
+            setMountain(mountain)
+          }
         } else {
           console.log('User document does not exist');
         }
@@ -73,15 +80,25 @@ export default function Booking({navigation}) {
     )
   })
 
-  return (
-    <View style={{flex: 1}}>
-      <ScrollView>
-        <Header
-          title="Training Schedule"
-        />
+  const goExplore = () => {
+    navigation.navigate('Explore');
+  };
+
+  const displayPage = () => {
+    if (showRedirect) {
+      return (
+        <SafeAreaView
+          style={{ ...BaseStyle.safeAreaView, paddingVertical: 50, paddingHorizontal: 50 }}
+          edges={['right', 'left', 'bottom']}>     
+          <Text style={styles.emptyText}>{'You are currently not training for any hike, visit our explore page to view our recommendation for you!'}</Text>
+          <Button style={{ marginTop: 50 }} onPress={goExplore}>{'Explore Hiking Trails'}</Button>
+        </SafeAreaView>
+      )
+    } else {
+      return (
         <SafeAreaView
           style={BaseStyle.safeAreaView}
-          edges={['right', 'left', 'bottom']}>     
+          edges={['right', 'left', 'bottom']}>
           <View>
             <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 20, paddingHorizontal: 20, fontWeight: 500 }}>{`Training for: ${mountain?.mountainName}`}</Text>
             <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training Date Range: ${mountain?.startDate} - ${mountain?.endDate}`}</Text>
@@ -91,6 +108,17 @@ export default function Booking({navigation}) {
             {test_data}
           </View>
         </SafeAreaView>
+      )
+    }
+  }
+
+  return (
+    <View style={{flex: 1}}>
+      <ScrollView>
+        <Header
+          title="Training Schedule"
+        />
+        {displayPage()}
       </ScrollView>
     </View>
   );

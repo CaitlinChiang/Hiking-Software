@@ -56,7 +56,6 @@ export default function BucketList({ navigation }) {
 
   const goExplore = () => {
     navigation.navigate('Explore');
-    console.log('test')
   };
   
   return (
