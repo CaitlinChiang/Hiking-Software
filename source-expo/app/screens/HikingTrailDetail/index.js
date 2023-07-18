@@ -336,6 +336,7 @@ export default function HikingTrailDetail({navigation, route}) {
         <TouchableWithoutFeedback onPress={handleCalendarClose}>
           <View style={stylesforcal.modalContainer}>
             <View style={stylesforcal.modalContent}>
+              <Text style={{ fontWeight: 500, textAlign: 'center' }}>{'Choose a Start and End Date'}</Text>
               <CalendarWithPeriodFill start={start} end={end} />
               <View style={stylesforcal.closeButtonContainer}>
                 <Button onPress={handleCalendarClose} style={stylesforcal.closeButton}>
