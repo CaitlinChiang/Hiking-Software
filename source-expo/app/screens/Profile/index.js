@@ -5,7 +5,21 @@ import { doc, getDoc } from "firebase/firestore";
 import {AuthActions} from '@actions';
 import {BaseStyle} from '@config';
 import firebase from 'firebase/compat/app';
+import { StyleSheet } from 'react-native';
 import 'firebase/compat/firestore';
+
+import CollapsibleCard from './CollabsibleCard';
+import SliderCard from './SlideCard';
+import LowerBodyCard from './LowerBody';
+import BSCard from './BandSCard';
+import FlexibilityCard from './FlexibilityCard';
+import OutdoorExperienceCard from './OutdoorExperienceCard';
+import HikingComfortCard from './HikingComfortCard';
+
+
+
+
+
 import {
   SafeAreaView,
   Text,
@@ -34,6 +48,12 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 
 export default function Profile({navigation}) {
+  // for collabsable
+  const [showPhysicalSustainability, setShowPhysicalSustainability] = useState(false);
+  const [showUpperBodyStrength, setShowUpperBodyStrength] = useState(false);
+
+
+
   const [loading, setLoading] = useState(false);
 
   const [totalScore, setTotalScore] = useState(0);
@@ -190,184 +210,187 @@ export default function Profile({navigation}) {
         style={{ marginTop: 60, ...BaseStyle.safeAreaView }}
         edges={['right', 'left', 'bottom']}>
         <ScrollView>
-          <View style={styles.contain}>
+        <View style={styles.contain}>
             <MeterComponent totalScore={totalScore} />
 
-            <View style={styles.contentTitle}>
-              <Text headline semibold>
-                {'Name'}
-              </Text>
-            </View>
-            <TextInput
-              onChangeText={text => setNaming(text)}
-              placeholder={'Input Name'}
-              value={naming}
-            />
-            <View style={styles.contentTitle}>
-              <Text headline semibold>
-                {'Email'}
-              </Text>
-            </View>
-            <TextInput
-              onChangeText={text => setEmail(text)}
-              placeholder={'Input Email'}
-              value={email}
-            />
-            <View style={styles.contentTitle}>
-              <Text headline semibold>
-                {'Gender'}
-              </Text>
-            </View>
-            <TextInput
-              onChangeText={text => setGender(text)}
-              placeholder={'Input Gender'}
-              value={gender}
-            />
-            <View style={styles.contentTitle}>
-              <Text headline semibold>
-                {'Birthday'}
-              </Text>
-            </View>
-            <TextInput
-              onChangeText={text => setBirthday(text)}
-              placeholder={'DD-MM-YYYY'}
-              value={birthday}
-            />
-            <View style={styles.contentTitle}>
-              <Text headline semibold>
-                {'Height (cm)'}
-              </Text>
-            </View>
-            <TextInput
-              onChangeText={text => setHeight(text)}
-              placeholder={'Input Weight'}
-              value={String(height)}
-            />
-            <View style={styles.contentTitle}>
-              <Text headline semibold>
-                {'Weight (kg)'}
-              </Text>
-            </View>
-            <TextInput
-              onChangeText={text => setWeight(text)}
-              placeholder={'Input Weight'}
-              value={String(weight)}
-            />
-            </View>
-
-         <View>
-            <Text style={{ padding: 20 }} headline semibold>Rate your ability to sustain physical activity for an extended period:</Text>
-            <Text style={{ textAlign: 'center' }} headline semibold>{physicalSustainability}</Text>
-            <Slider
-              style={{ marginRight: 50, marginLeft: 50 }}
-              minimumValue={1}
-              maximumValue={10}
-              step={1}
-              minimumTrackTintColor="blue"
-              maximumTrackTintColor="grey"
-              value={physicalSustainability}
-              onValueChange={(value) => setPhysicalSustainability(value)}
-            />
-            <View style={{ padding: 20 }}>
-              <Text>1 (Very low endurance)</Text>
-              <Text>3 (Low endurance)</Text>
-              <Text>5 (Moderate endurance)</Text>
-              <Text>7 (Above average endurance)</Text>
-              <Text>10 (Exceptional endurance)</Text>
-            </View>
-
-            <Text style={{ padding: 20 }} headline semibold>Rate your perceived upper body strength:</Text>
-            <Text style={{ textAlign: 'center' }} headline semibold>{upperBodyStrength}</Text>
-            <Slider
-              style={{ marginRight: 50, marginLeft: 50 }}
-              minimumValue={1}
-              maximumValue={10}
-              step={1}
-              minimumTrackTintColor="blue"
-              maximumTrackTintColor="grey"
-              value={upperBodyStrength}
-              onValueChange={(value) => setUpperBodyStrength(value)}
-            />
-            <View style={{ padding: 20 }}>
-              <Text>1 (Very weak)</Text>
-              <Text>3 (Low strength)</Text>
-              <Text>5 (Average strength)</Text>
-              <Text>7 (Above average strength)</Text>
-              <Text>10 (Very strong)</Text>
-            </View>
-
-            <Text style={{ padding: 20 }} headline semibold>Rate your perceived lower body strength:</Text>
-            <Text style={{ textAlign: 'center' }} headline semibold>{lowerBodyStrength}</Text>
-            <Slider
-              style={{ marginRight: 50, marginLeft: 50 }}
-              minimumValue={1}
-              maximumValue={10}
-              step={1}
-              minimumTrackTintColor="blue"
-              maximumTrackTintColor="grey"
-              value={lowerBodyStrength}
-              onValueChange={(value) => setLowerBodyStrength(value)}
-            />
-            <View style={{ padding: 20 }}>
-              <Text>1 (Very weak)</Text>
-              <Text>3 (Low strength)</Text>
-              <Text>5 (Average strength)</Text>
-              <Text>7 (Above average strength)</Text>
-              <Text>10 (Very strong)</Text>
-            </View>
-
             <View>
-              <View style={{ padding: 20 }}>
-                <Text style={{ marginBottom: 10 }} headline semibold>Balance and Stability:</Text>
-                <RNPickerSelect
-                  onValueChange={(value) => setBalanceStability(value)}
-                  items={[
-                    { label: "Not Confident at All", value: 1 },
-                    { label: "Somewhat Confident", value: 5 },
-                    { label: "Very Confident", value: 10 }
-                  ]}
-                  style={styles.inputIOS}
-                  value={balanceStability}
-                />
+              <View style={styles.contentTitle}>
+                <Text headline semibold>
+                  {'Name'}
+                </Text>
+              </View>
+              <TextInput
+                onChangeText={text => setNaming(text)}
+                placeholder={'Input Name'}
+                value={naming}
+              />
+            </View>
 
-                <Text style={{ marginBottom: 10, marginTop: 50 }} headline semibold>Flexibility:</Text>
-                <RNPickerSelect
-                  onValueChange={(value) => setFlexibility(value)}
-                  items={[
-                    { label: "Yes, easily", value: 10 },
-                    { label: "Yes, but with some difficulty", value: 5 },
-                    { label: "No, unable to reach toes", value: 1 }
-                  ]}
-                  style={styles.inputIOS}
-                  value={flexibility}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View style={{ flex: 1 }}>
+                <View style={styles.contentTitle}>
+                  <Text headline semibold>
+                    {'Birthday'}
+                  </Text>
+                </View>
+                <TextInput
+                  onChangeText={text => setBirthday(text)}
+                  placeholder={'DD-MM-YYYY'}
+                  value={birthday}
                 />
-                
-                <Text style={{ marginBottom: 10, marginTop: 50 }} headline semibold>Outdoor Experience:</Text>
+              </View>
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <View style={styles.contentTitle}>
+                  <Text headline semibold>
+                    {'Gender'}
+                  </Text>
+                </View>
                 <RNPickerSelect
-                  onValueChange={(value) => setOutdoorExperienceFrequency(value)}
+                  onValueChange={(value) => setGender(value)}
                   items={[
-                    { label: "Rarely or never", value: 2 },
-                    { label: "Occasionally (once a month or less)", value: 5 },
-                    { label: "Regularly (a few times a month)", value: 8 },
-                    { label: "Frequently (at least once a week)", value: 10 }
+                    { label: 'Select a Gender', value: '' },
+                    { label: 'Male', value: 'Male' },
+                    { label: 'Female', value: 'Female' },
+                    { label: 'Other', value: 'Other' },
                   ]}
-                  style={styles.inputIOS}
-                  value={outdoorExperienceFrequency}
-                />
-                
-                <Text style={{ marginBottom: 10, marginTop: 50 }} headline semibold>How comfortable are you with hiking on challenging terrains?</Text>
-                <RNPickerSelect
-                  onValueChange={(value) => setOutdoorExperienceComfort(value)}
-                  items={[
-                    { label: "Not comfortable at all", value: 1 },
-                    { label: "Somewhat comfortable", value: 5 },
-                    { label: "Very comfortable", value: 10 }
-                  ]}
-                  style={styles.inputIOS}
-                  value={outdoorExperienceComfort}
+                  style={pickerSelectStyles}
+                  value={gender}
                 />
               </View>
             </View>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View style={{ flex: 1 }}>
+                <View style={styles.contentTitle}>
+                  <Text headline semibold>
+                    {'Height (cm)'}
+                  </Text>
+                </View>
+                <TextInput
+                  onChangeText={text => setHeight(text)}
+                  placeholder={'Input Height'}
+                  value={String(height)}
+                />
+              </View>
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <View style={styles.contentTitle}>
+                  <Text headline semibold>
+                    {'Weight (kg)'}
+                  </Text>
+                </View>
+                <TextInput
+                  onChangeText={text => setWeight(text)}
+                  placeholder={'Input Weight'}
+                  value={String(weight)}
+                />
+              </View>
+            </View>
+
+            <View>
+              <View style={styles.contentTitle}>
+                <Text headline semibold>
+                  {'Email'}
+                </Text>
+              </View>
+              <TextInput
+                onChangeText={text => setEmail(text)}
+                placeholder={'Input Email'}
+                value={email}
+              />
+            </View>           
+          </View>
+
+          
+
+         <View style={{ padding: 15 }}>
+            <View style={styles.cardContainer}>
+              <CollapsibleCard
+                title="Rate your ability to sustain physical activity for an extended period:"
+                value={physicalSustainability}
+                onValueChange={setPhysicalSustainability}
+              />
+            </View>
+
+
+            <View style={styles.cardContainer}>
+              <SliderCard
+                title="Rate your perceived upper body strength:"
+                value={upperBodyStrength}
+                onValueChange={setUpperBodyStrength}
+                collapsed={showUpperBodyStrength}
+                onToggle={() => setShowUpperBodyStrength(!showUpperBodyStrength)}
+              />
+            </View>
+
+
+            <View style={styles.cardContainer}> 
+              <LowerBodyCard
+                title="Rate your perceived lower body strength:"
+                value={lowerBodyStrength}
+                onValueChange={setLowerBodyStrength}
+              />
+            </View>
+
+            <View>
+              
+            
+              <View style={styles.cardContainer}>
+                <BSCard
+                  title="Balance and Stability:"
+                  value={balanceStability}
+                  onValueChange={setBalanceStability}
+                  selectorItems={[
+                    { label: 'Not Confident at All', value: 1 },
+                    { label: 'Somewhat Confident', value: 5 },
+                    { label: 'Very Confident', value: 10 },
+                  ]}
+                />
+              </View>
+
+
+              <View style={styles.cardContainer}>
+                <FlexibilityCard
+                  title="Flexibility:"
+                  value={flexibility}
+                  onValueChange={setFlexibility}
+                  selectorItems={[
+                    { label: 'Yes, easily', value: 10 },
+                    { label: 'Yes, but with some difficulty', value: 5 },
+                    { label: 'No, unable to reach toes', value: 1 },
+                  ]}
+                />
+              </View>
+                
+
+              <View style={styles.cardContainer}>
+                <OutdoorExperienceCard
+                  title="Outdoor Experience:"
+                  value={outdoorExperienceFrequency}
+                  onValueChange={setOutdoorExperienceFrequency}
+                  selectorItems={[
+                    { label: 'Rarely or never', value: 2 },
+                    { label: 'Occasionally (once a month or less)', value: 5 },
+                    { label: 'Regularly (a few times a month)', value: 8 },
+                    { label: 'Frequently (at least once a week)', value: 10 },
+                  ]}
+                />
+              </View>
+                
+              <View style={styles.cardContainer}>
+                <HikingComfortCard
+                  title="How comfortable are you with hiking on challenging terrains?"
+                  value={outdoorExperienceComfort}
+                  onValueChange={setOutdoorExperienceComfort}
+                  selectorItems={[
+                    { label: 'Not comfortable at all', value: 1 },
+                    { label: 'Somewhat comfortable', value: 5 },
+                    { label: 'Very comfortable', value: 10 },
+                  ]}
+                />
+              </View>
+
+
+              </View>
           </View>
 
           <View style={{ flex: 1 }}>
@@ -389,3 +412,35 @@ export default function Profile({navigation}) {
     </View>
   );
 }
+
+
+const pickerSelectStyles = StyleSheet.create({
+
+  container: {
+    padding: 100,
+  },
+  cardContainer: {
+    marginBottom: 20,
+  },
+
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30,
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30,
+  },
+});
