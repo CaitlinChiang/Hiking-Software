@@ -15,12 +15,30 @@ const icons = [
   require('./Logos/LowerBody/Excp.png'),
 ];
 
+const texts = [
+  'Very low strength',
+  'Low strength',
+  'Moderate strength',
+  'Above average strength',
+  'Exceptional strength',
+];
+
 const BSCard = ({ title, value, onValueChange, selectorItems }) => {
   const [collapsed, setCollapsed] = useState(true);
+  const [selectedIconIndex, setSelectedIconIndex] = useState(-1);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const handleIconPress = (index) => {
+    onValueChange(index + 1);
+    setSelectedIconIndex(index);
+  };
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity onPress={() => setCollapsed(!collapsed)} style={styles.cardHeader}>
+      <TouchableOpacity onPress={toggleCollapsed} style={styles.cardHeader}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image source={PlaceholderImage} style={{ width: 30, height: 30, marginRight: 10 }} />
           <Text headline semibold>
@@ -42,21 +60,19 @@ const BSCard = ({ title, value, onValueChange, selectorItems }) => {
               <IconSelector
                 images={icons}
                 selectedIconIndex={value - 1}
-                onIconPress={(index) => onValueChange(index + 1)}
+                onIconPress={handleIconPress}
               />
-              <View style={{ padding: 20 }}>
-                <Text>1 (Very low)</Text>
-                <Text>3 (Low)</Text>
-                <Text>5 (Moderate)</Text>
-                <Text>7 (Above average)</Text>
-                <Text>10 (Exceptional)</Text>
-              </View>
+              {selectedIconIndex >= 0 && (
+                <View style={styles.textContainer}>
+                  <Text style={styles.strengthText}>{texts[selectedIconIndex]}</Text>
+                </View>
+              )}
             </>
           )}
         </View>
       )}
-      <View style={styles.arrowContainer}>
-        <TouchableOpacity onPress={() => setCollapsed(!collapsed)}>
+      <View style={[styles.arrowContainer, collapsed ? styles.rightMiddleArrow : styles.bottomCenterArrow]}>
+        <TouchableOpacity onPress={toggleCollapsed}>
           <MaterialIcons
             name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
             size={24}
@@ -110,6 +126,31 @@ const styles = StyleSheet.create({
     left: '50%',
     transform: [{ translateX: -12 }],
   },
+  rightMiddleArrow: {
+    bottom: '25%',
+    left: '81%',
+    transform: [{ translateY: -12 }],
+  },
+  bottomCenterArrow: {
+    bottom: "0.02%",
+    left: '47%',
+    transform: [{ translateY: -12 }],
+  },
+  textContainer: {
+    backgroundColor: '#E9B384',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: "12%",
+    maxWidth: '80%', 
+    alignSelf: 'center',
+  },
+  strengthText: {
+    fontSize: 12,
+    padding: 10,
+    textAlign: 'center',
+  },
+
 });
 
 export default BSCard;

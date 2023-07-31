@@ -13,7 +13,23 @@ const icons = [
   require('./Logos/UpperBody/VStrong.png'),
 ];
 
+// To printout
+const getStrengthText = (value) => {
+  // console.log('Received value:', value);
+
+  const strengthTexts = [
+    'Very weak',
+    'Low strength',
+    'Average strength',
+    'Above average strength',
+    'Very strong',
+  ];
+  return strengthTexts[value - 1];
+};
+
 const SliderCard = ({ title, value, onValueChange, collapsed, onToggle }) => {
+  const isValueSelected = value > 0;
+
   return (
     <View style={styles.card}>
       <TouchableOpacity onPress={onToggle} style={styles.cardHeader}>
@@ -24,24 +40,25 @@ const SliderCard = ({ title, value, onValueChange, collapsed, onToggle }) => {
           </Text>
         </View>
       </TouchableOpacity>
-      {collapsed ? null : (
+      {!collapsed && (
         <View style={styles.cardContent}>
-          {/* Use the IconSelector component here */}
           <IconSelector
             images={icons}
             selectedIconIndex={value - 1}
             onIconPress={(index) => onValueChange(index + 1)}
           />
-          <View style={{ padding: 20 }}>
-            <Text>1 (Very weak)</Text>
-            <Text>3 (Low strength)</Text>
-            <Text>5 (Average strength)</Text>
-            <Text>7 (Above average strength)</Text>
-            <Text>10 (Very strong)</Text>
-          </View>
+          {isValueSelected && ( // Show the text only if a value is selected
+            <View style={styles.legendContainer}>
+              <View style={styles.legendItem}>
+                <Text style={styles.legendText}>
+                  {getStrengthText(value)}
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       )}
-      <TouchableOpacity onPress={onToggle} style={styles.arrowContainer}>
+      <TouchableOpacity onPress={onToggle} style={[styles.arrowContainer, collapsed ? styles.middleRightArrow : styles.bottomCenterArrow]}>
         <MaterialIcons
           name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
           size={24}
@@ -51,6 +68,7 @@ const SliderCard = ({ title, value, onValueChange, collapsed, onToggle }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   card: {
@@ -69,10 +87,38 @@ const styles = StyleSheet.create({
   },
   arrowContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
     bottom: 10,
-    left: '50%',
+    right: 10,
     transform: [{ translateX: -12 }],
+  },
+  middleRightArrow: {
+    bottom: '25%',
+    right:"10%",
+    transform: [{ translateY: -12 }],
+  },
+  bottomCenterArrow: {
+    bottom: 10,
+    right: "42%",
+  },
+  legendContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  legendItem: {
+    backgroundColor: '#E9B384',
+    borderRadius: 20,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    marginBottom: 40,
+  },
+  legendText: {
+    fontSize: 12,
+    padding: 10,
+    textAlign: 'center',
+
   },
 });
 

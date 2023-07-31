@@ -78,7 +78,11 @@ const CollapsibleCard = ({ title, value, onValueChange, selectorItems }) => {
         ]}
       >
         <TouchableOpacity onPress={toggleCollapsed}>
-          <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
+          <MaterialIcons
+            name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+            size={24}
+            color="black"
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -154,7 +158,7 @@ const styles = StyleSheet.create({
   },
   rightMiddleArrow: {
     top: '30%',
-    left: '80%',
+    left: '83%',
     transform: [{ translateY: -12 }],
   },
   bottomCenterArrow: {
@@ -170,7 +174,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    marginBottom: "10%",
+    marginBottom: "12%",
 
   },
   legendText: {
