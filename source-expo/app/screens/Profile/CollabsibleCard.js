@@ -1,23 +1,43 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Text from '@components/Text';
-import Slider from '@react-native-community/slider';
-import RNPickerSelect from 'react-native-picker-select';
 import StaminaLogoPng from './Logos/running.png';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import IconSelector from './IconSelector';
+
+const icons = [
+  require('./Logos/Stamina/VlowEnd.png'),
+  require('./Logos/Stamina/LowEnd.png'),
+  require('./Logos/Stamina/ModEnd.png'),
+  require('./Logos/Stamina/AbvAvgEnd.png'),
+  require('./Logos/Stamina/ExcpEnd.png'),
+];
+
+const texts = [
+  'Very low endurance',
+  'Low endurance',
+  'Moderate endurance',
+  'Above average endurance',
+  'Exceptional endurance',
+];
 
 const CollapsibleCard = ({ title, value, onValueChange, selectorItems }) => {
   const [collapsed, setCollapsed] = useState(true);
+  const [selectedIconIndex, setSelectedIconIndex] = useState(-1);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
 
   return (
     <View style={styles.cardContainer}>
-      <TouchableOpacity
-        onPress={() => setCollapsed(!collapsed)}
-        style={styles.cardHeader}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <TouchableOpacity onPress={() => setCollapsed(!collapsed)} style={styles.cardHeader}>
+        <View style={styles.titleContainer}>
           <Image source={StaminaLogoPng} style={{ width: 30, height: 30, marginRight: 10 }} />
           <Text headline semibold>
-            {collapsed ? title : "Rate your ability to sustain physical activity for an extended period"}
+            {collapsed
+              ? title
+              : 'Rate your ability to sustain physical activity for an extended period'}
           </Text>
         </View>
       </TouchableOpacity>
@@ -32,47 +52,45 @@ const CollapsibleCard = ({ title, value, onValueChange, selectorItems }) => {
             />
           ) : (
             <>
-              <Text style={{ textAlign: 'center' }} headline semibold>
-                {value}
-              </Text>
-              <Slider
-                style={{ marginRight: 50, marginLeft: 50 }}
-                minimumValue={1}
-                maximumValue={10}
-                step={1}
-                minimumTrackTintColor="blue"
-                maximumTrackTintColor="grey"
-                value={value}
-                onValueChange={onValueChange}
+              <IconSelector
+                images={icons}
+                selectedIconIndex={value - 1}
+                onIconPress={(index) => {
+                  onValueChange(index + 1);
+                  setSelectedIconIndex(index);
+                }}
               />
-              <View style={{ padding: 20 }}>
-                <Text>1 (Very low endurance)</Text>
-                <Text>3 (Low endurance)</Text>
-                <Text>5 (Moderate endurance)</Text>
-                <Text>7 (Above average endurance)</Text>
-                <Text>10 (Exceptional endurance)</Text>
+              <View style={styles.legendContainer}>
+                {selectedIconIndex >= 0 && (
+                  <View style={styles.legendItem}>
+                    <Text style={styles.legendText}>{texts[selectedIconIndex]}</Text>
+                  </View>
+                )}
               </View>
             </>
           )}
         </View>
       )}
+      <View
+        style={[
+          styles.arrowContainer,
+          collapsed ? styles.rightMiddleArrow : styles.bottomCenterArrow,
+        ]}
+      >
+        <TouchableOpacity onPress={toggleCollapsed}>
+          <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginBottom: 10,
+    marginBottom: 0,
     backgroundColor: '#FFF5E4',
     borderRadius: 20,
-    // shadowColor: '#020',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 4,
-    // elevation: 5,
+    position: 'relative',
   },
   cardHeader: {
     padding: 40,
@@ -101,6 +119,64 @@ const styles = StyleSheet.create({
       color: 'black',
       paddingRight: 30,
     },
+  },
+  iconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  icon: {
+    backgroundColor: 'transparent',
+    borderRadius: 50,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: '#FFF5E4',
+  },
+  selectedIcon: {
+    borderColor: '#FF8551',
+  },
+  iconImage: {
+    width: 30,
+    height: 30,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  arrowContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 5,
+    left: '50%',
+    transform: [{ translateX: -12 }],
+  },
+  rightMiddleArrow: {
+    top: '30%',
+    left: '80%',
+    transform: [{ translateY: -12 }],
+  },
+  bottomCenterArrow: {
+    bottom: 5,
+  },
+  legendContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  legendItem: {
+    backgroundColor: '#E9B384',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: "10%",
+
+  },
+  legendText: {
+    fontSize: 12,
+    padding: 10,
+    textAlign: 'center',
   },
 });
 

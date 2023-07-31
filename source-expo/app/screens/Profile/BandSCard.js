@@ -2,60 +2,90 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Text from '@components/Text';
 import Slider from '@react-native-community/slider';
-import RNPickerSelect from 'react-native-picker-select';
-import PlaceholderImage from './Logos/balance.png'; // Replace with the actual image path
+import PlaceholderImage from './Logos/balance.png'; 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const BSCard = ({ title, value, onValueChange, selectorItems }) => {
+const BSCard = ({ title, value, onValueChange }) => {
   const [collapsed, setCollapsed] = useState(true);
+  const [selectedValue, setSelectedValue] = useState(value);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const handleButtonPress = (newValue) => {
+    setSelectedValue(newValue);
+    onValueChange(newValue);
+  };
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity
-        onPress={() => setCollapsed(!collapsed)}
-        style={styles.cardHeader}
-      >
+      <TouchableOpacity onPress={toggleCollapsed} style={styles.cardHeader}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image source={PlaceholderImage} style={{ width: 30, height: 30, marginRight: 10 }} />
           <Text headline semibold>
-            {collapsed ? title : "Rate your perceived balance & stability"}
+            {title}
           </Text>
         </View>
       </TouchableOpacity>
       {!collapsed && (
         <View style={styles.cardContent}>
-          {selectorItems ? (
-            <RNPickerSelect
-              onValueChange={(val) => onValueChange(val)}
-              items={selectorItems}
-              style={styles.pickerSelect}
-              value={value}
-            />
-          ) : (
-            <>
-              <Text style={{ textAlign: 'center' }} headline semibold>
-                {value}
-              </Text>
-              <Slider
-                style={{ marginRight: 50, marginLeft: 50 }}
-                minimumValue={1}
-                maximumValue={10}
-                step={1}
-                minimumTrackTintColor="blue"
-                maximumTrackTintColor="grey"
-                value={value}
-                onValueChange={onValueChange}
-              />
-              <View style={{ padding: 20 }}>
-                <Text>1 (Very low)</Text>
-                <Text>3 (Low)</Text>
-                <Text>5 (Moderate)</Text>
-                <Text>7 (Above average)</Text>
-                <Text>10 (Exceptional)</Text>
-              </View>
-            </>
-          )}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedValue === 1 && styles.selectedButton,
+              ]}
+              onPress={() => handleButtonPress(1)}
+            >
+              <Text style={styles.buttonText}>Very low</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedValue === 3 && styles.selectedButton,
+              ]}
+              onPress={() => handleButtonPress(3)}
+            >
+              <Text style={styles.buttonText}>Low</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedValue === 5 && styles.selectedButton,
+              ]}
+              onPress={() => handleButtonPress(5)}
+            >
+              <Text style={styles.buttonText}>Moderate</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedValue === 7 && styles.selectedButton,
+              ]}
+              onPress={() => handleButtonPress(7)}
+            >
+              <Text style={styles.buttonText}>Above average</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedValue === 10 && styles.selectedButton,
+              ]}
+              onPress={() => handleButtonPress(10)}
+            >
+              <Text style={styles.buttonText}>Exceptional</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
+      <TouchableOpacity onPress={toggleCollapsed} style={styles.arrowContainer}>
+        <MaterialIcons
+          name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+          size={24}
+          color="black"
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -67,33 +97,42 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 40,
+  },
+  arrowContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 10,
+    left: '50%',
+    transform: [{ translateX: -12 }],
   },
   cardContent: {
     padding: 25,
+    alignItems: 'center',
   },
-  pickerSelect: {
-    inputIOS: {
-      fontSize: 16,
-      paddingVertical: 12,
-      paddingHorizontal: 10,
-      borderWidth: 1,
-      borderColor: 'gray',
-      borderRadius: 4,
-      color: 'black',
-      paddingRight: 30,
-    },
-    inputAndroid: {
-      fontSize: 16,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderWidth: 0.5,
-      borderColor: 'purple',
-      borderRadius: 8,
-      color: 'black',
-      paddingRight: 30,
-    },
+  buttonContainer: {
+    width: '100%',
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
+  button: {
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'gray',
+    marginBottom: 10,
+  },
+  selectedButton: {
+    backgroundColor: '#DFA67B',
+  },
+  buttonText: {
+    textAlign: 'center',
+  },
+  intextContent:{
+  }
 });
 
 export default BSCard;

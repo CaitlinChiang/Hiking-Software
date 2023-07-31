@@ -1,8 +1,17 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Text from '@components/Text';
-import Slider from '@react-native-community/slider';
 import UpperBodyLogoPng from './Logos/upperBody.png';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import IconSelector from './IconSelector';
+
+const icons = [
+  require('./Logos/UpperBody/VWeak.png'),
+  require('./Logos/UpperBody/LowStg.png'),
+  require('./Logos/UpperBody/AbvAvg.png'),
+  require('./Logos/UpperBody/AvgStg.png'),
+  require('./Logos/UpperBody/VStrong.png'),
+];
 
 const SliderCard = ({ title, value, onValueChange, collapsed, onToggle }) => {
   return (
@@ -17,18 +26,11 @@ const SliderCard = ({ title, value, onValueChange, collapsed, onToggle }) => {
       </TouchableOpacity>
       {collapsed ? null : (
         <View style={styles.cardContent}>
-          <Text style={{ textAlign: 'center' }} headline semibold>
-            {value}
-          </Text>
-          <Slider
-            style={{ marginRight: 50, marginLeft: 50 }}
-            minimumValue={1}
-            maximumValue={10}
-            step={1}
-            minimumTrackTintColor="blue"
-            maximumTrackTintColor="grey"
-            value={value}
-            onValueChange={onValueChange}
+          {/* Use the IconSelector component here */}
+          <IconSelector
+            images={icons}
+            selectedIconIndex={value - 1}
+            onIconPress={(index) => onValueChange(index + 1)}
           />
           <View style={{ padding: 20 }}>
             <Text>1 (Very weak)</Text>
@@ -39,6 +41,13 @@ const SliderCard = ({ title, value, onValueChange, collapsed, onToggle }) => {
           </View>
         </View>
       )}
+      <TouchableOpacity onPress={onToggle} style={styles.arrowContainer}>
+        <MaterialIcons
+          name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+          size={24}
+          color="black"
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -50,10 +59,20 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 40,
   },
   cardContent: {
     padding: 25,
+  },
+  arrowContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 10,
+    left: '50%',
+    transform: [{ translateX: -12 }],
   },
 });
 

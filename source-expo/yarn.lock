@@ -3769,6 +3769,11 @@ d3-array@^3.1.6, "d3-array@2 - 3", "d3-array@2.10.0 - 3":
   resolved "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz"
   integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
 
+d3-color@1:
+  version "1.4.1"
+  resolved "https://registry.npmjs.org/d3-color/-/d3-color-1.4.1.tgz"
+  integrity sha512-p2sTHSLCJI2QKunbGb7ocOh7DgTAn8IrLx21QRc/BSnodXM4sv6aLQlnfpvehFMLZEfBc6g9pH9SWQccFYfJ9Q==
+
 d3-ease@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/d3-ease/-/d3-ease-3.0.1.tgz"
@@ -3778,6 +3783,13 @@ d3-ease@^3.0.1:
   version "3.1.0"
   resolved "https://registry.npmjs.org/d3-format/-/d3-format-3.1.0.tgz"
   integrity sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==
+
+d3-interpolate@^1.1.2:
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-1.4.0.tgz"
+  integrity sha512-V9znK0zc3jOPV4VD2zZn0sDhZU3WAE2bmlxdIwwQPPzPjvyLkd8B3JUVdS1IDUFDkWZ72c9qnv1GK2ZagTZ8EA==
+  dependencies:
+    d3-color "1"
 
 d3-interpolate@^3.0.1, "d3-interpolate@1.2.0 - 3":
   version "3.0.1"
@@ -5641,6 +5653,11 @@ lodash.isequal@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz"
   integrity sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==
 
+lodash.range@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/lodash.range/-/lodash.range-3.2.0.tgz"
+  integrity sha512-Fgkb7SinmuzqgIhNhAElo0BL/R1rHCnhwSZf78omqSwvWqD0kD2ssOAutQonDKH/ldS8BxA72ORYI09qAY9CYg==
+
 lodash.throttle@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz"
@@ -7478,6 +7495,15 @@ react-native-charts-wrapper@^0.5.11:
     prop-types "^15.8.1"
     react "16.13.1"
 
+react-native-circular-slider@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/react-native-circular-slider/-/react-native-circular-slider-1.0.1.tgz"
+  integrity sha512-wBYjkiRXb7prT1hdbJzMa7h36xxfkKcO+qGh780OQNSNgwFPExwE3S1/u8qBivhIt/yOsirqA/FdykoEHVJ+hg==
+  dependencies:
+    d3-interpolate "^1.1.2"
+    lodash.range "^3.2.0"
+    react-native-svg ">=4.3.3"
+
 react-native-codegen@^0.71.5:
   version "0.71.5"
   resolved "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.71.5.tgz"
@@ -7607,7 +7633,7 @@ react-native-speedometer@^1.0.5:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-svg@^13.4.0:
+react-native-svg@^13.4.0, react-native-svg@>=4.3.3:
   version "13.4.0"
   resolved "https://registry.npmjs.org/react-native-svg/-/react-native-svg-13.4.0.tgz"
   integrity sha512-B3TwK+H0+JuRhYPzF21AgqMt4fjhCwDZ9QUtwNstT5XcslJBXC0FoTkdZo8IEb1Sv4suSqhZwlAY6lwOv3tHag==

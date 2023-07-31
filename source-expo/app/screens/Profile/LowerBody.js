@@ -2,48 +2,68 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Text from '@components/Text';
 import Slider from '@react-native-community/slider';
-import UpperBodyLogoPng from './Logos/lowerBody.png'; // Import the image
+import RNPickerSelect from 'react-native-picker-select';
+import PlaceholderImage from './Logos/lowerBody.png';
+import IconSelector from './IconSelector'; 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const LowerBodyCard = ({ title, value, onValueChange }) => {
+const icons = [
+  require('./Logos/LowerBody/Vlow.png'),
+  require('./Logos/LowerBody/Low.png'),
+  require('./Logos/LowerBody/Moderate.png'),
+  require('./Logos/LowerBody/AbvAvg.png'),
+  require('./Logos/LowerBody/Excp.png'),
+];
+
+const BSCard = ({ title, value, onValueChange, selectorItems }) => {
   const [collapsed, setCollapsed] = useState(true);
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity
-        onPress={() => setCollapsed(!collapsed)}
-        style={styles.cardHeader}
-      >
+      <TouchableOpacity onPress={() => setCollapsed(!collapsed)} style={styles.cardHeader}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Image source={UpperBodyLogoPng} style={{ width: 30, height: 30, marginRight: 10 }} />
+          <Image source={PlaceholderImage} style={{ width: 30, height: 30, marginRight: 10 }} />
           <Text headline semibold>
-          {collapsed ? title : "Rate your perceived lower body strength"}
+            {collapsed ? title : "Rate your perceived lower body strength"}
           </Text>
         </View>
       </TouchableOpacity>
       {!collapsed && (
         <View style={styles.cardContent}>
-          <Text style={{ textAlign: 'center' }} headline semibold>
-            {value}
-          </Text>
-          <Slider
-            style={{ marginRight: 50, marginLeft: 50 }}
-            minimumValue={1}
-            maximumValue={10}
-            step={1}
-            minimumTrackTintColor="blue"
-            maximumTrackTintColor="grey"
-            value={value}
-            onValueChange={onValueChange}
-          />
-          <View style={{ padding: 20 }}>
-            <Text>1 (Very weak)</Text>
-            <Text>3 (Low strength)</Text>
-            <Text>5 (Average strength)</Text>
-            <Text>7 (Above average strength)</Text>
-            <Text>10 (Very strong)</Text>
-          </View>
+          {selectorItems ? (
+            <RNPickerSelect
+              onValueChange={(val) => onValueChange(val)}
+              items={selectorItems}
+              style={styles.pickerSelect}
+              value={value}
+            />
+          ) : (
+            <>
+              <IconSelector
+                images={icons}
+                selectedIconIndex={value - 1}
+                onIconPress={(index) => onValueChange(index + 1)}
+              />
+              <View style={{ padding: 20 }}>
+                <Text>1 (Very low)</Text>
+                <Text>3 (Low)</Text>
+                <Text>5 (Moderate)</Text>
+                <Text>7 (Above average)</Text>
+                <Text>10 (Exceptional)</Text>
+              </View>
+            </>
+          )}
         </View>
       )}
+      <View style={styles.arrowContainer}>
+        <TouchableOpacity onPress={() => setCollapsed(!collapsed)}>
+          <MaterialIcons
+            name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -60,6 +80,36 @@ const styles = StyleSheet.create({
   cardContent: {
     padding: 25,
   },
+  pickerSelect: {
+    inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 4,
+      color: 'black',
+      paddingRight: 30,
+    },
+    inputAndroid: {
+      fontSize: 16,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 0.5,
+      borderColor: 'purple',
+      borderRadius: 8,
+      color: 'black',
+      paddingRight: 30,
+    },
+  },
+  arrowContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 10,
+    left: '50%',
+    transform: [{ translateX: -12 }],
+  },
 });
 
-export default LowerBodyCard;
+export default BSCard;
