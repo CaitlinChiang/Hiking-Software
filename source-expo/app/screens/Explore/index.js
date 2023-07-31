@@ -85,13 +85,13 @@ export default function Home({navigation}) {
                 style={[
                   styles.iconContent,
                   {
-                    backgroundColor: isSelected ? colors.primary : colors.card,
-                    borderColor: isSelected ? colors.primary : colors.background,
+                    backgroundColor: isSelected ? '#ce8c6c' : colors.card,
+                    borderColor: isSelected ? '#ce8c6c' : colors.background,
                     borderWidth: isSelected ? 2 : 1,
                   }
                 ]}
               >
-                <Icon name={item.icon} size={18} color={isSelected ? colors.background : colors.primary} solid />
+                <Icon name={item.icon} size={18} color={isSelected ? colors.background : 'grey'} solid />
               </View>
               <Text footnote grayColor numberOfLines={1}>
                 {t(item.name)}
