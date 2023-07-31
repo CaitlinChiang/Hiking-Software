@@ -46,7 +46,7 @@ const MeterComponent = ({ totalScore }) => {
           },
         ]}
         labelStyle={{
-          fontSize: 30,
+          fontSize: 0,
         }}
       />
       <View style={{ marginTop: 50, paddingHorizontal: 20 }} />

@@ -17,9 +17,6 @@ import OutdoorExperienceCard from './OutdoorExperienceCard';
 import HikingComfortCard from './HikingComfortCard';
 
 
-
-
-
 import {
   SafeAreaView,
   Text,
@@ -49,22 +46,8 @@ const db = firebase.firestore();
 
 export default function Profile({navigation}) {
   // for collabsable
-  const [showPhysicalSustainability, setShowPhysicalSustainability] = useState(false);
-  const [showUpperBodyStrength, setShowUpperBodyStrength] = useState(false);
-
-
-
-  const [loading, setLoading] = useState(false);
-
-  const [totalScore, setTotalScore] = useState(0);
-  
-  const [naming, setNaming] = useState('');
-  const [email, setEmail] = useState('');
-  const [gender, setGender] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
-  
+  const [showPhysicalSustainability, setShowPhysicalSustainability] = useState(true);
+  const [showUpperBodyStrength, setShowUpperBodyStrength] = useState(true);
   const [physicalSustainability, setPhysicalSustainability] = useState(1);
   const [upperBodyStrength, setUpperBodyStrength] = useState(1);
   const [lowerBodyStrength, setLowerBodyStrength] = useState(1);
@@ -73,60 +56,96 @@ export default function Profile({navigation}) {
   const [outdoorExperienceFrequency, setOutdoorExperienceFrequency] = useState(1);
   const [outdoorExperienceComfort, setOutdoorExperienceComfort] = useState(1);
 
+  const [loading, setLoading] = useState(false);
+  const [totalScore, setTotalScore] = useState(0);
+  const [naming, setNaming] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  
+
+
+  // useEffect(() => {
+  //   const fetchUserProfile = async () => {
+  //     try {
+  //       const userId = 'pIRDa83OOxomB7Gr6czm';
+  //       const userDocRef = doc(db, 'users', userId);
+  //       const userDocSnapshot = await getDoc(userDocRef);
+  
+  //       if (userDocSnapshot.exists()) {
+  //         const userRecord = userDocSnapshot.get('userProfile') || [];
+  //         const existingUserRecord = userRecord[0];
+          
+  //         setNaming(existingUserRecord?.naming);
+  //         setEmail(existingUserRecord?.email);
+  //         setGender(existingUserRecord?.gender);
+  //         setBirthday(existingUserRecord?.birthday);
+  //         setHeight(Number(existingUserRecord?.height));
+  //         setWeight(Number(existingUserRecord?.weight));
+  //       } else {
+  //         console.log('Document does not exist');
+  //       }
+  //     } catch (error) {
+  //       console.log('Error fetching physical activities data', error);
+  //     }
+  //   };
+
+  //   const fetchPhysicalActivities = async () => {
+  //     try {
+  //       const userId = 'xIAJtDxUUahHf2kgMjPf';
+  //       const userDocRef = doc(db, 'users', userId);
+  //       const userDocSnapshot = await getDoc(userDocRef);
+  
+  //       if (userDocSnapshot.exists()) {
+  //         const physicalRecord = userDocSnapshot.get('physicalActivities') || [];
+  //         const existingPhysicalRecord = physicalRecord[0]
+          
+  //         setPhysicalSustainability(existingPhysicalRecord?.physicalSustainability);
+  //         setUpperBodyStrength(existingPhysicalRecord?.upperBodyStrength);
+  //         setLowerBodyStrength(existingPhysicalRecord?.lowerBodyStrength);
+  //         setBalanceStability(existingPhysicalRecord?.balanceStability);
+  //         setFlexibility(existingPhysicalRecord?.flexibility);
+  //         setOutdoorExperienceFrequency(existingPhysicalRecord?.outdoorExperienceFrequency);
+  //         setOutdoorExperienceComfort(existingPhysicalRecord?.outdoorExperienceComfort);
+  //       } else {
+  //         console.log('Document does not exist');
+  //       }
+  //     } catch (error) {
+  //       console.log('Error fetching physical activities data', error);
+  //     }
+  //   };
+  
+  //   fetchUserProfile();
+  //   fetchPhysicalActivities();
+  // }, []);
+
+//in place of db
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const userId = 'pIRDa83OOxomB7Gr6czm';
-        const userDocRef = doc(db, 'users', userId);
-        const userDocSnapshot = await getDoc(userDocRef);
-  
-        if (userDocSnapshot.exists()) {
-          const userRecord = userDocSnapshot.get('userProfile') || [];
-          const existingUserRecord = userRecord[0];
-          
-          setNaming(existingUserRecord?.naming);
-          setEmail(existingUserRecord?.email);
-          setGender(existingUserRecord?.gender);
-          setBirthday(existingUserRecord?.birthday);
-          setHeight(Number(existingUserRecord?.height));
-          setWeight(Number(existingUserRecord?.weight));
-        } else {
-          console.log('Document does not exist');
-        }
-      } catch (error) {
-        console.log('Error fetching physical activities data', error);
-      }
+    const calculateTotalScore = () => {
+      const total =
+        physicalSustainability +
+        upperBodyStrength +
+        lowerBodyStrength +
+        balanceStability +
+        flexibility +
+        outdoorExperienceFrequency +
+        outdoorExperienceComfort;
+      setTotalScore(total);
     };
 
-    const fetchPhysicalActivities = async () => {
-      try {
-        const userId = 'xIAJtDxUUahHf2kgMjPf';
-        const userDocRef = doc(db, 'users', userId);
-        const userDocSnapshot = await getDoc(userDocRef);
+    calculateTotalScore();
+  }, [
+    physicalSustainability,
+    upperBodyStrength,
+    lowerBodyStrength,
+    balanceStability,
+    flexibility,
+    outdoorExperienceFrequency,
+    outdoorExperienceComfort,
+  ]);
   
-        if (userDocSnapshot.exists()) {
-          const physicalRecord = userDocSnapshot.get('physicalActivities') || [];
-          const existingPhysicalRecord = physicalRecord[0]
-          
-          setPhysicalSustainability(existingPhysicalRecord?.physicalSustainability);
-          setUpperBodyStrength(existingPhysicalRecord?.upperBodyStrength);
-          setLowerBodyStrength(existingPhysicalRecord?.lowerBodyStrength);
-          setBalanceStability(existingPhysicalRecord?.balanceStability);
-          setFlexibility(existingPhysicalRecord?.flexibility);
-          setOutdoorExperienceFrequency(existingPhysicalRecord?.outdoorExperienceFrequency);
-          setOutdoorExperienceComfort(existingPhysicalRecord?.outdoorExperienceComfort);
-        } else {
-          console.log('Document does not exist');
-        }
-      } catch (error) {
-        console.log('Error fetching physical activities data', error);
-      }
-    };
-  
-    fetchUserProfile();
-    fetchPhysicalActivities();
-  }, []);
-
   useEffect(() => {
     total = physicalSustainability + upperBodyStrength + lowerBodyStrength + balanceStability + flexibility + outdoorExperienceFrequency + outdoorExperienceComfort;
     setTotalScore(total)
@@ -198,6 +217,22 @@ export default function Profile({navigation}) {
   
   const dispatch = useDispatch();
 
+  // for the profile section
+  const profileInfoHeadingStyle = {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+    color: 'black', 
+  };
+
+  const profileInfoContainerStyle = {
+    backgroundColor: '#B5D5C5',
+    borderRadius: 20,
+    padding: 5,
+    marginBottom: 20,
+  };
+
   onLogOut = () => {
     setLoading(true);
     dispatch(AuthActions.authentication(false, response => {}));
@@ -213,6 +248,10 @@ export default function Profile({navigation}) {
         <View style={styles.contain}>
             <MeterComponent totalScore={totalScore} />
 
+          {/* Profile Info Section */}
+          <View style={profileInfoContainerStyle}>  
+          <View style={ProfileStyles.profileInfoContainer}>
+          <Text style={profileInfoHeadingStyle}>Profile Information</Text>
             <View>
               <View style={styles.contentTitle}>
                 <Text headline semibold>
@@ -297,7 +336,9 @@ export default function Profile({navigation}) {
                 placeholder={'Input Email'}
                 value={email}
               />
-            </View>           
+              </View>           
+            </View>
+          </View>
           </View>
 
           
@@ -305,9 +346,11 @@ export default function Profile({navigation}) {
          <View style={{ padding: 15 }}>
             <View style={styles.cardContainer}>
               <CollapsibleCard
-                title="Rate your ability to sustain physical activity for an extended period:"
+                title="Stamina"
                 value={physicalSustainability}
                 onValueChange={setPhysicalSustainability}
+                collapsed={showPhysicalSustainability}
+                onToggle={() => setShowPhysicalSustainability(!showPhysicalSustainability)}
               />
             </View>
 
@@ -442,5 +485,44 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 8,
     color: 'black',
     paddingRight: 30,
+  },
+
+});
+
+
+
+
+
+
+const ProfileStyles = StyleSheet.create({
+  profileInfoContainer: {
+    backgroundColor: '#B5D5C5',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+  },
+  profileInfoHeading: {
+    marginBottom: 10,
+  },
+  profileInfoContent: {
+    size: 10,
+  },
+  inputRowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+  },
+  inputContainer: {
+    flex: 1,
+  },
+  input: {
+    fontSize: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    marginTop: 5,
   },
 });
