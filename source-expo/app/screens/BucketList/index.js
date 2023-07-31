@@ -22,6 +22,7 @@ const firebaseConfig = {
 
 export default function BucketList({ navigation }) {
   const [hikingTrails, setHikingTrails] = useState([]);
+  const [upcomingTrails, setUpcomingTrails] = useState([]);
 
   useEffect(() => {
     const fetchHikingTrails = async () => {
@@ -33,6 +34,7 @@ export default function BucketList({ navigation }) {
         
         if (userDocSnapshot.exists()) {
           const bucketList = userDocSnapshot.get('bucketlist') || [];
+          const upcomingList = userDocSnapshot.get('upcoming') || [];
 
           if (bucketList.length === 0) {
             setHikingTrails([]); // Clear the hiking trails state if the bucket list is empty
@@ -40,8 +42,18 @@ export default function BucketList({ navigation }) {
             const hikingTrails = HikingTrailsData.filter((trail) => {
               return bucketList.some((item) => item.name === trail.name);
             });
-            console.log('Filtered Hiking Trails:', hikingTrails);
             setHikingTrails(hikingTrails);
+          }
+
+          if (upcomingList.length === 0) {
+            setUpcomingTrails([]); // Clear the upcoming trails state if the upcoming list is empty
+          } else {
+            console.log('Upcoming List:', upcomingList)
+            const upcomingTrails = HikingTrailsData.filter((trail) => {
+              return upcomingList.some((item) => item.mountainName === trail.name);
+            });
+            console.log('Filtered Upcoming Trails:', upcomingTrails);
+            setUpcomingTrails(upcomingTrails);
           }
         } else {
           console.log('User document does not exist'); // Wrote these statements to check my errors because I could not figure out why I didnt receive data from firebase.
@@ -64,6 +76,40 @@ export default function BucketList({ navigation }) {
         <ScrollView scrollEventThrottle={8}>
           <Header title="Bucket List" />
           <View style={styles.container}>
+            <Text style={{ fontSize: 18 }}>Upcoming Hikes</Text>
+            {upcomingTrails.length === 0 ? (
+              <View style={styles.emptyContainer1}>
+                <Icon name="inbox" size={50} color="#ccc" />
+                <Text>You do not have any upcoming hikes.</Text>
+              </View>
+            ) : (
+              upcomingTrails.map((trail, index) => (
+                <BucketListItem
+                  key={index}
+                  name={trail.name}
+                  location={trail.location}
+                  summitHeight={trail.summitHeight}
+                  duration={trail.duration}
+                  ydsGrading={trail.ydsGrading}
+                  ydsClass={trail.ydsClass}
+                  style={{ marginTop: 10, width: '100%' }}
+                  image={trail.imageSrc}
+                  onPress={() => {
+                    navigation.navigate('HikingTrailDetail', {
+                      name: trail.name,
+                      location: trail.location,
+                      duration: trail.duration,
+                      summitHeight: trail.summitHeight,
+                      imageSrc: trail.imageSrc,
+                    });
+                  }}
+                />
+              ))
+            )}
+          </View>
+          
+          <View style={styles.container}>
+            <Text style={{ fontSize: 18 }}>Bucket List</Text>
             {hikingTrails.length === 0 ? (
               <View style={styles.emptyContainer}>
                 <Icon name="inbox" size={50} color="#ccc" />
@@ -111,6 +157,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 270,
+  },
+  emptyContainer1: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+    marginBottom: 20
   },
   emptyText: {
     marginTop: 10,

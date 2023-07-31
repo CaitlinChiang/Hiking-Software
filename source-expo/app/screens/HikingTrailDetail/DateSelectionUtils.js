@@ -17,9 +17,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const handleDateSelection = async (startDate, endDate) => {
+const handleDateSelection = async (startDate, endDate, name) => {
   console.log('Start Date:', startDate);
   console.log('End Date:', endDate);
+  console.log('Name:', name)
 
   const userId = 'jxihUCNoi0396wkQR2gx'; // Replace with the actual user ID
   const savedDocRef = doc(db, 'users', userId);
@@ -27,15 +28,16 @@ const handleDateSelection = async (startDate, endDate) => {
 
   if (savedDocSnapshot.exists()) {
     const savedDoc = savedDocSnapshot.data()|| {};
-    const updatedDates = { ...savedDoc.dates, startDate, endDate };
+    const upcomingList = savedDoc.upcoming || [];
+    const currentTraining = savedDocSnapshot.get('dates') || {};
 
-    updateDoc(savedDocRef, {
-      dates: updatedDates
-    }).then(() => {
-      console.log('Start Date and End Date stored in Firebase:', startDate, endDate);
-    }).catch((error) => {
-      console.log('Error storing Start Date and End Date in Firebase:', error);
-    });
+    if (currentTraining?.startDate === '' && currentTraining?.endDate === '') {
+      const updatedDates = { ...savedDoc.dates, startDate, endDate, mountainName: name };
+      updateDoc(savedDocRef, { dates: updatedDates })
+    } else {
+      const updatedDates = { startDate, endDate, mountainName: name };
+      updateDoc(savedDocRef, { upcoming: [...upcomingList, updatedDates] })
+    }
   } else {
     console.log('User document does not exist');
   }

@@ -65,23 +65,58 @@ export default function Booking({navigation}) {
       const bucketListRef = doc(db, 'users', userId);
   
       await updateDoc(bucketListRef, {
-        historyList: arrayUnion({ name: mountain?.mountainName})
+        historyList: arrayUnion({ name: mountain?.mountainName })
       });
-
+  
       const savedDocSnapshot = await getDoc(bucketListRef);
-
+  
       if (savedDocSnapshot.exists()) {
-        const savedDoc = savedDocSnapshot.data()|| {};
-        const updatedDates = { ...savedDoc.dates, startDate: '', endDate: '', mountainName: '-' };
-
-        updateDoc(bucketListRef, { dates: updatedDates })
+        const savedDoc = savedDocSnapshot.data() || {};
+        let upcomingList = savedDoc.upcoming || [];
+  
+        // Remove duplicates based on mountainName
+        const uniqueUpcomingList = [];
+        const seenMountainNames = {};
+  
+        for (const item of upcomingList) {
+          if (!seenMountainNames[item.mountainName]) {
+            seenMountainNames[item.mountainName] = true;
+            uniqueUpcomingList.push(item);
+          }
+        }
+  
+        upcomingList = uniqueUpcomingList;
+  
+        if (upcomingList.length > 0) {
+          // Sort the bucketList items by ascending startDate
+          upcomingList.sort((a, b) => a.startDate.localeCompare(b.startDate));
+  
+          // Set the first item's startDate, endDate, and mountainName as the new 'dates' object
+          const firstItem = upcomingList[0];
+          const updatedDates = {
+            startDate: firstItem.startDate,
+            endDate: firstItem.endDate,
+            mountainName: firstItem.mountainName
+          };
+  
+          await updateDoc(bucketListRef, { dates: updatedDates });
+  
+          // Remove the first item from the bucketList in Firebase
+          await updateDoc(bucketListRef, {
+            upcoming: arrayRemove(firstItem)
+          });
+        } else {
+          // If bucketList has no items, set the dates object to default values
+          const updatedDates = { mountainName: '-', startDate: '', endDate: '' };
+          await updateDoc(bucketListRef, { dates: updatedDates });
+        }
       } else {
         console.log('User document does not exist');
       }
     } catch (error) {
       console.log('Error:', error);
     }
-  }
+  };  
 
   const test_data = trainingTimeline?.map((item, index) => {
     return (

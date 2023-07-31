@@ -70,6 +70,7 @@ export default function HikingTrailDetail({navigation, route}) {
   const deltaY = new Animated.Value(0);
   const [isFilled, setIsFilled] = useState(false);
   const [trail, setTrailData] = useState(null);
+  const [blockedDateRanges, setBlockedDateRanges] = useState([]);
 
   useEffect(() => {
     const fetchHikingTrailData = async () => {
@@ -82,6 +83,16 @@ export default function HikingTrailDetail({navigation, route}) {
           const bucketList = userDocSnapshot.get('bucketlist') || [];
           const existsInBucketList = bucketList.some(item => item.name === name);
           setIsFilled(existsInBucketList);
+
+          const upcomingList = userDocSnapshot.get('upcoming') || [];
+          const currentTraining = userDocSnapshot.get('dates') || {};
+          upcomingList.push(currentTraining);
+          const upcomingDates = upcomingList.map(item => ({
+            startDate: item.startDate,
+            endDate: item.endDate,
+          }))
+          console.log(upcomingDates)
+          setBlockedDateRanges(upcomingDates);
         } else {
           console.log('User document does not exist');
         }
@@ -110,20 +121,20 @@ export default function HikingTrailDetail({navigation, route}) {
   const handleButtonPress = async () => {
     setShowCalendar(true);
 
-    const userId = 'jxihUCNoi0396wkQR2gx'; 
-    const savedDocRef = doc(db, 'users', userId);
-    const savedDocSnapshot = await getDoc(savedDocRef);
+    // const userId = 'jxihUCNoi0396wkQR2gx'; 
+    // const savedDocRef = doc(db, 'users', userId);
+    // const savedDocSnapshot = await getDoc(savedDocRef);
 
-    const savedDoc = savedDocSnapshot.data()|| {};
-    const updatedDates = { ...savedDoc.dates, mountainName: name };
+    // const savedDoc = savedDocSnapshot.data()|| {};
+    // const updatedDates = { ...savedDoc.dates, mountainName: name };
 
-    updateDoc(savedDocRef, {
-      dates: updatedDates
-    }).then(() => {
-      console.log('Mountain name stored in Firebase:', name);
-    }).catch((error) => {
-      console.log('Error storing');
-    });
+    // updateDoc(savedDocRef, {
+    //   dates: updatedDates
+    // }).then(() => {
+    //   console.log('Mountain name stored in Firebase:', name);
+    // }).catch((error) => {
+    //   console.log('Error storing');
+    // });
   };
 
   const handleCalendarClose = () => {
@@ -344,7 +355,7 @@ export default function HikingTrailDetail({navigation, route}) {
           <View style={stylesforcal.modalContainer}>
             <View style={stylesforcal.modalContent}>
               <Text style={{ fontWeight: 500, textAlign: 'center' }}>{'Choose a Start and End Date'}</Text>
-              <CalendarWithPeriodFill start={start} end={end} />
+              <CalendarWithPeriodFill blockedDateRanges={blockedDateRanges} name={name} start={start} end={end} />
               <View style={stylesforcal.closeButtonContainer}>
                 <Button onPress={handleSaveClose} style={stylesforcal.closeButton}>
                   <Text style={stylesforcal.closeButtonText}>Save</Text>
