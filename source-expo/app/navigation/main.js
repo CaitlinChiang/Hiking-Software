@@ -11,6 +11,7 @@ import NotFound from '@screens/NotFound'
 import TrainingPlan from '@screens/TrainingPlan'
 import Explore from '@screens/Explore'
 import BucketList from '@screens/BucketList'
+import HistoryList from '@screens/HistoryList'
 import Profile from '@screens/Profile'
 /* Pages */
 import TrainingDetail from '@screens/TrainingDetail'
@@ -94,6 +95,16 @@ function BottomTabNavigator() {
           title: t('Bucket List'),
           tabBarIcon: ({color}) => {
             return <Icon color={color} name="heart" size={20} solid />
+          }
+        }}
+      />
+      <BottomTab.Screen
+        name="HistoryList"
+        component={HistoryList}
+        options={{
+          title: t('History'),
+          tabBarIcon: ({color}) => {
+            return <Icon color={color} name="history" size={20} solid />
           }
         }}
       />
