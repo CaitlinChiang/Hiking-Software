@@ -72,7 +72,7 @@ export default function Booking({navigation}) {
 
       if (savedDocSnapshot.exists()) {
         const savedDoc = savedDocSnapshot.data()|| {};
-        const updatedDates = { ...savedDoc.dates, mountainName: '-' };
+        const updatedDates = { ...savedDoc.dates, startDate: '', endDate: '', mountainName: '-' };
 
         updateDoc(bucketListRef, { dates: updatedDates })
       } else {
