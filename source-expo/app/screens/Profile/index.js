@@ -75,8 +75,8 @@ export default function Profile({navigation}) {
   //       const userDocSnapshot = await getDoc(userDocRef);
   
   //       if (userDocSnapshot.exists()) {
-  //         const userRecord = userDocSnapshot.get('userProfile') || [];
-  //         const existingUserRecord = userRecord[0];
+    //         const userRecord = userDocSnapshot.get('userProfile') || [];
+    //         const existingUserRecord = userRecord[0];
           
   //         setNaming(existingUserRecord?.naming);
   //         setEmail(existingUserRecord?.email);
@@ -227,7 +227,7 @@ export default function Profile({navigation}) {
   };
 
   const profileInfoContainerStyle = {
-    backgroundColor: '#B5D5C5',
+    // backgroundColor: '#B5D5C5',
     borderRadius: 20,
     padding: 5,
     marginBottom: 20,
@@ -242,16 +242,13 @@ export default function Profile({navigation}) {
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
-        style={{ marginTop: 60, ...BaseStyle.safeAreaView }}
+        style={{ marginTop: 70, ...BaseStyle.safeAreaView }}
         edges={['right', 'left', 'bottom']}>
         <ScrollView>
         <View style={styles.contain}>
             <MeterComponent totalScore={totalScore} />
 
           {/* Profile Info Section */}
-          <View style={profileInfoContainerStyle}>  
-          <View style={ProfileStyles.profileInfoContainer}>
-          <Text style={profileInfoHeadingStyle}>Profile Information</Text>
             <View>
               <View style={styles.contentTitle}>
                 <Text headline semibold>
@@ -337,8 +334,6 @@ export default function Profile({navigation}) {
                 value={email}
               />
               </View>           
-            </View>
-          </View>
           </View>
 
           
@@ -357,7 +352,7 @@ export default function Profile({navigation}) {
 
             <View style={styles.cardContainer}>
               <SliderCard
-                title="Rate your perceived upper body strength:"
+                title="Upper Body Strength"
                 value={upperBodyStrength}
                 onValueChange={setUpperBodyStrength}
                 collapsed={showUpperBodyStrength}
@@ -368,7 +363,7 @@ export default function Profile({navigation}) {
 
             <View style={styles.cardContainer}> 
               <LowerBodyCard
-                title="Rate your perceived lower body strength:"
+                title="Lower Body Strength"
                 value={lowerBodyStrength}
                 onValueChange={setLowerBodyStrength}
               />
@@ -379,7 +374,7 @@ export default function Profile({navigation}) {
             
               <View style={styles.cardContainer}>
                 <BSCard
-                  title="Balance and Stability:"
+                  title="Balance and Stability"
                   value={balanceStability}
                   onValueChange={setBalanceStability}
                   selectorItems={[
@@ -393,7 +388,7 @@ export default function Profile({navigation}) {
 
               <View style={styles.cardContainer}>
                 <FlexibilityCard
-                  title="Flexibility:"
+                  title="Flexibility"
                   value={flexibility}
                   onValueChange={setFlexibility}
                   selectorItems={[
@@ -407,7 +402,7 @@ export default function Profile({navigation}) {
 
               <View style={styles.cardContainer}>
                 <OutdoorExperienceCard
-                  title="Outdoor Experience:"
+                  title="Outdoor Experience"
                   value={outdoorExperienceFrequency}
                   onValueChange={setOutdoorExperienceFrequency}
                   selectorItems={[
@@ -421,7 +416,7 @@ export default function Profile({navigation}) {
                 
               <View style={styles.cardContainer}>
                 <HikingComfortCard
-                  title="How comfortable are you with hiking on challenging terrains?"
+                  title="Hiking Comfort"
                   value={outdoorExperienceComfort}
                   onValueChange={setOutdoorExperienceComfort}
                   selectorItems={[
@@ -431,7 +426,6 @@ export default function Profile({navigation}) {
                   ]}
                 />
               </View>
-
 
               </View>
           </View>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Text from '@components/Text';
 import Slider from '@react-native-community/slider';
 import RNPickerSelect from 'react-native-picker-select';
+import PlaceholderImage from './Logos/balance.png'; // Replace with the actual image path
 
 const BSCard = ({ title, value, onValueChange, selectorItems }) => {
   const [collapsed, setCollapsed] = useState(true);
@@ -13,9 +14,12 @@ const BSCard = ({ title, value, onValueChange, selectorItems }) => {
         onPress={() => setCollapsed(!collapsed)}
         style={styles.cardHeader}
       >
-        <Text headline semibold>
-          {title}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={PlaceholderImage} style={{ width: 30, height: 30, marginRight: 10 }} />
+          <Text headline semibold>
+            {collapsed ? title : "Rate your perceived balance & stability"}
+          </Text>
+        </View>
       </TouchableOpacity>
       {!collapsed && (
         <View style={styles.cardContent}>

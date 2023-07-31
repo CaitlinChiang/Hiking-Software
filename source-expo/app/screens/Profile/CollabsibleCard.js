@@ -14,10 +14,12 @@ const CollapsibleCard = ({ title, value, onValueChange, selectorItems }) => {
         onPress={() => setCollapsed(!collapsed)}
         style={styles.cardHeader}
       >
-        <Image source={StaminaLogoPng} style={{ width: 30, height: 30 }} />
-        <Text headline semibold>
-          {collapsed ? title : "Rate your ability to sustain physical activity for an extended period"}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={StaminaLogoPng} style={{ width: 30, height: 30, marginRight: 10 }} />
+          <Text headline semibold>
+            {collapsed ? title : "Rate your ability to sustain physical activity for an extended period"}
+          </Text>
+        </View>
       </TouchableOpacity>
       {!collapsed && (
         <View style={styles.cardContent}>
@@ -60,7 +62,7 @@ const CollapsibleCard = ({ title, value, onValueChange, selectorItems }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: '#FFF5E4',
     borderRadius: 20,
     // shadowColor: '#020',

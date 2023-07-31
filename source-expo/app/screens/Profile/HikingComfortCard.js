@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Text from '@components/Text';
 import RNPickerSelect from 'react-native-picker-select';
+import PlaceholderImage from './Logos/hiking.png'; // Replace with the actual image path
 
 const HikingComfortCard = ({ title, value, onValueChange, selectorItems }) => {
   const [collapsed, setCollapsed] = useState(true);
@@ -12,9 +13,12 @@ const HikingComfortCard = ({ title, value, onValueChange, selectorItems }) => {
         onPress={() => setCollapsed(!collapsed)}
         style={styles.cardHeader}
       >
-        <Text headline semibold>
-          {title}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={PlaceholderImage} style={{ width: 30, height: 30, marginRight: 10 }} />
+          <Text headline semibold>
+          {collapsed ? title : "How comfortable are you with hiking on challenging terrains?"}
+          </Text>
+        </View>
       </TouchableOpacity>
       {!collapsed && (
         <View style={styles.cardContent}>

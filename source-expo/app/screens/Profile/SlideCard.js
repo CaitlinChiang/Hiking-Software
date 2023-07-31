@@ -1,15 +1,19 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Text from '@components/Text';
 import Slider from '@react-native-community/slider';
+import UpperBodyLogoPng from './Logos/upperBody.png';
 
 const SliderCard = ({ title, value, onValueChange, collapsed, onToggle }) => {
   return (
     <View style={styles.card}>
       <TouchableOpacity onPress={onToggle} style={styles.cardHeader}>
-        <Text headline semibold>
-          {title}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={UpperBodyLogoPng} style={{ width: 30, height: 30, marginRight: 10 }} />
+          <Text headline semibold>
+            {collapsed ? title : "Rate your perceived upper body strength"}
+          </Text>
+        </View>
       </TouchableOpacity>
       {collapsed ? null : (
         <View style={styles.cardContent}>

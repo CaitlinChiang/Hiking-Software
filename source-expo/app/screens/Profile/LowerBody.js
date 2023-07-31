@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Text from '@components/Text';
 import Slider from '@react-native-community/slider';
+import UpperBodyLogoPng from './Logos/lowerBody.png'; // Import the image
 
 const LowerBodyCard = ({ title, value, onValueChange }) => {
   const [collapsed, setCollapsed] = useState(true);
@@ -12,9 +13,12 @@ const LowerBodyCard = ({ title, value, onValueChange }) => {
         onPress={() => setCollapsed(!collapsed)}
         style={styles.cardHeader}
       >
-        <Text headline semibold>
-          {title}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={UpperBodyLogoPng} style={{ width: 30, height: 30, marginRight: 10 }} />
+          <Text headline semibold>
+          {collapsed ? title : "Rate your perceived lower body strength"}
+          </Text>
+        </View>
       </TouchableOpacity>
       {!collapsed && (
         <View style={styles.cardContent}>
