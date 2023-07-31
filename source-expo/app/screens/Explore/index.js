@@ -57,7 +57,7 @@ export default function Home({navigation}) {
   };
 
   const renderIconService = () => {
-    const [selectedIcon, setSelectedIcon] = useState(null);
+    const [selectedIcon, setSelectedIcon] = useState('Recommended');
   
     return (
       <FlatList
