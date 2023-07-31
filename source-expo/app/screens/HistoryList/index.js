@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
-import { Header, SafeAreaView, historyListItem, Button } from '@components';
+import { Header, SafeAreaView, BucketListItem, Button } from '@components';
 import { initializeApp } from 'firebase/app';
 import { doc, getFirestore, getDoc, onSnapshot } from 'firebase/firestore';
 import { HikingTrailsData } from '@data';
@@ -71,7 +71,7 @@ export default function HistoryList({ navigation }) {
               </View>
             ) : (
               hikingTrails.map((trail, index) => (
-                <historyListItem
+                <BucketListItem
                   key={index}
                   name={trail.name}
                   location={trail.location}

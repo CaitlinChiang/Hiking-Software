@@ -57,17 +57,33 @@ export default function Booking({navigation}) {
     };
   
     fetchCurrentMountain();
-  }, [mountain]);
+  }, [trainingTimeline, mountain]);
 
+  const completeTraining = async () => {
+    try {
+      const userId = 'jxihUCNoi0396wkQR2gx';
+      const bucketListRef = doc(db, 'users', userId);
+  
+      await updateDoc(bucketListRef, {
+        historyList: arrayUnion({ name: mountain?.mountainName})
+      });
+
+      const savedDocSnapshot = await getDoc(bucketListRef);
+
+      if (savedDocSnapshot.exists()) {
+        const savedDoc = savedDocSnapshot.data()|| {};
+        const updatedDates = { ...savedDoc.dates, mountainName: '-' };
+
+        updateDoc(bucketListRef, { dates: updatedDates })
+      } else {
+        console.log('User document does not exist');
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  }
 
   const test_data = trainingTimeline?.map((item, index) => {
-    let color = '#C1C1C1'
-
-    if (index < 4) {
-      color = '#C1C1C1'
-    }
-
-
     return (
       <View>
         <View style={styles.listItemContainer} key={index}>
@@ -100,17 +116,19 @@ export default function Booking({navigation}) {
           style={{ ...BaseStyle.safeAreaView, paddingVertical: 50, paddingHorizontal: 50 }}
           edges={['right', 'left', 'bottom']}>     
           <Text style={styles.emptyText}>{'You are currently not training for any hike, visit our explore page to view our recommendations for you!'}</Text>
-          <Button style={{ marginTop: 50 }} onPress={goExplore}>{'Explore Hiking Trails'}</Button>
+          <Button style={{ marginTop: 50  }} onPress={goExplore}>{'Explore Hiking Trails'}</Button>
         </SafeAreaView>
       )
     } else {
       return (
         <SafeAreaView
-          style={BaseStyle.safeAreaView}
+          style={{ ...BaseStyle.safeAreaView, paddingHorizontal: 20 }}
           edges={['right', 'left', 'bottom']}>
           <View>
             <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 20, paddingHorizontal: 20, fontWeight: 500 }}>{`Training for: ${mountain?.mountainName}`}</Text>
-            <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training Date Range: ${mountain?.startDate} - ${mountain?.endDate}`}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training Start: ${mountain?.startDate}`}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training End: ${mountain?.endDate}`}</Text>
+            <Button style={{ marginTop: 10, textAlign: 'center' }} onPress={completeTraining}>{'Complete Training'}</Button>
           </View>
 
           <View style={{ flex: 1, marginTop: 35 }}>
