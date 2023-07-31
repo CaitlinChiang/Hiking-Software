@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './styles';
 import Timeline from 'react-native-timeline-flatlist';
 import Slider from '@react-native-community/slider';
+import CheckBox from '@react-native-community/checkbox';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 
@@ -28,6 +29,8 @@ const Booking = ({ navigation }) => {
   const [trainingTimeline] = useState(TrainingTimelineData);
   const [rating, setRating] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isSelected, setSelection] = useState(false);
+
 
   const test_data = trainingTimeline?.map((item, index) => {
     return {
@@ -142,6 +145,7 @@ const Booking = ({ navigation }) => {
             </View>
           </View>
         </View>
+
         <View style={{ flex: 1, marginLeft: -20, marginTop: 35 }}>
           <Timeline
             data={randomElements}

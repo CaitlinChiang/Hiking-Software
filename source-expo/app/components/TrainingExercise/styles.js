@@ -1,5 +1,7 @@
 import {StyleSheet} from 'react-native';
 
+const checkboxSize = 20;
+
 export default StyleSheet.create({
   contain: {
     shadowOffset: {height: 1},
@@ -28,5 +30,5 @@ export default StyleSheet.create({
     flexDirection: 'row',
     borderBottomRightRadius: 8,
     borderBottomLeftRadius: 8
-  },
+  }
 });
