@@ -129,7 +129,12 @@ export default function HikingTrailDetail({navigation, route}) {
   const handleCalendarClose = () => {
     setShowCalendar(false);
   };
-  
+
+  const handleSaveClose = () => {
+    handleCalendarClose()
+    navigation.navigate('Train')
+  }
+
   const handleHeartIconPress = async () => {
     try {
       const userId = 'jxihUCNoi0396wkQR2gx';
@@ -341,7 +346,7 @@ export default function HikingTrailDetail({navigation, route}) {
               <Text style={{ fontWeight: 500, textAlign: 'center' }}>{'Choose a Start and End Date'}</Text>
               <CalendarWithPeriodFill start={start} end={end} />
               <View style={stylesforcal.closeButtonContainer}>
-                <Button onPress={handleCalendarClose} style={stylesforcal.closeButton}>
+                <Button onPress={handleSaveClose} style={stylesforcal.closeButton}>
                   <Text style={stylesforcal.closeButtonText}>Save</Text>
                 </Button>
               </View>
