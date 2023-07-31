@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 export default function TrainingExercise(props) {
   const {t} = useTranslation();
   const {colors} = useTheme();
-  const {style, title, currentDate, onPress} = props;
+  const {style, title, complete, past, currentDate, onPress} = props;
 
   return (
     <TouchableOpacity
@@ -27,12 +27,15 @@ export default function TrainingExercise(props) {
           styles.nameContent,
           {
             paddingVertical: 15,
-            backgroundColor: '#ce8c6c',
+            backgroundColor: past ? '#C1C1C1' : '#ce8c6c',
           },
         ]}>
-        <Text body2 whiteColor semibold>
+        <Text body2 whiteColor semibold style={{ textDecorationLine: past ? 'line-through' : 'none' }}>
           {title}
         </Text>
+        <View style={{ ...styles.overlay, backgroundColor: complete ? '#14A92A' : '#FF5D1C' }}>
+          <Text style={styles.overlayText}>{complete ? 'Complete' : 'Incomplete'}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );

@@ -45,4 +45,23 @@ export default StyleSheet.create({
     backgroundColor: '#554c3d',
     marginLeft: -10
   },
+  overlay: {
+    position: 'absolute',
+    bottom: 3,
+    right: 10,
+    padding: 2,
+    paddingRight:6,
+    marginBottom: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'white',
+    zIndex: 1
+  },
+  overlayText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginLeft: 4,
+    zIndex:1
+  }
 });

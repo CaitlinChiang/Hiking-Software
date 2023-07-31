@@ -61,15 +61,24 @@ export default function Booking({navigation}) {
 
 
   const test_data = trainingTimeline?.map((item, index) => {
+    let color = '#C1C1C1'
+
+    if (index < 4) {
+      color = '#C1C1C1'
+    }
+
+
     return (
       <View>
         <View style={styles.listItemContainer} key={index}>
-          <View style={index === 4 ? styles.circleContainerCurrent : styles.circleContainer}>
+          <View style={index === 4 ? styles.circleContainerCurrent : (index < 4 ? {...styles.circleContainer, backgroundColor: '#c1c1c1'} : styles.circleContainer) }>
             <Text style={index === 4 ? styles.circleTextCurrent : styles.circleText}>{`July\n${index + 1}`}</Text>
           </View>
           <TrainingDetail
             currentDate={index == 4}
             title={item.title}
+            past={index < 4}
+            complete={item.complete}
             style={{paddingVertical: 5, marginHorizontal: 20, width: '75%' }}
             onPress={() => {
               navigation.navigate('TrainingDetail');

@@ -47,7 +47,7 @@ const Booking = ({ navigation }) => {
   const [rating, setRating] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isSelected, setSelection] = useState(false);
-  const [chosenEmoticon, setChosenEmoticon] = useState('easy');
+  const [chosenEmoticon, setChosenEmoticon] = useState('');
   const [randomElements, setRandomElements] = useState([]);
 
   const test_data = trainingTimeline?.map((item, index) => {
