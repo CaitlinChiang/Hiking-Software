@@ -23,7 +23,7 @@ export default function Home({navigation}) {
   const [icons] = useState([
     {
       icon: 'thumbs-up',
-      name: 'Recommended',
+      name: 'For You',
       route: 'Explore',
     },
     {
@@ -57,7 +57,7 @@ export default function Home({navigation}) {
   };
 
   const renderIconService = () => {
-    const [selectedIcon, setSelectedIcon] = useState('Recommended');
+    const [selectedIcon, setSelectedIcon] = useState('For You');
   
     return (
       <FlatList
