@@ -4,6 +4,7 @@ import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firest
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
 import { HikingTrailsData } from '@data';
+import CardWithImage from './Card';
 
 //imports for calender
 import CalendarWithPeriodFill from './calender';
@@ -157,23 +158,17 @@ export default function HikingTrailDetail({navigation, route}) {
   };
 
   return (
+    
     <View style={{flex: 1}}>
-    <ScrollView><Animated.Image
-      source={{ uri: imageSrc }}
-      style={[
-        styles.imgBanner,
-        {
-          height: deltaY.interpolate({
-            inputRange: [
-              0,
-              Utils.scaleWithPixel(200),
-              Utils.scaleWithPixel(200),
-              ],
-              outputRange: [heightImageBanner, heightHeader, heightHeader], 
-            }),
-          },
-        ]}
-      />
+    <ScrollView>
+
+        <CardWithImage
+          imageSrc={imageSrc}
+          mountainName={name}
+          location={trail?.location}
+          grading={trail?.ydsGrading} // Pass the grading prop
+        />
+
       <Header
         title=""
         renderLeft={() => {
@@ -181,7 +176,7 @@ export default function HikingTrailDetail({navigation, route}) {
             <Icon
               name="arrow-left"
               size={20}
-              color={BaseColor.whiteColor}
+              color={"black"}
               enableRTL={true}
             />
           );
@@ -209,28 +204,7 @@ export default function HikingTrailDetail({navigation, route}) {
           scrollEventThrottle={8}
         >
           <View style={{paddingHorizontal: 20}}>
-            <View
-              style={[
-                styles.contentBoxTop,
-                {
-                  marginTop: marginTopBanner,
-                  backgroundColor: colors.card,
-                  shadowColor: colors.border,
-                  borderColor: colors.border,
-                },
-              ]}>
-              <Text title2 semibold style={{marginBottom: 10}}>
-                {name}
-              </Text>
-              <Text
-                body2
-                style={{
-                  marginTop: 10,
-                  textAlign: 'center',
-                }}>
-                Description of mountain
-              </Text>
-            </View>
+
 
             <View>
               <View style={styles.itemReason}>
