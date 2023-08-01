@@ -12,7 +12,8 @@ export default class CalendarWithPeriodFill extends React.Component {
       start: {},
       end: {}, 
       period: {},
-      
+      name: {},
+      blockedDateRanges: []
  }
 
 getDateString(timestamp) {
@@ -56,74 +57,86 @@ getPeriod(startTimestamp, endTimestamp) {
 }
 
 setDay(dayObj) {
- const { start, end } = this.state
- const {
-   dateString, day, month, year,
- } = dayObj
+  const { start, end } = this.state
+  const {
+    dateString, day, month, year,
+  } = dayObj
 
- if (!_isEmpty(start) && _isEmpty(end)) {
-    handleDateSelection(start.dateString, dateString);
+  if (!_isEmpty(start) && _isEmpty(end)) {
+    handleDateSelection(start.dateString, dateString, this.props.name);
   }
 
- // timestamp returned by dayObj is in 12:00AM UTC 0, want local 12:00AM
- const timestamp = new Date(year, month - 1, day).getTime()
- const newDayObj = { ...dayObj, timestamp }
- // if there is no start day, add start. or if there is already a end and start date, restart
- const startIsEmpty = _isEmpty(start)
- if (startIsEmpty || !startIsEmpty && !_isEmpty(end)) {
-   const periodo = {
-     [dateString]: {
-       color: '#4ed2de',
-       endingDay: true,
-       startingDay: true,
-     },
-   }
-   this.setState({ start: newDayObj, period : periodo, end: {} })
- } else {
-   // if end date is older than start date switch
-   const { timestamp: savedTimestamp } = start
-   if (savedTimestamp > timestamp) {
-     const periodo = this.getPeriod(timestamp, savedTimestamp)
-     this.setState({ start: newDayObj, end: start, period: periodo })
-   } else {
-     const periodo = this.getPeriod(savedTimestamp, timestamp)
-     this.setState({ end: newDayObj, start : start, period : periodo })
-   }
- }
+  const timestamp = new Date(year, month - 1, day).getTime();
+  const newDayObj = { ...dayObj, timestamp };
+
+  const startIsEmpty = _isEmpty(start);
+  if (startIsEmpty || (!startIsEmpty && !_isEmpty(end))) {
+    const periodo = {
+      [dateString]: {
+        color: '#4ed2de',
+        endingDay: true,
+        startingDay: true,
+      },
+    };
+    this.setState({ start: newDayObj, period: periodo, end: {} });
+  } else {
+    const { timestamp: savedTimestamp } = start;
+    if (savedTimestamp > timestamp) {
+      const periodo = this.getPeriod(timestamp, savedTimestamp);
+      this.setState({ start: newDayObj, end: start, period: periodo });
+    } else {
+      const periodo = this.getPeriod(savedTimestamp, timestamp);
+      this.setState({ end: newDayObj, start: start, period: periodo });
+    }
+  }
 }
 
 render() {
  const { period } = this.state
- return (
-   <Calendar
-     onDayPress={this.setDay.bind(this)}
-     current={moment().format('YYYY-MM-DD')}
-     minDate={'2001-01-01'}
-     maxDate={'2030-12-31'}
-     onDayLongPress={(day) => {
-       console.log('selected day', day.dateString);
-     }}
-    monthFormat={'MMMM - yyyy'}
-     onMonthChange={(month) => {
-       console.log('month changed', month);
-    }}
-    hideArrows={false}
-    renderArrow={(direction) =>
-     direction == 'left' ? (
-       <MaterialIcons name="arrow-back" size={24} color="#3485E4" />
-     ) : (
-       <MaterialIcons name="arrow-forward" size={24} color="#3485E4" />
-     )
-   }
-    hideExtraDays={true}
-    firstDay={1}
-    onPressArrowLeft={(subtractMonth) => subtractMonth()}
-    onPressArrowRight={(addMonth) => addMonth()}
-    disableAllTouchEventsForDisabledDays={true}
-    enableSwipeMonths={true}
-    markingType={'period'}
-    markedDates={period}
+
+  const disabledDates = {};
+  this.props?.blockedDateRanges?.forEach((range) => {
+    const startDate = moment(range.startDate);
+    const endDate = moment(range.endDate);
+    while (startDate.isSameOrBefore(endDate)) {
+      disabledDates[startDate.format('YYYY-MM-DD')] = { disabled: true };
+      startDate.add(1, 'days');
+    }
+  });
+
+  const markedDates = { ...period, ...disabledDates };
+
+  return (
+    <Calendar
+      onDayPress={this.setDay.bind(this)}
+      current={moment().format('YYYY-MM-DD')}
+      minDate={'2001-01-01'}
+      maxDate={'2030-12-31'}
+      onDayLongPress={(day) => {
+        console.log('selected day', day.dateString);
+      }}
+      monthFormat={'MMMM - yyyy'}
+      onMonthChange={(month) => {
+        console.log('month changed', month);
+      }}
+      hideArrows={false}
+      renderArrow={(direction) =>
+        direction == 'left' ? (
+          <MaterialIcons name="arrow-back" size={24} color="#3485E4" />
+        ) : (
+          <MaterialIcons name="arrow-forward" size={24} color="#3485E4" />
+        )
+      }
+      hideExtraDays={true}
+      firstDay={1}
+      onPressArrowLeft={(subtractMonth) => subtractMonth()}
+      onPressArrowRight={(addMonth) => addMonth()}
+      disableAllTouchEventsForDisabledDays={true}
+      enableSwipeMonths={true}
+      markingType={'period'}
+      markedDates={markedDates}
     />
-  )
-}
+  );
+  
+  }
 }
