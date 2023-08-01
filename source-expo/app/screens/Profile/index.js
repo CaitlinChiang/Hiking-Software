@@ -5,11 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import {AuthActions} from '@actions';
 import {BaseStyle} from '@config';
 import firebase from 'firebase/compat/app';
-import { StyleSheet } from 'react-native';
 import 'firebase/compat/firestore';
-import { Platform} from 'react-native';
-
-
 import CollapsibleCard from './CollabsibleCard';
 import SliderCard from './SlideCard';
 import LowerBodyCard from './LowerBody';
@@ -17,8 +13,6 @@ import BSCard from './BandSCard';
 import FlexibilityCard from './FlexibilityCard';
 import OutdoorExperienceCard from './OutdoorExperienceCard';
 import HikingComfortCard from './HikingComfortCard';
-
-
 import {
   SafeAreaView,
   Text,
@@ -28,6 +22,8 @@ import styles from './styles';
 import Slider from '@react-native-community/slider';
 import RNPickerSelect from "react-native-picker-select";
 import MeterComponent from './meter';
+import { TouchableNativeFeedback, Platform } from 'react-native';
+
 
 
 const calculateTotalMaxScore = () => {
@@ -323,7 +319,6 @@ export default function Profile({navigation}) {
                 <RNPickerSelect
                   onValueChange={(value) => setGender(value)}
                   items={[
-                    { label: 'Select a Gender', value: '' },
                     { label: 'Male', value: 'Male' },
                     { label: 'Female', value: 'Female' },
                     { label: 'Other', value: 'Other' },

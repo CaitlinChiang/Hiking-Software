@@ -8,8 +8,8 @@ import IconSelector from './IconSelector';
 const icons = [
   require('./Logos/UpperBody/VWeak.png'),
   require('./Logos/UpperBody/LowStg.png'),
-  require('./Logos/UpperBody/AbvAvg.png'),
   require('./Logos/UpperBody/AvgStg.png'),
+  require('./Logos/UpperBody/AbvAvg.png'),
   require('./Logos/UpperBody/VStrong.png'),
 ];
 
