@@ -58,10 +58,11 @@ export default StyleSheet.create({
     borderRadius: 10,
   },
   saveButtonText: {
-    color: 'white', // Set the text color to white
+    color: 'white', 
     fontWeight: 'bold', 
     fontSize: 25,
     justifyContent: 'center',
     fontFamily: 'Roboto',
   },
+  
 });

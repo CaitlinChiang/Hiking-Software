@@ -7,6 +7,8 @@ import {BaseStyle} from '@config';
 import firebase from 'firebase/compat/app';
 import { StyleSheet } from 'react-native';
 import 'firebase/compat/firestore';
+import { Platform} from 'react-native';
+
 
 import CollapsibleCard from './CollabsibleCard';
 import SliderCard from './SlideCard';
@@ -27,6 +29,28 @@ import Slider from '@react-native-community/slider';
 import RNPickerSelect from "react-native-picker-select";
 import MeterComponent from './meter';
 
+
+const calculateTotalMaxScore = () => {
+  const maxPhysicalSustainability = 7;
+  const maxUpperBodyStrength = 10;
+  const maxLowerBodyStrength = 10;
+  const maxBalanceStability = 8;
+  const maxFlexibility = 8;
+  const maxOutdoorExperienceFrequency = 7;
+  const maxOutdoorExperienceComfort = 5; // Change the max value to 5
+
+  return (
+    maxPhysicalSustainability +
+    maxUpperBodyStrength +
+    maxLowerBodyStrength +
+    maxBalanceStability +
+    maxFlexibility +
+    maxOutdoorExperienceFrequency +
+    maxOutdoorExperienceComfort
+  );
+};
+
+
 // Imports for firebase (you can get this from firebase.js as well to make it cleaner)
 const firebaseConfig = {
   apiKey: "AIzaSyD46mMFUwZ7AlCJWPqOXK3SKw1BuIihlFM",
@@ -37,6 +61,7 @@ const firebaseConfig = {
   appId: "1:23275209713:web:3579558675b39890b47a50",
   measurementId: "G-7H0L154L10"
 };
+
 
 // Important initialization. must be done in index.js
 if (!firebase.apps.length) {
@@ -64,9 +89,14 @@ export default function Profile({navigation}) {
   const [birthday, setBirthday] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
-  
+  const [birthdayDate, setBirthdayDate] = useState(new Date()); // Set the initial date to today
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
 
+
+
+
+// UNCOMMENT IT WHEN WANT TO USE DB
   // useEffect(() => {
   //   const fetchUserProfile = async () => {
   //     try {
@@ -75,8 +105,8 @@ export default function Profile({navigation}) {
   //       const userDocSnapshot = await getDoc(userDocRef);
   
   //       if (userDocSnapshot.exists()) {
-    //         const userRecord = userDocSnapshot.get('userProfile') || [];
-    //         const existingUserRecord = userRecord[0];
+  //           const userRecord = userDocSnapshot.get('userProfile') || [];
+  //           const existingUserRecord = userRecord[0];
           
   //         setNaming(existingUserRecord?.naming);
   //         setEmail(existingUserRecord?.email);
@@ -121,7 +151,9 @@ export default function Profile({navigation}) {
   //   fetchPhysicalActivities();
   // }, []);
 
-//in place of db
+  const maxTotalScore = calculateTotalMaxScore();
+
+  //in place of db
   useEffect(() => {
     const calculateTotalScore = () => {
       const total =
@@ -145,7 +177,11 @@ export default function Profile({navigation}) {
     outdoorExperienceFrequency,
     outdoorExperienceComfort,
   ]);
+    
+
+
   
+
   useEffect(() => {
     total = physicalSustainability + upperBodyStrength + lowerBodyStrength + balanceStability + flexibility + outdoorExperienceFrequency + outdoorExperienceComfort;
     setTotalScore(total)
@@ -245,10 +281,13 @@ export default function Profile({navigation}) {
         style={{ marginTop: 70, ...BaseStyle.safeAreaView }}
         edges={['right', 'left', 'bottom']}>
         <ScrollView>
-        <View style={styles.contain}>
-            <MeterComponent totalScore={totalScore} />
 
-          {/* Profile Info Section */}
+
+        <View style={styles.contain}>
+            <MeterComponent totalScore={totalScore} maxScore={maxTotalScore} />
+
+
+          <View style = {styles.profileSelect}>
             <View>
               <View style={styles.contentTitle}>
                 <Text headline semibold>
@@ -289,7 +328,6 @@ export default function Profile({navigation}) {
                     { label: 'Female', value: 'Female' },
                     { label: 'Other', value: 'Other' },
                   ]}
-                  style={pickerSelectStyles}
                   value={gender}
                 />
               </View>
@@ -333,10 +371,13 @@ export default function Profile({navigation}) {
                 placeholder={'Input Email'}
                 value={email}
               />
-              </View>           
+              </View>    
+            </View>       
           </View>
 
           
+
+
 
          <View style={{ padding: 15 }}>
             <View style={styles.cardContainer}>
@@ -449,74 +490,3 @@ export default function Profile({navigation}) {
     </View>
   );
 }
-
-
-const pickerSelectStyles = StyleSheet.create({
-
-  container: {
-    padding: 100,
-  },
-  cardContainer: {
-    marginBottom: 20,
-  },
-
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    color: 'black',
-    paddingRight: 30,
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: 'purple',
-    borderRadius: 8,
-    color: 'black',
-    paddingRight: 30,
-  },
-
-});
-
-
-
-
-
-
-const ProfileStyles = StyleSheet.create({
-  profileInfoContainer: {
-    backgroundColor: '#B5D5C5',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 20,
-  },
-  profileInfoHeading: {
-    marginBottom: 10,
-  },
-  profileInfoContent: {
-    size: 10,
-  },
-  inputRowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  inputContainer: {
-    flex: 1,
-  },
-  input: {
-    fontSize: 16,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    color: 'black',
-    marginTop: 5,
-  },
-});

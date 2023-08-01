@@ -25,7 +25,7 @@ const texts = [
 
 const BSCard = ({ title, value, onValueChange, selectorItems }) => {
   const [collapsed, setCollapsed] = useState(true);
-  const [selectedIconIndex, setSelectedIconIndex] = useState(-1);
+  const [selectedIconIndex, setSelectedIconIndex] = useState(0);
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   rightMiddleArrow: {
     bottom: '25%',
-    left: '81%',
+    left: '83%',
     transform: [{ translateY: -12 }],
   },
   bottomCenterArrow: {
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 5,
+    marginTop: "5%",
     marginBottom: "12%",
     maxWidth: '80%', 
     alignSelf: 'center',

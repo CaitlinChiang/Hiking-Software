@@ -50,17 +50,18 @@ const FlexibilityCard = ({ title, value, onValueChange, selectorItems }) => {
             contentContainerStyle={styles.buttonContainer}
           />
         </View>
-      )}
-      <TouchableOpacity
-        onPress={toggleCollapsed}
-        style={styles.arrowContainer}
-      >
-        <MaterialIcons
-          name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
-          size={24}
-          color="black"
-        />
-      </TouchableOpacity>
+      )}<View style={[styles.arrowContainer, collapsed ? styles.rightMiddleArrow : styles.bottomCenterArrow]}>
+          <TouchableOpacity
+            onPress={toggleCollapsed}
+            style={styles.arrowContainer}
+          >
+            <MaterialIcons
+              name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
     </View>
   );
 };
@@ -79,7 +80,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 30,
+
   },
   button: {
     padding: 10,
@@ -101,6 +103,15 @@ const styles = StyleSheet.create({
     left: '50%',
     transform: [{ translateX: -12 }],
   },
+  rightMiddleArrow: {
+    bottom: '15%',
+    left: '86%',
+    transform: [{ translateY: -12 }],
+  },
+  bottomCenterArrow: {
+    bottom: -8,
+    left: '50%',
+    transform: [{ translateY: -12 }],}
 });
 
 export default FlexibilityCard;

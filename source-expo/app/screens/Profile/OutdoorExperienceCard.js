@@ -52,16 +52,15 @@ const OutdoorExperienceCard = ({ title, value, onValueChange, selectorItems }) =
           />
         </View>
       )}
-      <TouchableOpacity
-        onPress={toggleCollapsed}
-        style={styles.arrowContainer}
-      >
-        <MaterialIcons
-          name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
-          size={24}
-          color="black"
-        />
-      </TouchableOpacity>
+      <View style={[styles.arrowContainer, collapsed ? styles.rightMiddleArrow : styles.bottomCenterArrow]}>
+        <TouchableOpacity onPress={toggleCollapsed}>
+          <MaterialIcons
+            name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -123,6 +122,24 @@ const styles = StyleSheet.create({
       color: 'black',
       paddingRight: 30,
     },
+  },
+  arrowContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 10,
+    left: '50%',
+    transform: [{ translateX: -12 }],
+  },
+  rightMiddleArrow: {
+    bottom: '25%',
+    left: '83%',
+    transform: [{ translateY: -12 }],
+  },
+  bottomCenterArrow: {
+    bottom: "0.02%",
+    left: '47%',
+    transform: [{ translateY: -12 }],
   },
 });
 

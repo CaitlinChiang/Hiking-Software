@@ -79,13 +79,15 @@ const BSCard = ({ title, value, onValueChange }) => {
           </View>
         </View>
       )}
-      <TouchableOpacity onPress={toggleCollapsed} style={styles.arrowContainer}>
-        <MaterialIcons
-          name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
-          size={24}
-          color="black"
-        />
-      </TouchableOpacity>
+      <View style={[styles.arrowContainer, collapsed ? styles.rightMiddleArrow : styles.bottomCenterArrow]}>
+        <TouchableOpacity onPress={toggleCollapsed}>
+          <MaterialIcons
+            name={collapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -131,8 +133,17 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
   },
-  intextContent:{
-  }
+
+  rightMiddleArrow: {
+    bottom: '25%',
+    left: '83%',
+    transform: [{ translateY: -12 }],
+  },
+  bottomCenterArrow: {
+    bottom: "0.02%",
+    left: '47%',
+    transform: [{ translateY: -12 }],}
+
 });
 
 export default BSCard;

@@ -159,8 +159,7 @@ export default function HikingTrailDetail({navigation, route}) {
   return (
     <View style={{flex: 1}}>
     <ScrollView><Animated.Image
-      source={{ uri: imageSrc }} // Using this instead for URI
-      // source={require(Image.trail1)} //
+      source={{ uri: imageSrc }}
       style={[
         styles.imgBanner,
         {

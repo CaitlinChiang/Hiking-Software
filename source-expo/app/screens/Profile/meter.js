@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 import RNSpeedometer from 'react-native-speedometer';
 
-const MeterComponent = ({ totalScore }) => {
+const MeterComponent = ({ totalScore, maxScore }) => {
   const [meterValue, setMeterValue] = useState(10);
 
   useEffect(() => {
     setMeterValue(totalScore);
-  }, [totalScore]);
+    console.log('meterValue:', meterValue);
+    console.log('totalScore:', totalScore);
+    console.log('maxScore:', maxScore);
+  }, [totalScore, maxScore]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -15,7 +18,7 @@ const MeterComponent = ({ totalScore }) => {
         value={meterValue}
         size={250}
         minValue={0}
-        maxValue={70}
+        maxValue={maxScore}
         allowedDecimals={0}
         labels={[
           {
@@ -54,6 +57,7 @@ const MeterComponent = ({ totalScore }) => {
   );
 };
 
+
 export default MeterComponent;
 
 const styles = StyleSheet.create({
@@ -61,3 +65,9 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+
+
+
+
+

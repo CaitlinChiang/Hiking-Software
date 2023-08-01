@@ -23,7 +23,8 @@ const texts = [
 
 const CollapsibleCard = ({ title, value, onValueChange, selectorItems }) => {
   const [collapsed, setCollapsed] = useState(true);
-  const [selectedIconIndex, setSelectedIconIndex] = useState(-1);
+  const [selectedIconIndex, setSelectedIconIndex] = useState(0);
+
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -91,7 +92,7 @@ const CollapsibleCard = ({ title, value, onValueChange, selectorItems }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginBottom: 0,
+    marginBottom: 10,
     backgroundColor: '#FFF5E4',
     borderRadius: 20,
     position: 'relative',
