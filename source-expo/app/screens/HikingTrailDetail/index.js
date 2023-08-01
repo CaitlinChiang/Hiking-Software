@@ -134,6 +134,13 @@ export default function HikingTrailDetail({navigation, route}) {
     setShowCalendar(false);
   };
   
+// This is for the Card.js since it needs to know what to do on clicking the cross
+  const handleCrossIconPress = () => {
+    navigation.goBack(); 
+  };
+
+  const footerHeight = 100; // THIS IS FOR FOTTER
+
   const handleHeartIconPress = async () => {
     try {
       const userId = 'jxihUCNoi0396wkQR2gx';
@@ -159,43 +166,20 @@ export default function HikingTrailDetail({navigation, route}) {
 
   return (
     
-    <View style={{flex: 1}}>
-    <ScrollView>
-
-        <CardWithImage
-          imageSrc={imageSrc}
-          mountainName={name}
-          location={trail?.location}
-          grading={trail?.ydsGrading} // Pass the grading prop
-        />
-
-      <Header
-        title=""
-        renderLeft={() => {
-          return (
-            <Icon
-              name="arrow-left"
-              size={20}
-              color={"black"}
-              enableRTL={true}
-            />
-          );
-        }}
-        renderRight={() => (
-          <TouchableOpacity onPress={handleHeartIconPress}>
-            <SvgXml
-              xml={isFilled ? heartSolidSvg : heartRegularSvg}
-              width={24}
-              height={24}
-              fill={isFilled ? 'red' : 'white'}
-            />
-          </TouchableOpacity>
-        )}
-        onPressLeft={() => {
-          navigation.goBack();
-        }}
-      
+    <View style={{flex: 1, flexDirection: 'column' }}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: footerHeight }}
+      >
+      <CardWithImage
+        imageSrc={imageSrc}
+        mountainName={name}
+        location={trail?.location}
+        grading={trail?.ydsGrading}
+        duration={trail?.duration} // Pass the duration prop here
+        onPressCross={handleCrossIconPress}
       />
+
+
       <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
         <ScrollView
           style={{ flex: 1 }}
@@ -205,19 +189,19 @@ export default function HikingTrailDetail({navigation, route}) {
         >
           <View style={{paddingHorizontal: 20}}>
 
+            {/* Description */}
+            <View style={descStyles.descriptionContainer}>
+              <Text style={descStyles.descriptionHeading}>Overview</Text>
+              <Text style={descStyles.descriptionText}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                aliquet, tellus a gravida malesuada, dolor tellus bibendum libero,
+                sed euismod dui ante nec lorem. In pulvinar accumsan vestibulum.
+                Quisque ultrices justo nec arcu venenatis aliquam. Aliquam feugiat
+                suscipit dolor vitae sagittis. Praesent eu neque sed justo volutpat
+                tincidunt tincidunt nec felis.
+              </Text>
+            </View>
 
-            <View>
-              <View style={styles.itemReason}>
-                <Icon name="map-marker-alt" size={18} color={colors.accent} />
-                <View style={{marginLeft: 15}}>
-                  <Text subhead semibold>
-                    Location
-                  </Text>
-                  <Text body2>
-                    {trail?.location || ''}
-                  </Text>
-                </View>
-              </View>
 
               <View style={styles.itemReason}>
                 <Icon name="hourglass-start" size={18} color={colors.accent} />
@@ -226,7 +210,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Starting Height
                   </Text>
                   <Text body2>
-                    {trail?.startingHeight || ''}
+                    {trail?.startingHeight + " m" || ''}
                   </Text>
                 </View>
               </View>
@@ -238,7 +222,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Summit Height
                   </Text>
                   <Text body2>
-                    {trail?.summitHeight || ''}
+                    {trail?.summitHeight + " m" || ''}
                   </Text>
                 </View>
               </View>
@@ -250,7 +234,7 @@ export default function HikingTrailDetail({navigation, route}) {
                     Altitude Gain
                   </Text>
                   <Text body2>
-                    {trail?.altitudeGain || ''}
+                    {trail?.altitudeGain  + " m"  || ''}
                   </Text>
                 </View>
               </View>
@@ -267,17 +251,6 @@ export default function HikingTrailDetail({navigation, route}) {
                 </View>
               </View>
 
-              <View style={styles.itemReason}>
-                <Icon name="greater-than" size={18} color={colors.accent} />
-                <View style={{marginLeft: 15}}>
-                  <Text subhead semibold>
-                    Physical Grading
-                  </Text>
-                  <Text body2>
-                    {trail?.ydsGrading || ''}
-                  </Text>
-                </View>
-              </View>
 
               <View style={styles.largerItemReason}>
                 <Icon name="cloud-sun" size={18} color={colors.accent} />
@@ -290,38 +263,46 @@ export default function HikingTrailDetail({navigation, route}) {
                   </Text>
                 </View>
               </View>
-            </View>
           </View>
         </ScrollView>
-
-        <View
-          style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
-          <Button onPress={handleButtonPress}>
-            {'Schedule Training'}
-          </Button>
-        </View>
-      <Modal
-        visible={showCalendar}
-        onRequestClose={handleCalendarClose}
-        animationType="slide"
-        transparent={true}
-      >
-        <TouchableWithoutFeedback onPress={handleCalendarClose}>
-          <View style={stylesforcal.modalContainer}>
-            <View style={stylesforcal.modalContent}>
-              <Text style={{ fontWeight: 500, textAlign: 'center' }}>{'Choose a Start and End Date'}</Text>
-              <CalendarWithPeriodFill start={start} end={end} />
-              <View style={stylesforcal.closeButtonContainer}>
-                <Button onPress={handleCalendarClose} style={stylesforcal.closeButton}>
-                  <Text style={stylesforcal.closeButtonText}>Save</Text>
-                </Button>
-              </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
       </SafeAreaView>
       </ScrollView>
+        
+      {/* Sticky Footers with like the buttons */}
+      <View style={footerStyles.footerContainer}>
+        {/* Heart icon thingy */}
+        <TouchableOpacity onPress={handleHeartIconPress} style={styles.footerButton}>
+          <View
+            style={{
+              backgroundColor: '#EA906C',
+              borderRadius: 8,
+              paddingVertical: 8,
+              paddingHorizontal: 20,
+            }}
+          >
+            <SvgXml
+              xml={isFilled ? heartSolidSvg : heartRegularSvg}
+              width={24}
+              height={40}
+              fill={isFilled ? 'green' : 'red'}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {/* Schedule Training buttewns */}
+        <View style={styles.footerButton}>
+          <View
+            style={{
+              paddingVertical: 20,
+              paddingHorizontal: 20,
+            }}
+          >
+            <Button onPress={handleButtonPress}>
+              {'Schedule Training'}
+            </Button>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
@@ -331,7 +312,7 @@ const stylesforcal = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(, 0, 0, 0.9)',
   },
   modalContent: {
     backgroundColor: 'white',
@@ -345,3 +326,45 @@ const stylesforcal = StyleSheet.create({
   },
 });
 
+
+
+const footerStyles = StyleSheet.create({
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.75)', 
+    borderTopWidth: 0,
+    paddingHorizontal: 40,
+    alignItems: 'center', 
+    position: 'absolute', 
+    bottom: 0, 
+  },
+  footerButton: {
+    flex: 1,
+  },
+});
+
+
+const descStyles = StyleSheet.create({
+  descriptionContainer: {
+    marginTop: 20,
+    paddingHorizontal: 5,
+  },
+  descriptionHeading: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    // alignSelf: "left",
+  },
+  descriptionText: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'justify'
+  },
+  informationContainer: {
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+
+});
