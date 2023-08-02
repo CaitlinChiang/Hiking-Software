@@ -9,6 +9,7 @@ import CardWithImage from './Card';
 import TabbedCard from './TabbedCard';
 
 
+
 //imports for calender
 import CalendarWithPeriodFill from './calender';
 
@@ -63,7 +64,6 @@ export default function HikingTrailDetail({navigation, route}) {
   const [start, setStart] = useState({});
   const [end, setEnd] = useState({});
 
-  
   
 
   const {colors} = useTheme();
@@ -192,12 +192,12 @@ export default function HikingTrailDetail({navigation, route}) {
         >
           <View style={{paddingHorizontal: 20}}>
 
-          <TabbedCard
-            overviewData={
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi aliquet, tellus a gravida malesuada, dolor tellus bibendum libero, sed euismod dui ante nec lorem. In pulvinar accumsan vestibulum. Quisque ultrices justo nec arcu venenatis aliquam. Aliquam feugiat suscipit dolor vitae sagittis. Praesent eu neque sed justo volutpat tincidunt tincidunt nec felis.'
-            }
-            moreInfoData={trail}
-          />
+        <TabbedCard
+          overviewData={
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi aliquet, tellus a gravida malesuada, dolor tellus bibendum libero, sed euismod dui ante nec lorem. In pulvinar accumsan vestibulum. Quisque ultrices justo nec arcu venenatis aliquam. Aliquam feugiat suscipit dolor vitae sagittis. Praesent eu neque sed justo volutpat tincidunt tincidunt nec felis.'
+          }
+          moreInfoData={trail} // Pass the trail data here
+        />
 
           </View>
         </ScrollView>

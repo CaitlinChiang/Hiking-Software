@@ -25,25 +25,29 @@ const CardWithImage = ({ imageSrc, mountainName, location, grading, duration, on
         </TouchableOpacity>
         <View style={styles.textContainer}>
           {grading && ( 
-          <View style={styles.gradingContainer}>
-            <Text style={styles.gradingText}>{"Fitness Level: " + grading}</Text>
-          </View>
-          )}
-          <View style={styles.topMountainNameContainer}>
-            <Text style={styles.mountainNameText}>{topMountainName}</Text>
-          </View>
-          <View style={styles.bottomMountainNameContainer}>
-            <Text style={styles.mountainNameText}>{bottomMountainName}</Text>
-          </View>
-          <View style={styles.locationContainer}>
-            <Icon name="map-marker" size={12} color="white" />
-            <Text style={styles.locationText}>{location}</Text>
-          </View>
-            {duration && (
-            <View style={styles.durationContainer}>
-                <Text style={styles.durationText}></Text>
+            <View style={styles.gradingContainer}>
+              <Text style={styles.gradingText}>{"Fitness Level: " + grading}</Text>
             </View>
+          )}
+          <View style={styles.mountainNameContainer}>
+            <View style={styles.topMountainNameContainer}>
+              <Text style={styles.mountainNameText}>{topMountainName}</Text>
+            </View>
+            <View style={styles.bottomMountainNameContainer}>
+              <Text style={styles.mountainNameText}>{bottomMountainName}</Text>
+            </View>
+          </View>
+          <View style={styles.locationDurationContainer}>
+            <View style={styles.locationContainer}>
+              <Icon name="map-marker" size={12} color="white" />
+              <Text style={styles.locationText}>{location}</Text>
+            </View>
+            {duration && (
+              <View style={styles.durationContainer}>
+                <Text style={styles.durationText}>{duration}</Text>
+              </View>
             )}
+          </View>
         </View>
       </View>
     );
@@ -65,11 +69,12 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     position: 'absolute',
-    bottom: -7,
+    bottom: 20,
     left: 16,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
+    marginRight: 30,
   },
   topMountainNameContainer: {
     marginBottom: -10,
@@ -114,20 +119,19 @@ const styles = StyleSheet.create({
   },
 
   durationContainer: {
-    position: 'relative',
+    position: 'absolute',
     alignItems: 'center',
-    bottom: 25,
-    left: 150, 
+    bottom: -3,
+    left: 80, 
     paddingHorizontal: 12, 
-    backgroundColor: 'rgba(0, 0, 0, 0.0)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     paddingVertical: 4,
     borderRadius: 20,
     marginLeft: 20,
   },
   durationText: {
     color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
+    fontSize: 14,
   },
 });
 

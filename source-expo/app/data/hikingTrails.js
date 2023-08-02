@@ -120,7 +120,7 @@ const HikingTrailsData = [
       "summitHeight": "3,031",
       "altitudeGain": "3,031",
       "trailDistance": "",
-      "duration": "10 hours - 14 hours",
+      "duration": "10 hrs - 14 hrs",
       "ydsGrading": "B - D",
       "ydsClass": "3",
       "weather": "May - Oct DRY\nDec - Mar WET",

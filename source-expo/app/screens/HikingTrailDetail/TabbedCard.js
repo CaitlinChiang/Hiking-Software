@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '@components';
 import { Icon } from '@components';
+import { useTheme } from '@config'; 
 
 const TabbedCard = ({ overviewData, moreInfoData }) => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -10,83 +11,109 @@ const TabbedCard = ({ overviewData, moreInfoData }) => {
     setActiveTab(tab);
   };
 
+  const { colors } = useTheme();
+
   return (
     <View>
       <View style={styles.tabContainer}>
-        <TouchableOpacity
-          onPress={() => handleTabPress('overview')}
-          style={[
-            styles.tabButton,
-            activeTab === 'overview' ? styles.activeTabButton : null,
-          ]}
-        >
-          <Text semibold>Overview</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            onPress={() => handleTabPress('moreInfo')}
+            style={[
+              styles.tabButton,
+              activeTab === 'moreInfo' ? styles.activeTabButton : null,
+            ]}
+          >
+            <Text semibold style={styles.tabButtonText}>Overview</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => handleTabPress('moreInfo')}
-          style={[
-            styles.tabButton,
-            activeTab === 'moreInfo' ? styles.activeTabButton : null,
-          ]}
-        >
-          <Text semibold>More Info</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleTabPress('overview')}
+            style={[
+              styles.tabButton,
+              activeTab === 'overview' ? styles.activeTabButton : null,
+            ]}
+          >
+            <Text semibold style={styles.tabButtonText}>More Info</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {activeTab === 'overview' ? (
-        <View style={{ paddingHorizontal: 20 }}>
-          <View style={descStyles.descriptionContainer}>
-            <Text style={descStyles.descriptionHeading}>Overview</Text>
-            <Text style={descStyles.descriptionText}>{overviewData}</Text>
+      {activeTab === 'moreInfo' ? (
+        <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name="hourglass-start" size={10} color={colors.accent} />
+              <View style={{ marginLeft: 10 }}>
+                <Text subhead semibold>
+                  Starting Height
+                </Text>
+                <Text body2>{moreInfoData.startingHeight !== null ? moreInfoData.startingHeight + ' m' : 'Not Available'}</Text>
+              </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name="mountain" size={10} color={colors.accent} />
+              <View style={{ marginLeft: 10 }}>
+                <Text subhead semibold>
+                  Summit Height
+                </Text>
+                <Text body2>{moreInfoData.summitHeight + ' m' || ''}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name="arrow-up" size={10} color={colors.accent} />
+              <View style={{ marginLeft: 10 }}>
+                <Text subhead semibold>
+                  Altitude Gain
+                </Text>
+                <Text body2>{moreInfoData.altitudeGain + ' m' || ''}</Text>
+              </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name="cloud-sun" size={11} color={colors.accent} />
+              <View style={{ marginLeft: 10 }}>
+                <Text subhead semibold>
+                  Weather
+                </Text>
+                {moreInfoData.weather ? (
+                  <Text body2>{moreInfoData.weather}</Text>
+                ) : (
+                  <Text body2 style={{ color: 'red' }}>No Weather Data</Text>
+                )}
+              </View>
+            </View>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name="clock" size={10} color={colors.accent} />
+              <View style={{ marginLeft: 10 }}>
+                <Text subhead semibold>
+                  Duration
+                </Text>
+                <Text body2>{moreInfoData.duration || ''}</Text>
+              </View>
+            </View>
           </View>
         </View>
       ) : (
         <View style={{ paddingHorizontal: 20 }}>
-          <View style={stylesforcal.itemReason}>
-            <Icon name="hourglass-start" size={18} color={colors.accent} />
-            <View style={{ marginLeft: 15 }}>
-              <Text subhead semibold>
-                Starting Height
-              </Text>
-              <Text body2>{moreInfoData.startingHeight + ' m' || ''}</Text>
-            </View>
-          </View>
-
-          <View style={stylesforcal.itemReason}>
-            <Icon name="mountain" size={18} color={colors.accent} />
-            <View style={{ marginLeft: 10 }}>
-              <Text subhead semibold>
-                Summit Height
-              </Text>
-              <Text body2>{moreInfoData.summitHeight + ' m' || ''}</Text>
-            </View>
-          </View>
-
-          <View style={stylesforcal.itemReason}>
-            <Icon name="arrow-up" size={18} color={colors.accent} />
-            <View style={{ marginLeft: 12 }}>
-              <Text subhead semibold>
-                Altitude Gain
-              </Text>
-              <Text body2>{moreInfoData.altitudeGain + ' m' || ''}</Text>
-            </View>
-          </View>
-
-          <View style={stylesforcal.largerItemReason}>
-            <Icon name="cloud-sun" size={18} color={colors.accent} />
-            <View style={{ marginLeft: 10 }}>
-              <Text subhead semibold>
-                Weather
-              </Text>
-              <Text body2>{moreInfoData.weather || ''}</Text>
-            </View>
+          <View style={descStyles.descriptionContainer}>
+            <Text style={descStyles.descriptionHeading}>Peak Tidbits</Text>
+            <Text style={descStyles.descriptionText}>{overviewData}</Text>
           </View>
         </View>
       )}
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   tabContainer: {
@@ -98,11 +125,16 @@ const styles = StyleSheet.create({
   },
   tabButton: {
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 15,
+    fontSize: 20,
   },
   activeTabButton: {
     borderBottomWidth: 2,
     borderBottomColor: '#2A8BF2',
+  },
+
+  tabButtonText: {
+    fontSize: 16, 
   },
 });
 
@@ -123,6 +155,28 @@ const stylesforcal = StyleSheet.create({
     color: 'white', 
     fontWeight: 'bold'
   },
+
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5E5',
+    backgroundColor:"red"
+
+  },
+  tabButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+  },
+  activeTabButton: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#2A8BF2',
+  },
+  tabButtonText: {
+    fontSize: 24,
+  },
+
 });
 
 
@@ -147,8 +201,7 @@ const footerStyles = StyleSheet.create({
 
 const descStyles = StyleSheet.create({
   descriptionContainer: {
-    marginTop: 20,
-    paddingHorizontal: 5,
+    marginTop: 10,
   },
   descriptionHeading: {
     fontSize: 28,
@@ -157,7 +210,7 @@ const descStyles = StyleSheet.create({
     // alignSelf: "left",
   },
   descriptionText: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 24,
     textAlign: 'justify'
   },
