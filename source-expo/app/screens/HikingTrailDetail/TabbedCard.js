@@ -40,7 +40,7 @@ const TabbedCard = ({ overviewData, moreInfoData }) => {
       </View>
 
       {activeTab === 'moreInfo' ? (
-        <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
+        <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon name="hourglass-start" size={10} color={colors.accent} />
@@ -89,17 +89,6 @@ const TabbedCard = ({ overviewData, moreInfoData }) => {
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Icon name="clock" size={10} color={colors.accent} />
-              <View style={{ marginLeft: 10 }}>
-                <Text subhead semibold>
-                  Duration
-                </Text>
-                <Text body2>{moreInfoData.duration || ''}</Text>
-              </View>
-            </View>
-          </View>
         </View>
       ) : (
         <View style={{ paddingHorizontal: 20 }}>
@@ -156,26 +145,6 @@ const stylesforcal = StyleSheet.create({
     fontWeight: 'bold'
   },
 
-  tabContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-    backgroundColor:"red"
-
-  },
-  tabButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-  },
-  activeTabButton: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#2A8BF2',
-  },
-  tabButtonText: {
-    fontSize: 24,
-  },
 
 });
 

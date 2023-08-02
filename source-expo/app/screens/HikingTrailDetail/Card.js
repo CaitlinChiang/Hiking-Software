@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 8,
     alignSelf: 'flex-start',
-    marginRight: 10, // Add margin to create a distance between gradingContainer and durationContainer
+    marginRight: 10, 
   },
   gradingText: {
     color: 'white',
