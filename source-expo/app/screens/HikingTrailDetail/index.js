@@ -4,7 +4,10 @@ import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firest
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
 import { HikingTrailsData } from '@data';
+
 import CardWithImage from './Card';
+import TabbedCard from './TabbedCard';
+
 
 //imports for calender
 import CalendarWithPeriodFill from './calender';
@@ -189,80 +192,13 @@ export default function HikingTrailDetail({navigation, route}) {
         >
           <View style={{paddingHorizontal: 20}}>
 
-            {/* Description */}
-            <View style={descStyles.descriptionContainer}>
-              <Text style={descStyles.descriptionHeading}>Overview</Text>
-              <Text style={descStyles.descriptionText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                aliquet, tellus a gravida malesuada, dolor tellus bibendum libero,
-                sed euismod dui ante nec lorem. In pulvinar accumsan vestibulum.
-                Quisque ultrices justo nec arcu venenatis aliquam. Aliquam feugiat
-                suscipit dolor vitae sagittis. Praesent eu neque sed justo volutpat
-                tincidunt tincidunt nec felis.
-              </Text>
-            </View>
+          <TabbedCard
+            overviewData={
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi aliquet, tellus a gravida malesuada, dolor tellus bibendum libero, sed euismod dui ante nec lorem. In pulvinar accumsan vestibulum. Quisque ultrices justo nec arcu venenatis aliquam. Aliquam feugiat suscipit dolor vitae sagittis. Praesent eu neque sed justo volutpat tincidunt tincidunt nec felis.'
+            }
+            moreInfoData={trail}
+          />
 
-
-              <View style={styles.itemReason}>
-                <Icon name="hourglass-start" size={18} color={colors.accent} />
-                <View style={{marginLeft: 15}}>
-                  <Text subhead semibold>
-                    Starting Height
-                  </Text>
-                  <Text body2>
-                    {trail?.startingHeight + " m" || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.largerItemReason}>
-                <Icon name="mountain" size={18} color={colors.accent} />
-                <View style={{marginLeft: 10}}>
-                  <Text subhead semibold>
-                    Summit Height
-                  </Text>
-                  <Text body2>
-                    {trail?.summitHeight + " m" || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
-                <Icon name="arrow-up" size={18} color={colors.accent} />
-                <View style={{marginLeft: 12}}>
-                  <Text subhead semibold>
-                    Altitude Gain
-                  </Text>
-                  <Text body2>
-                    {trail?.altitudeGain  + " m"  || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
-                <Icon name="clock" size={18} color={colors.accent} />
-                <View style={{marginLeft: 10}}>
-                  <Text subhead semibold>
-                    Duration
-                  </Text>
-                  <Text body2>
-                    {trail?.duration || ''}
-                  </Text>
-                </View>
-              </View>
-
-
-              <View style={styles.largerItemReason}>
-                <Icon name="cloud-sun" size={18} color={colors.accent} />
-                <View style={{marginLeft: 10}}>
-                  <Text subhead semibold>
-                    Weather
-                  </Text>
-                  <Text body2>
-                    {trail?.weather || ''} 
-                  </Text>
-                </View>
-              </View>
           </View>
         </ScrollView>
       </SafeAreaView>
