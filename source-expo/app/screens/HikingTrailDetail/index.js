@@ -195,23 +195,7 @@ export default function HikingTrailDetail({navigation, route}) {
         duration={trail?.duration} // Pass the duration prop here
         onPressCross={handleCrossIconPress}
       />
-      <Header
-        title=""
-        renderLeft={() => {
-          return (
-            <Icon
-              name="arrow-left"
-              size={20}
-              color={BaseColor.whiteColor}
-              enableRTL={true}
-            />
-          );
-        }}
-        onPressLeft={() => {
-          navigation.goBack();
-        }}
-      
-      />
+
       <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
         <ScrollView
           style={{ flex: 1 }}
@@ -249,7 +233,7 @@ export default function HikingTrailDetail({navigation, route}) {
               xml={isFilled ? heartSolidSvg : heartRegularSvg}
               width={24}
               height={40}
-              fill={isFilled ? 'green' : 'red'}
+              fill={isFilled ? 'white' : 'white'}
             />
           </View>
         </TouchableOpacity>
@@ -300,7 +284,7 @@ const footerStyles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'rgba(255, 255, 255, 0.75)', 
     borderTopWidth: 0,
-    paddingHorizontal: 40,
+    paddingHorizontal: 45,
     alignItems: 'center', 
     position: 'absolute', 
     bottom: 0, 
