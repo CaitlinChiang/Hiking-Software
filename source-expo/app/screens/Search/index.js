@@ -31,10 +31,23 @@ export default function Search({navigation}) {
   const [hikingTrails, setHikingTrails] = useState(HikingTrailsData);
   const [filteredHikingTrails, setFilteredHikingTrails] = useState(hikingTrails);
 
-  const handleSearch = () => {
+  const fuzzySearch = (text, target) => {
+    const pattern = text
+      .split('')
+      .map((char) => `(?=.*${char})`)
+      .join('');
+    const regex = new RegExp(pattern, 'i');
+    return regex.test(target);
+  };
+
+  const handleSearch = (text) => {
+    setKeyword(text);
+
     const filteredTrails = hikingTrails.filter((trail) =>
-      trail.name.toLowerCase().includes(keyword.toLowerCase())
+      fuzzySearch(text.toLowerCase(), trail.name.toLowerCase()) ||
+      fuzzySearch(text.toLowerCase(), trail.location.toLowerCase())
     );
+
     setFilteredHikingTrails(filteredTrails);
   };
 
@@ -58,7 +71,7 @@ export default function Search({navigation}) {
           style={{flex: 1}}>
           <ScrollView contentContainerStyle={{padding: 20}}>
             <TextInput
-              onChangeText={(text) => setKeyword(text)}
+              onChangeText={(text) => handleSearch(text)}
               placeholder={'Search for a Hiking Trail'}
               value={keyword}
             />
@@ -91,14 +104,6 @@ export default function Search({navigation}) {
               )}
             </View>
           </ScrollView>
-          <View style={{paddingHorizontal: 20, paddingVertical: 15}}>
-            <Button
-              full
-              onPress={handleSearch}
-              loading={loading}>
-              {t('Search')}
-            </Button>
-          </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </View>

@@ -57,19 +57,79 @@ export default function Booking({navigation}) {
     };
   
     fetchCurrentMountain();
-  }, [mountain]);
+  }, [trainingTimeline, mountain]);
 
+  const completeTraining = async () => {
+    try {
+      const userId = 'jxihUCNoi0396wkQR2gx';
+      const bucketListRef = doc(db, 'users', userId);
+  
+      await updateDoc(bucketListRef, {
+        historyList: arrayUnion({ name: mountain?.mountainName })
+      });
+  
+      const savedDocSnapshot = await getDoc(bucketListRef);
+  
+      if (savedDocSnapshot.exists()) {
+        const savedDoc = savedDocSnapshot.data() || {};
+        let upcomingList = savedDoc.upcoming || [];
+  
+        // Remove duplicates based on mountainName
+        const uniqueUpcomingList = [];
+        const seenMountainNames = {};
+  
+        for (const item of upcomingList) {
+          if (!seenMountainNames[item.mountainName]) {
+            seenMountainNames[item.mountainName] = true;
+            uniqueUpcomingList.push(item);
+          }
+        }
+  
+        upcomingList = uniqueUpcomingList;
+  
+        if (upcomingList.length > 0) {
+          // Sort the bucketList items by ascending startDate
+          upcomingList.sort((a, b) => a.startDate.localeCompare(b.startDate));
+  
+          // Set the first item's startDate, endDate, and mountainName as the new 'dates' object
+          const firstItem = upcomingList[0];
+          const updatedDates = {
+            startDate: firstItem.startDate,
+            endDate: firstItem.endDate,
+            mountainName: firstItem.mountainName
+          };
+  
+          await updateDoc(bucketListRef, { dates: updatedDates });
+  
+          // Remove the first item from the bucketList in Firebase
+          await updateDoc(bucketListRef, {
+            upcoming: arrayRemove(firstItem)
+          });
+        } else {
+          // If bucketList has no items, set the dates object to default values
+          const updatedDates = { mountainName: '-', startDate: '', endDate: '' };
+          await updateDoc(bucketListRef, { dates: updatedDates });
+        }
+      } else {
+        console.log('User document does not exist');
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };  
 
   const test_data = trainingTimeline?.map((item, index) => {
     return (
       <View>
         <View style={styles.listItemContainer} key={index}>
-          <View style={index === 4 ? styles.circleContainerCurrent : styles.circleContainer}>
+          <View style={index === 4 ? styles.circleContainerCurrent : (index < 4 ? {...styles.circleContainer, backgroundColor: '#c1c1c1'} : styles.circleContainer) }>
             <Text style={index === 4 ? styles.circleTextCurrent : styles.circleText}>{`July\n${index + 1}`}</Text>
           </View>
           <TrainingDetail
             currentDate={index == 4}
             title={item.title}
+            past={index < 4}
+            complete={item.complete}
             style={{paddingVertical: 5, marginHorizontal: 20, width: '75%' }}
             onPress={() => {
               navigation.navigate('TrainingDetail');
@@ -91,17 +151,19 @@ export default function Booking({navigation}) {
           style={{ ...BaseStyle.safeAreaView, paddingVertical: 50, paddingHorizontal: 50 }}
           edges={['right', 'left', 'bottom']}>     
           <Text style={styles.emptyText}>{'You are currently not training for any hike, visit our explore page to view our recommendations for you!'}</Text>
-          <Button style={{ marginTop: 50 }} onPress={goExplore}>{'Explore Hiking Trails'}</Button>
+          <Button style={{ marginTop: 50  }} onPress={goExplore}>{'Explore Hiking Trails'}</Button>
         </SafeAreaView>
       )
     } else {
       return (
         <SafeAreaView
-          style={BaseStyle.safeAreaView}
+          style={{ ...BaseStyle.safeAreaView, paddingHorizontal: 20 }}
           edges={['right', 'left', 'bottom']}>
           <View>
             <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 20, paddingHorizontal: 20, fontWeight: 500 }}>{`Training for: ${mountain?.mountainName}`}</Text>
-            <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training Date Range: ${mountain?.startDate} - ${mountain?.endDate}`}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training Start: ${mountain?.startDate}`}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 15, marginTop: 10, paddingHorizontal: 20 }}>{`Training End: ${mountain?.endDate}`}</Text>
+            <Button style={{ marginTop: 10, textAlign: 'center' }} onPress={completeTraining}>{'Complete Training'}</Button>
           </View>
 
           <View style={{ flex: 1, marginTop: 35 }}>
