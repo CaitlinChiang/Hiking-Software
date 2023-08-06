@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { View, ScrollView } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
 import {BaseStyle} from '@config'
 import {Header, Text, SafeAreaView, TrainingDetail, Button} from '@components'
 import {TrainingDatesData} from '@data'
@@ -25,8 +26,9 @@ export default function TrainingPlan({ navigation }) {
   const [trainingTimeline] = useState(TrainingDatesData)
   const [mountain, setMountain] = useState({})
   const [showRedirect, setShowRedirect] = useState(false)
+  const isFocused = useIsFocused()
 
-  useEffect(() => {    
+  useEffect(() => {
     const fetchCurrentMountain = async () => {
       const savedDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx' )
       const savedDocSnapshot = await getDoc(savedDocRef)
@@ -44,8 +46,8 @@ export default function TrainingPlan({ navigation }) {
       }
     }
 
-    fetchCurrentMountain()
-  }, [trainingTimeline, mountain, showRedirect])
+    fetchCurrentMountain();
+  }, [trainingTimeline, mountain, showRedirect, isFocused])
 
   const completeTraining = async () => {
     try {

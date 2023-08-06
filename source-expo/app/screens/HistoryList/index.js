@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, ScrollView, Text } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
 import { Header, SafeAreaView, BucketListItem, Button } from '@components'
 import { initializeApp } from 'firebase/app'
 import styles from './styles'
@@ -22,6 +23,7 @@ const db = getFirestore(app)
 
 export default function HistoryList({ navigation }) {
   const [hikingTrails, setHikingTrails] = useState([])
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     const fetchHikingTrails = async () => {
@@ -41,7 +43,7 @@ export default function HistoryList({ navigation }) {
     }
 
     fetchHikingTrails()
-  }, [hikingTrails])
+  }, [hikingTrails, isFocused])
 
   const goExplore = () => {
     navigation.navigate('Explore')
