@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {BaseColor} from '@config';
 
 export default StyleSheet.create({
   footerContainer: {
@@ -11,5 +10,21 @@ export default StyleSheet.create({
   footerText: {
     fontSize: 14,
     color: '#aaa',
+  },
+  container: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 270,
+  },
+  emptyText: {
+    marginTop: 10,
+    fontSize: 12,
+    textAlign: 'center',
+    color: '#999999', 
+    alignSelf: 'center', 
   },
 });

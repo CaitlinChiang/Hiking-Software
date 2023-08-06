@@ -17,10 +17,6 @@ import Profile from '@screens/Profile'
 import TrainingDetail from '@screens/TrainingDetail'
 import TrainingExercise from '@screens/TrainingExercise'
 import HikingTrailDetail from '@screens/HikingTrailDetail'
-import SignUp from '@screens/SignUp'
-import SignIn from '@screens/SignIn'
-import ResetPassword from '@screens/ResetPassword'
-import ChangePassword from '@screens/ChangePassword'
 
 const MainStack = createStackNavigator()
 const BottomTab = createBottomTabNavigator()
@@ -40,10 +36,6 @@ export default function Main() {
       <MainStack.Screen name="TrainingDetail" component={TrainingDetail} />
       <MainStack.Screen name="TrainingExercise" component={TrainingExercise} />
       <MainStack.Screen name="HikingTrailDetail" component={HikingTrailDetail} />
-      <MainStack.Screen name="SignUp" component={SignUp} />
-      <MainStack.Screen name="SignIn" component={SignIn} />
-      <MainStack.Screen name="ResetPassword" component={ResetPassword} />
-      <MainStack.Screen name="ChangePassword" component={ChangePassword} />
       <MainStack.Screen name="NotFound" component={NotFound} />
     </MainStack.Navigator>
   )
