@@ -48,14 +48,14 @@ export default StyleSheet.create({
     paddingRight: 30
   },
   saveButtonContainer: {
-    // backgroundColor: '#D48B67', 
     paddingVertical: 1,
     paddingHorizontal: 5,
+    marginTop: 10,
     width: '60%',
     height: '80%',
     alignItems: 'center',
     alignSelf: 'center',
-    borderRadius: 10,
+    borderRadius: 10
   },
   saveButton: {
     backgroundColor: '#DFA67B',
@@ -72,6 +72,5 @@ export default StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     alignSelf: "center"
-  },
-  
+  }
 });

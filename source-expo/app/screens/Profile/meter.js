@@ -1,40 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
-import RNSpeedometer from 'react-native-speedometer';
+import React, { useState, useEffect } from 'react'
+import { SafeAreaView, StyleSheet, View, Text } from 'react-native'
+import RNSpeedometer from 'react-native-speedometer'
 
-const MeterComponent = ({ totalScore, maxScore }) => {
-  const [meterValue, setMeterValue] = useState(10);
+const MeterComponent = ({ totalScore }) => {
+  const [meterValue, setMeterValue] = useState(0)
 
   useEffect(() => {
-    setMeterValue(totalScore);
-    console.log('meterValue:', meterValue);
-    console.log('totalScore:', totalScore);
-    console.log('maxScore:', maxScore);
-  }, [totalScore, maxScore]);
+    setMeterValue(totalScore)
+  }, [totalScore])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
       <RNSpeedometer
         value={meterValue}
         size={250}
         minValue={0}
-        maxValue={maxScore}
+        maxValue={55}
         allowedDecimals={0}
         labels={[
           {
             name: 'E',
             labelColor: '#E4766F',
-            activeBarColor: '#FE8B71',
+            activeBarColor: '#FE8B71'
           },
           {
             name: 'D',
             labelColor: '#CF792A',
-            activeBarColor: '#F4A67A',
+            activeBarColor: '#F4A67A'
           },
           {
             name: 'C',
             labelColor: '#F8955E',
-            activeBarColor: '#F9CD79',
+            activeBarColor: '#F9CD79'
           },
           {
             name: 'B',
@@ -44,30 +41,18 @@ const MeterComponent = ({ totalScore, maxScore }) => {
           {
             name: 'A',
             labelColor: '#A6C06F',
-            activeBarColor: '#C3E182',
-            fontSize: 100,
+            activeBarColor: '#C3E182'
           },
         ]}
         labelStyle={{
-          fontSize: 0,
+          fontSize: 0
         }}
       />
-      <View style={{ marginTop: 50, paddingHorizontal: 20 }} />
+      <View style={{ marginTop: 50, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 20 }}>Physical Score: {meterValue} / 55</Text>
+      </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-
-export default MeterComponent;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  }
-});
-
-
-
-
-
-
+export default MeterComponent
