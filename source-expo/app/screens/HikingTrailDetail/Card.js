@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     width: '91%',
-    aspectRatio: 4 / 6,
+    aspectRatio: 5 / 6,
   },
   image: {
     width: '100%',

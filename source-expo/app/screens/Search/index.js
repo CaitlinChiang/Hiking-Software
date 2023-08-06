@@ -10,7 +10,6 @@ import {
   Header,
   SafeAreaView,
   Icon,
-  Button,
   Text,
   TextInput,
   BucketListItem
@@ -41,7 +40,7 @@ export default function Search({navigation}) {
   const handleSearch = (text) => {
     setKeyword(text)
 
-    const filteredTrails = hikingTrails.filter((trail) =>
+    const filteredTrails = filteredHikingTrails.filter((trail) =>
       fuzzySearch(text.toLowerCase(), trail.name.toLowerCase()) ||
       fuzzySearch(text.toLowerCase(), trail.location.toLowerCase())
     )

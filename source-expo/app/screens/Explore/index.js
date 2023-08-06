@@ -6,7 +6,7 @@ import {
   HikingItem,
   SafeAreaView
 } from '@components'
-import {BaseStyle, Images, useTheme} from '@config'
+import {BaseStyle, useTheme} from '@config'
 import styles from './styles'
 import { HikingTrailsData } from '@data'
 import {useTranslation} from 'react-i18next'

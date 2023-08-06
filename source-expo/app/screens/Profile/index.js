@@ -45,13 +45,13 @@ export default function Profile() {
 
   const [showPhysicalSustainability, setShowPhysicalSustainability] = useState(true)
   const [showUpperBodyStrength, setShowUpperBodyStrength] = useState(true)
-  const [physicalSustainability, setPhysicalSustainability] = useState(1)
-  const [upperBodyStrength, setUpperBodyStrength] = useState(1)
-  const [lowerBodyStrength, setLowerBodyStrength] = useState(1)
-  const [balanceStability, setBalanceStability] = useState(1)
-  const [flexibility, setFlexibility] = useState(1)
-  const [outdoorExperienceFrequency, setOutdoorExperienceFrequency] = useState(2)
-  const [outdoorExperienceComfort, setOutdoorExperienceComfort] = useState(1)
+  const [physicalSustainability, setPhysicalSustainability] = useState(0)
+  const [upperBodyStrength, setUpperBodyStrength] = useState(0)
+  const [lowerBodyStrength, setLowerBodyStrength] = useState(0)
+  const [balanceStability, setBalanceStability] = useState(0)
+  const [flexibility, setFlexibility] = useState(0)
+  const [outdoorExperienceFrequency, setOutdoorExperienceFrequency] = useState(0)
+  const [outdoorExperienceComfort, setOutdoorExperienceComfort] = useState(0)
   const [totalScore, setTotalScore] = useState(0)
 
   useEffect(() => {

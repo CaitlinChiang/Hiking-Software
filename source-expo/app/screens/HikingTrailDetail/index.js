@@ -184,9 +184,6 @@ export default function HikingTrailDetail({navigation, route}) {
   return (
     
     <View style={{flex: 1, flexDirection: 'column' }}>
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: footerHeight }}
-      >
       <CardWithImage
         imageSrc={imageSrc}
         mountainName={name}
@@ -215,7 +212,6 @@ export default function HikingTrailDetail({navigation, route}) {
           </View>
         </ScrollView>
       </SafeAreaView>
-      </ScrollView>
         
       {/* Sticky Footers with like the buttons */}
       <View style={footerStyles.footerContainer}>
@@ -272,7 +268,7 @@ export default function HikingTrailDetail({navigation, route}) {
             </View>
           </TouchableWithoutFeedback>
         </Modal>
-      </View>
+      </View> 
     </View>
   );
 }
