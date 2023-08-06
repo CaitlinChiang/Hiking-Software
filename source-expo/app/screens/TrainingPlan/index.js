@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import {FlatList, RefreshControl, View, ScrollView } from 'react-native';
-import {BaseStyle, useTheme, BaseColor} from '@config';
-import {Header, Text, SafeAreaView, TrainingDetail, Icon, Button} from '@components';
-import {TrainingDatesData} from '@data';
-import { doc, getDoc, updateDoc, deleteField, arrayUnion, arrayRemove } from "firebase/firestore";
-import { initializeApp } from 'firebase/app';
+import React, {useState, useEffect} from 'react'
+import { View, ScrollView } from 'react-native'
+import {BaseStyle} from '@config'
+import {Header, Text, SafeAreaView, TrainingDetail, Button} from '@components'
+import {TrainingDatesData} from '@data'
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"
+import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
-import {useTranslation} from 'react-i18next';
-import styles from './styles';
+import styles from './styles'
 
+// DATABASE
 const firebaseConfig = {
   apiKey: "AIzaSyD46mMFUwZ7AlCJWPqOXK3SKw1BuIihlFM",
   authDomain: "hikingproject-3abef.firebaseapp.com",
@@ -17,106 +17,95 @@ const firebaseConfig = {
   messagingSenderId: "23275209713",
   appId: "1:23275209713:web:3579558675b39890b47a50",
   measurementId: "G-7H0L154L10"
-};
+}
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-
-export default function Booking({navigation}) {
-  const {t} = useTranslation();
-  const {colors} = useTheme();
-
-  const [trainingTimeline] = useState(TrainingDatesData);
+export default function TrainingPlan({ navigation }) {
+  const [trainingTimeline] = useState(TrainingDatesData)
   const [mountain, setMountain] = useState({})
   const [showRedirect, setShowRedirect] = useState(false)
 
-  useEffect(() => {
+  useEffect(() => {    
     const fetchCurrentMountain = async () => {
-      try {
-        const userId = 'jxihUCNoi0396wkQR2gx'; 
-        const savedDocRef = doc(db, 'users', userId);
-        const savedDocSnapshot = await getDoc(savedDocRef);
+      const savedDocRef = doc(db, 'users', 'jxihUCNoi0396wkQR2gx' )
+      const savedDocSnapshot = await getDoc(savedDocRef)
   
-        if (savedDocSnapshot.exists()) {
-          const savedDoc = savedDocSnapshot.data()|| {};
-          const mountain = savedDoc?.dates || {};
-
-          if (mountain?.mountainName === '-') {
-            setShowRedirect(true)
-          } else {
-            setShowRedirect(false)
-            setMountain(mountain)
-          }
+      if (savedDocSnapshot.exists()) {
+        const savedDoc = savedDocSnapshot.data() || {}
+        const mountain = savedDoc?.dates || {}
+  
+        if (mountain?.mountainName === '-') {
+          setShowRedirect(true)
         } else {
-          console.log('User document does not exist');
+          setShowRedirect(false)
+          setMountain(mountain)
         }
-      } catch (error) {
-        console.log('Error fetching hiking trail data:', error);
       }
-    };
-  
-    fetchCurrentMountain();
-  }, [trainingTimeline, mountain]);
+    }
+
+    fetchCurrentMountain()
+  }, [trainingTimeline, mountain, showRedirect])
 
   const completeTraining = async () => {
     try {
-      const userId = 'jxihUCNoi0396wkQR2gx';
-      const bucketListRef = doc(db, 'users', userId);
+      const userId = 'jxihUCNoi0396wkQR2gx'
+      const bucketListRef = doc(db, 'users', userId)
   
       await updateDoc(bucketListRef, {
         historyList: arrayUnion({ name: mountain?.mountainName })
-      });
+      })
   
-      const savedDocSnapshot = await getDoc(bucketListRef);
+      const savedDocSnapshot = await getDoc(bucketListRef)
   
       if (savedDocSnapshot.exists()) {
-        const savedDoc = savedDocSnapshot.data() || {};
-        let upcomingList = savedDoc.upcoming || [];
+        const savedDoc = savedDocSnapshot.data() || {}
+        let upcomingList = savedDoc.upcoming || []
   
         // Remove duplicates based on mountainName
-        const uniqueUpcomingList = [];
-        const seenMountainNames = {};
+        const uniqueUpcomingList = []
+        const seenMountainNames = {}
   
         for (const item of upcomingList) {
           if (!seenMountainNames[item.mountainName]) {
-            seenMountainNames[item.mountainName] = true;
-            uniqueUpcomingList.push(item);
+            seenMountainNames[item.mountainName] = true
+            uniqueUpcomingList.push(item)
           }
         }
   
-        upcomingList = uniqueUpcomingList;
+        upcomingList = uniqueUpcomingList
   
         if (upcomingList.length > 0) {
           // Sort the bucketList items by ascending startDate
-          upcomingList.sort((a, b) => a.startDate.localeCompare(b.startDate));
+          upcomingList.sort((a, b) => a.startDate.localeCompare(b.startDate))
   
           // Set the first item's startDate, endDate, and mountainName as the new 'dates' object
-          const firstItem = upcomingList[0];
+          const firstItem = upcomingList[0]
           const updatedDates = {
             startDate: firstItem.startDate,
             endDate: firstItem.endDate,
             mountainName: firstItem.mountainName
-          };
+          }
   
-          await updateDoc(bucketListRef, { dates: updatedDates });
+          await updateDoc(bucketListRef, { dates: updatedDates })
   
           // Remove the first item from the bucketList in Firebase
           await updateDoc(bucketListRef, {
             upcoming: arrayRemove(firstItem)
-          });
+          })
         } else {
           // If bucketList has no items, set the dates object to default values
-          const updatedDates = { mountainName: '-', startDate: '', endDate: '' };
-          await updateDoc(bucketListRef, { dates: updatedDates });
+          const updatedDates = { mountainName: '-', startDate: '', endDate: '' }
+          await updateDoc(bucketListRef, { dates: updatedDates })
+          showRedirect(true)
         }
       } else {
-        console.log('User document does not exist');
+        console.log('User document does not exist')
       }
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error:', error)
     }
-  };  
+  }  
 
   const test_data = trainingTimeline?.map((item, index) => {
     return (
@@ -132,7 +121,7 @@ export default function Booking({navigation}) {
             complete={item.complete}
             style={{paddingVertical: 5, marginHorizontal: 20, width: '75%' }}
             onPress={() => {
-              navigation.navigate('TrainingDetail');
+              navigation.navigate('TrainingDetail')
             }}
           />
         </View>
@@ -141,8 +130,8 @@ export default function Booking({navigation}) {
   })
 
   const goExplore = () => {
-    navigation.navigate('Explore');
-  };
+    navigation.navigate('Explore')
+  }
 
   const displayPage = () => {
     if (showRedirect) {
@@ -183,5 +172,5 @@ export default function Booking({navigation}) {
         {displayPage()}
       </ScrollView>
     </View>
-  );
+  )
 }

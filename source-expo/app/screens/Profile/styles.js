@@ -48,20 +48,29 @@ export default StyleSheet.create({
     paddingRight: 30
   },
   saveButtonContainer: {
-    backgroundColor: '#D48B67', 
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    width: '40%',
-    height: '60%',
+    paddingVertical: 1,
+    paddingHorizontal: 5,
+    marginTop: 10,
+    width: '60%',
+    height: '80%',
     alignItems: 'center',
     alignSelf: 'center',
-    borderRadius: 10,
+    borderRadius: 10
+  },
+  saveButton: {
+    backgroundColor: '#DFA67B',
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+    width: '70%',
   },
   saveButtonText: {
-    color: 'white', // Set the text color to white
-    fontWeight: 'bold', 
-    fontSize: 25,
-    justifyContent: 'center',
-    fontFamily: 'Roboto',
-  },
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    alignSelf: "center"
+  }
 });

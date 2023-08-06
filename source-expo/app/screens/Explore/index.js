@@ -1,21 +1,16 @@
 import React, {useState} from 'react'
-import {RefreshControl, View, Animated, TouchableOpacity, FlatList} from 'react-native'
+import {RefreshControl, View, TouchableOpacity, FlatList} from 'react-native'
 import {
-  Image,
   Text,
   Icon,
   HikingItem,
-  Card,
-  Button,
-  SafeAreaView,
-  EventCard,
+  SafeAreaView
 } from '@components'
 import {BaseStyle, Images, useTheme} from '@config'
-import * as Utils from '@utils'
 import styles from './styles'
 import { HikingTrailsData } from '@data'
 import {useTranslation} from 'react-i18next'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'
 
 export default function Home({navigation}) {
   const {t} = useTranslation()
@@ -38,26 +33,22 @@ export default function Home({navigation}) {
     }
   ])
   const [hikingTrails] = useState(HikingTrailsData)
-  const [heightHeader, setHeightHeader] = useState(Utils.heightHeader())
-  const deltaY = new Animated.Value(0)
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [activeIcon, setActiveIcon] = useState('');
-
+  const [refreshing, setRefreshing] = React.useState(false)
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    setRefreshing(true)
     setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+      setRefreshing(false)
+    }, 2000)
+  }, [])
 
   const getRandomTrail = () => {
-    const randomIndex = Math.floor(Math.random() * hikingTrails.length);
-    return hikingTrails[randomIndex];
-  };
+    const randomIndex = Math.floor(Math.random() * hikingTrails.length)
+    return hikingTrails[randomIndex]
+  }
 
   const renderIconService = () => {
-    const [selectedIcon, setSelectedIcon] = useState('For You');
+    const [selectedIcon, setSelectedIcon] = useState('For You')
   
     return (
       <FlatList
@@ -66,7 +57,7 @@ export default function Home({navigation}) {
         numColumns={4}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}, i) => {
-          const isSelected = selectedIcon === item.name;
+          const isSelected = selectedIcon === item.name
   
           return (
             <TouchableOpacity
@@ -74,11 +65,11 @@ export default function Home({navigation}) {
               style={styles.itemService}
               activeOpacity={0.9}
               onPress={() => {
-                setSelectedIcon(item.name);
-                setRefreshing(true);
+                setSelectedIcon(item.name)
+                setRefreshing(true)
                 setTimeout(() => {
-                  setRefreshing(false);
-                }, 2000);
+                  setRefreshing(false)
+                }, 2000)
               }}
             >
               <View
@@ -97,21 +88,16 @@ export default function Home({navigation}) {
                 {t(item.name)}
               </Text>
             </TouchableOpacity>
-          );
+          )
         }}
       />
-    );
-  };
+    )
+  }
   
-
-  const heightImageBanner = Utils.scaleWithPixel(140)
-  const marginTopBanner = heightImageBanner - heightHeader
-
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={{flex: 1}} edges={['right', 'left']}>
         <FlatList
-          onContentSizeChange={() => setHeightHeader(Utils.heightHeader())}
           scrollEventThrottle={8}
           ListHeaderComponent={
             <View style={{ paddingHorizontal: 20 }}>

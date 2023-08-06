@@ -5,6 +5,11 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore'
 import { HikingTrailsData } from '@data';
 
+import CardWithImage from './Card';
+import TabbedCard from './TabbedCard';
+
+
+
 //imports for calender
 import CalendarWithPeriodFill from './calender';
 
@@ -146,6 +151,13 @@ export default function HikingTrailDetail({navigation, route}) {
     navigation.navigate('Train')
   }
 
+// This is for the Card.js since it needs to know what to do on clicking the cross
+  const handleCrossIconPress = () => {
+    navigation.goBack(); 
+  };
+
+  const footerHeight = 100; // THIS IS FOR FOTTER
+
   const handleHeartIconPress = async () => {
     try {
       const userId = 'jxihUCNoi0396wkQR2gx';
@@ -170,41 +182,20 @@ export default function HikingTrailDetail({navigation, route}) {
   };
 
   return (
-    <View style={{flex: 1}}>
-    <ScrollView><Animated.Image
-      source={{ uri: imageSrc }} // Using this instead for URI
-      // source={require(Image.trail1)} //
-      style={[
-        styles.imgBanner,
-        {
-          height: deltaY.interpolate({
-            inputRange: [
-              0,
-              Utils.scaleWithPixel(200),
-              Utils.scaleWithPixel(200),
-              ],
-              outputRange: [heightImageBanner, heightHeader, heightHeader], 
-            }),
-          },
-        ]}
+    
+    <View style={{flex: 1, flexDirection: 'column' }}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: footerHeight }}
+      >
+      <CardWithImage
+        imageSrc={imageSrc}
+        mountainName={name}
+        location={trail?.location}
+        grading={trail?.ydsGrading}
+        duration={trail?.duration} // Pass the duration prop here
+        onPressCross={handleCrossIconPress}
       />
-      <Header
-        title=""
-        renderLeft={() => {
-          return (
-            <Icon
-              name="arrow-left"
-              size={20}
-              color={BaseColor.whiteColor}
-              enableRTL={true}
-            />
-          );
-        }}
-        onPressLeft={() => {
-          navigation.goBack();
-        }}
-      
-      />
+
       <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
         <ScrollView
           style={{ flex: 1 }}
@@ -213,160 +204,75 @@ export default function HikingTrailDetail({navigation, route}) {
           scrollEventThrottle={8}
         >
           <View style={{paddingHorizontal: 20}}>
-            <View
-              style={[
-                styles.contentBoxTop,
-                {
-                  marginTop: marginTopBanner,
-                  backgroundColor: colors.card,
-                  shadowColor: colors.border,
-                  borderColor: colors.border,
-                },
-              ]}>
-              <Text title2 semibold style={{marginBottom: 10}}>
-                {name}
-              </Text>
-              <Text
-                body2
-                style={{
-                  marginTop: 10,
-                  textAlign: 'center',
-                }}>
-                Description of mountain
-              </Text>
-            </View>
 
-            <View>
-              <View style={styles.itemReason}>
-                <Icon name="map-marker-alt" size={18} color={colors.accent} />
-                <View style={{marginLeft: 15}}>
-                  <Text subhead semibold>
-                    Location
-                  </Text>
-                  <Text body2>
-                    {trail?.location || ''}
-                  </Text>
-                </View>
-              </View>
+        <TabbedCard
+          overviewData={
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi aliquet, tellus a gravida malesuada, dolor tellus bibendum libero, sed euismod dui ante nec lorem. In pulvinar accumsan vestibulum. Quisque ultrices justo nec arcu venenatis aliquam. Aliquam feugiat suscipit dolor vitae sagittis. Praesent eu neque sed justo volutpat tincidunt tincidunt nec felis.'
+          }
+          moreInfoData={trail} // Pass the trail data here
+        />
 
-              <View style={styles.itemReason}>
-                <Icon name="hourglass-start" size={18} color={colors.accent} />
-                <View style={{marginLeft: 15}}>
-                  <Text subhead semibold>
-                    Starting Height
-                  </Text>
-                  <Text body2>
-                    {trail?.startingHeight || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.largerItemReason}>
-                <Icon name="mountain" size={18} color={colors.accent} />
-                <View style={{marginLeft: 10}}>
-                  <Text subhead semibold>
-                    Summit Height
-                  </Text>
-                  <Text body2>
-                    {trail?.summitHeight || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
-                <Icon name="arrow-up" size={18} color={colors.accent} />
-                <View style={{marginLeft: 12}}>
-                  <Text subhead semibold>
-                    Altitude Gain
-                  </Text>
-                  <Text body2>
-                    {trail?.altitudeGain || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
-                <Icon name="clock" size={18} color={colors.accent} />
-                <View style={{marginLeft: 10}}>
-                  <Text subhead semibold>
-                    Duration
-                  </Text>
-                  <Text body2>
-                    {trail?.duration || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.itemReason}>
-                <Icon name="greater-than" size={18} color={colors.accent} />
-                <View style={{marginLeft: 15}}>
-                  <Text subhead semibold>
-                    Physical Grading
-                  </Text>
-                  <Text body2>
-                    {trail?.ydsGrading || ''}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.largerItemReason}>
-                <Icon name="cloud-sun" size={18} color={colors.accent} />
-                <View style={{marginLeft: 10}}>
-                  <Text subhead semibold>
-                    Weather
-                  </Text>
-                  <Text body2>
-                    {trail?.weather || ''} 
-                  </Text>
-                </View>
-              </View>
-            </View>
           </View>
         </ScrollView>
-
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+      </SafeAreaView>
+      </ScrollView>
+        
+      {/* Sticky Footers with like the buttons */}
+      <View style={footerStyles.footerContainer}>
+        {/* Heart icon thingy */}
+        <TouchableOpacity onPress={handleHeartIconPress} style={styles.footerButton}>
           <View
-            style={{ paddingVertical: 20, paddingHorizontal: 20, width: 320 }}>
+            style={{
+              backgroundColor: '#EA906C',
+              borderRadius: 8,
+              paddingVertical: 8,
+              paddingHorizontal: 20,
+            }}
+          >
+            <SvgXml
+              xml={isFilled ? heartSolidSvg : heartRegularSvg}
+              width={24}
+              height={40}
+              fill={isFilled ? 'white' : 'white'}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {/* Schedule Training buttewns */}
+        <View style={styles.footerButton}>
+          <View
+            style={{
+              paddingVertical: 20,
+              paddingHorizontal: 20,
+            }}
+          >
             <Button onPress={handleButtonPress}>
               {'Schedule Training'}
             </Button>
           </View>
-          <View
-            style={{ paddingVertical: 20, paddingHorizontal: 20, width: 50 }}>
-            <TouchableOpacity onPress={handleHeartIconPress} style={{ backgroundColor: '#E8E8E8', width: 70, height: 57, borderRadius: 10, marginLeft: -10 }}>
-              <View style={{ marginLeft: 22, marginTop: 15 }}>
-                <SvgXml
-                  xml={isFilled ? heartSolidSvg : heartRegularSvg}
-                  width={25}
-                  height={25}
-                  fill={isFilled ? '#FF1818' : '#000'}
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
+          
         </View>
-      <Modal
-        visible={showCalendar}
-        onRequestClose={handleCalendarClose}
-        animationType="slide"
-        transparent={true}
-      >
-        <TouchableWithoutFeedback onPress={handleCalendarClose}>
-          <View style={stylesforcal.modalContainer}>
-            <View style={stylesforcal.modalContent}>
-              <Text style={{ fontWeight: 500, textAlign: 'center' }}>{'Choose a Start and End Date'}</Text>
-              <CalendarWithPeriodFill blockedDateRanges={blockedDateRanges} name={name} start={start} end={end} />
-              <View style={stylesforcal.closeButtonContainer}>
-                <Button onPress={handleSaveClose} style={stylesforcal.closeButton}>
-                  <Text style={stylesforcal.closeButtonText}>Save</Text>
-                </Button>
+        <Modal
+          visible={showCalendar}
+          onRequestClose={handleCalendarClose}
+          animationType="slide"
+          transparent={true}
+        >
+          <TouchableWithoutFeedback onPress={handleCalendarClose}>
+            <View style={stylesforcal.modalContainer}>
+              <View style={stylesforcal.modalContent}>
+                <Text style={{ fontWeight: 500, textAlign: 'center' }}>{'Choose a Start and End Date'}</Text>
+                <CalendarWithPeriodFill blockedDateRanges={blockedDateRanges} name={name} start={start} end={end} />
+                <View style={stylesforcal.closeButtonContainer}>
+                  <Button onPress={handleSaveClose} style={stylesforcal.closeButton}>
+                    <Text style={stylesforcal.closeButtonText}>Save</Text>
+                  </Button>
+                </View>
               </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-      </SafeAreaView>
-      </ScrollView>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </View>
     </View>
   );
 }
@@ -376,7 +282,7 @@ const stylesforcal = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(, 0, 0, 0.9)',
   },
   modalContent: {
     backgroundColor: 'white',
@@ -390,3 +296,45 @@ const stylesforcal = StyleSheet.create({
   },
 });
 
+
+
+const footerStyles = StyleSheet.create({
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.75)', 
+    borderTopWidth: 0,
+    paddingHorizontal: 45,
+    alignItems: 'center', 
+    position: 'absolute', 
+    bottom: 0, 
+  },
+  footerButton: {
+    flex: 1,
+  },
+});
+
+
+const descStyles = StyleSheet.create({
+  descriptionContainer: {
+    marginTop: 20,
+    paddingHorizontal: 5,
+  },
+  descriptionHeading: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    // alignSelf: "left",
+  },
+  descriptionText: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'justify'
+  },
+  informationContainer: {
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+
+});

@@ -1,6 +1,5 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
-import {BaseColor} from '@config';
+import {StyleSheet} from 'react-native'
+import {BaseColor} from '@config'
 
 export default StyleSheet.create({
   contentPickDate: {
@@ -83,4 +82,4 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 1,
   },
-});
+})

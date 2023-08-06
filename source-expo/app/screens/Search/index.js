@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import {
   View,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import {BaseStyle, useTheme} from '@config';
+} from 'react-native'
+import {BaseStyle, useTheme} from '@config'
 import {
   Header,
   SafeAreaView,
@@ -14,52 +14,50 @@ import {
   Text,
   TextInput,
   BucketListItem
-} from '@components';
-import {useTranslation} from 'react-i18next';
-import { HikingTrailsData } from '@data';
+} from '@components'
+import {useTranslation} from 'react-i18next'
+import { HikingTrailsData } from '@data'
 
 export default function Search({navigation}) {
-  const {colors} = useTheme();
-  const {t} = useTranslation();
+  const {colors} = useTheme()
+  const {t} = useTranslation()
   const offsetKeyboard = Platform.select({
     ios: 0,
     android: 20,
-  });
+  })
 
-  const [keyword, setKeyword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [hikingTrails, setHikingTrails] = useState(HikingTrailsData);
-  const [filteredHikingTrails, setFilteredHikingTrails] = useState(hikingTrails);
+  const [keyword, setKeyword] = useState('')
+  const [filteredHikingTrails, setFilteredHikingTrails] = useState(HikingTrailsData)
 
   const fuzzySearch = (text, target) => {
     const pattern = text
       .split('')
       .map((char) => `(?=.*${char})`)
-      .join('');
-    const regex = new RegExp(pattern, 'i');
-    return regex.test(target);
-  };
+      .join('')
+    const regex = new RegExp(pattern, 'i')
+    return regex.test(target)
+  }
 
   const handleSearch = (text) => {
-    setKeyword(text);
+    setKeyword(text)
 
     const filteredTrails = hikingTrails.filter((trail) =>
       fuzzySearch(text.toLowerCase(), trail.name.toLowerCase()) ||
       fuzzySearch(text.toLowerCase(), trail.location.toLowerCase())
-    );
+    )
 
-    setFilteredHikingTrails(filteredTrails);
-  };
+    setFilteredHikingTrails(filteredTrails)
+  }
 
   return (
     <View style={{flex: 1}}>
       <Header
         title={t('search')}
         renderLeft={() => {
-          return <Icon name="arrow-left" size={20} color={colors.primary} />;
+          return <Icon name="arrow-left" size={20} color={colors.primary} />
         }}
         onPressLeft={() => {
-          navigation.goBack();
+          navigation.goBack()
         }}
       />
       <SafeAreaView
@@ -107,5 +105,5 @@ export default function Search({navigation}) {
         </KeyboardAvoidingView>
       </SafeAreaView>
     </View>
-  );
+  )
 }
