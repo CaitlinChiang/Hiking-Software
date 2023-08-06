@@ -250,7 +250,28 @@ export default function HikingTrailDetail({navigation, route}) {
               {'Schedule Training'}
             </Button>
           </View>
+          
         </View>
+        <Modal
+          visible={showCalendar}
+          onRequestClose={handleCalendarClose}
+          animationType="slide"
+          transparent={true}
+        >
+          <TouchableWithoutFeedback onPress={handleCalendarClose}>
+            <View style={stylesforcal.modalContainer}>
+              <View style={stylesforcal.modalContent}>
+                <Text style={{ fontWeight: 500, textAlign: 'center' }}>{'Choose a Start and End Date'}</Text>
+                <CalendarWithPeriodFill blockedDateRanges={blockedDateRanges} name={name} start={start} end={end} />
+                <View style={stylesforcal.closeButtonContainer}>
+                  <Button onPress={handleSaveClose} style={stylesforcal.closeButton}>
+                    <Text style={stylesforcal.closeButtonText}>Save</Text>
+                  </Button>
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
       </View>
     </View>
   );
